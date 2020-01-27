@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    app:cardPreventCornerOverlap="true"
+    app:cardElevation="4dp"
+    app:cardMaxElevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true"
+
+    >
+<TextView
+    android:id="@+id/manycourses"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tool:text="اساسيات الاندرويد"
+    android:textSize="25sp"
+    android:gravity="center"
+    android:textStyle="bold"
+    android:background="#FFF"
+    android:padding="12dp"
+    android:textColor="#000"
+    />
+</androidx.cardview.widget.CardView>

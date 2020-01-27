@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">خدمات الطلاب</string>
+    <string name="news">الاخبار</string>
+    <string name="sign_or_login">التسجيل</string>
+
+
+    <string name="vision">الرؤية</string>
+    <string name="communication">التواصل</string>
+    <string name="sign_up">تسجيل</string>
+
+    <string name="code_student">كود الطالب</string>
+    <string name="password">الرقم السري</string>
+    <string name="login">تسجيل دخول</string>
+    <string name="UserName">اسم المستخدم</string>
+    <string name="ShowResult">النتيجة</string>
+    <string name="GraduatesForm">استمارة الخرجين</string>
+    <string name="graduate">خريج جامعي</string>
+    <string name="updateText">قد تم أصدار تحديث جديد لبرنامج من أجل أستخدام افضل ومتطلبات اوفر
+للتحديث اضغط على تحديث</string>
+    <string name="Password">الرقم السري</string>
+    <string name="lectures">المحاضرات</string>
+    <string name="Name">اسم الطالب</string>
+    <string name="update">تحديث</string>
+    <string name="Code">كود الطالب</string>
+    <string name="ConPassword">تأكيد الرقم السري</string>
+    <string name="noavailable">غير متوفر حاليا</string>
+    <string name="guide">دليل الطالب</string>
+    <string name="settings">خدمات الطلاب</string>
+
+    <string name="land1">الفرقة الاولي</string>
+    <string name="land2">الفرقة الثانية</string>
+    <string name="Email">البريد الاكتروني</string>
+    <string name="InEmail">الاميل الجامعي</string>
+    <string name="shair_app">مشاركة التطبيق</string>
+    <string name="sendSuggestion">أرسال اقترحات</string>
+    <string name="make_rate">تقييم التطبيق</string>
+    <string name="exit_app">الخروج من التطبيق</string>
+    <string name="nosendprogrem">لا يوجد برامج ارسال علي الهاتف</string>
+    <string name="entername">أدخل الاسم</string>
+    <string name="Error">خطأ</string>
+    <string name="comment">تعليق</string>
+    <string name="downloadexams">تنزيل</string>
+    <string name="tryagainlater">يرجا أعادة المحاولة فى وقت اخر...</string>
+    <string name="Add">أضافة</string>
+    <string name="nopostgroup">لا يوجد منشورات متاحة الان..</string>
+    <string name="addcommenttext">أكتب تعليق</string>
+    <string name="addcomment">تم اضافة التعليق بالنجاح</string>
+    <string name="errorupload">لا يوجد أتصال بلانترنت أو حجم الملف كبير</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="land3">الفرقة الثالثة</string>
+    <string name="land4">الفرقة الرابعة</string>
+    <string name="lland1">الفصل الدراسي الاولي</string>
+    <string name="lland2">الفصل الدراسي الثاني</string>
+    <string name="subject_address1">أن يكون معهد العبور العالى ضمن أفضل عشر مؤسسات تعليم عالى مصرية خلال العقد القادم, والمساهمة الفعالة فى تحقيق أهداف التنمية المستدامة فى المجتمع المصرى</string>
+    <string name="address2">الرسالة</string>
+    <string name="subject_address2">يساهم المعهد فى توفير إحتياجات سوق العمل المحلى من المتخصصين فى المحاسبة والإدارة ونظم المعلومات وعلوم الحاسب, وذلك من خلال عملية تعليمية وبحثية ذات جودة عالية تتفق والمعايير القومية مع الإلتزام بالقواعد الأخلاقية والمهنية, وكذلك التفاعل المستمر مع الأطراف المجتمعية المختلفة بما يساهم فى تحقيق أهداف التنمية الإقتصادية والإجتماعية</string>
+    <string name="location">العنوان</string>
+    <string name="address_location"> كيلو21 طريق القاهرة-بلبيس الصحراوى
+ص.ب 27 مدينة العبور - على بعد 10 دقائق من كارفور العبور وإستاد السلام الدولى .</string>
+    <string name="phone">الموبيل</string>
+    <string name="table">الجداول</string>
+    <string name="map">الخرائط</string>
+    <string name="courses">الكورسات</string>
+    <string name="library">المكتبة</string>
+    <string name="examp">الامتحانات</string>
+    <string name="compition">المسابقات</string>
+    <string name="signout">تسجيل خروج</string>
+    <string name="result">النتيجة</string>
+    <string name="student_info">معلومات الطالب</string>
+    <string name="student_fav">المفضل لدي الطالب</string>
+    <string name="mobile1">01277773408</string>
+    <string name="mobile2">01221040101</string>
+    <string name="email">info@oi.edu.eg</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="profile_name_page">الصفحة الشخصية</string>
+    <string name="groups">المجموعات</string>
+    <string name="doctor_info">معلومات الدكتور</string>
+    <string name="doctor_fav">المفضل لدي الدكتور</string>
+    <string name="favcourses">الكورسات المفضلة</string>
+    <string name="favexams">الامتحانات المفضلة</string>
+    <string name="favbook">الكتب المفضلة</string>
+
+    <string name="favcompitions">المسابقات المفضلة</string>
+
+    <string name="add_success">تم الاضافة بالنجاح</string>
+    <string name="delete_success">تم الحذف بالنجاح</string>
+    <string name="no_communcationInternet">لا يوجد اتصال بلانترنت</string>
+    <string name="create_Success_Group">تم انشاء الجروب بالنجاح</string>
+    <string name="upload_post_scuccess">تم النشر</string>
+    <string name="wrong">حصل خطأ</string>
+
+    <string-array name="departments">
+        <item>علوم الحاسب</item>
+
+        <item>نظم</item>
+        <item>ادارة</item>
+
+    </string-array>
+    <string-array name="lans">
+        <item>الفرقة الاولي</item>
+        <item>الفرقة الثانية</item>
+        <item>الفرقة الثالثة</item>
+        <item>الفرقة الرابعة</item>
+        <item>الفرقة خريج</item>
+    </string-array>
+    <string-array name="level">
+        <item>الفرقة الاولي</item>
+        <item>الفرقة الثانية</item>
+        <item>الفرقة الثالثة</item>
+        <item>الفرقة الرابعة</item>
+    </string-array>
+
+    <string name="Sc">علوم الحاسب</string>
+    <string name="IS">نظم المعلومات</string>
+    <string name="one">الاولي</string>
+    <string name="two">الثانية</string>
+    <string name="thired">الثالثة</string>
+    <string name="foure">الرابعة</string>
+    <string name="code">الكود  :</string>
+    <string name="department">الشعبة :</string>
+    <string name="level">الفرقة :</string>
+
+
+
+    <string name="download">تحميل</string>
+    <string name="noCompetition">لا يوجد مسابقات متاحة الان...</string>
+    <string name="noCourse">لا يوجد كورسات متاحة الان...</string>
+    <string name="groupName">اسم المجموعة</string>
+    <string name="create">أنشاء</string>
+    <string name="addphoto">اضافة صورة</string>
+    <string name="addfile">اضافة ملف</string>
+    <string name="writehere">أكتب هنا</string>
+
+    <string name="downloadprogress">جاري التحميل...</string>
+    <string name="addvideo">اضافة فديو</string>
+    <string name="noNews">لا يوجد أخبار متاحة الان...</string>
+    <string name="createGroup">أنشاء مجموعة</string>
+    <string name="Groups">المجموعات</string>
+    <string name="showtable">عرض الجدول</string>
+    <string name="notable">لا يوجد جداول متاحة الان..</string>
+    <string name="firsttable">الجدول الاول</string>
+    <string name="checkuserandpass">اسم المستخدم أو الرقم السري غير صحيح</string>
+    <string name="successlogin">تم تسجيل الدخول بالنجاح</string>
+    <string name="secound">الجدول الثاني</string>
+    <string name="showexams">عرض الامتحانات</string>
+    <string name="noexams">لا يوجد امتحانات متاحة الان...</string>
+    <string name="nogroup">لا يوجد مجموعات متاحة الان...</string>
+    <string name="nobook">لا يوجد كتب متاحة الان...</string>
+    <string name="add">اضافة</string>
+    <string name="addcompetion">أضافة الى المسابقات المفضلة</string>
+    <string name="addbookfav">أضافة الى الكتب المفضلة</string>
+    <string name="addcoursefav">أضافة الى الكورسات المفضلة</string>
+    <string name="addfav">أضافة الى الامتحانات المفضلة</string>
+    <string name="deletefav">مسح من المفضلة</string>
+    <string name="ok">تم</string>
+    <string name="cancell">الغاء</string>
+    <string name="search">بحث</string>
+    <string name="addnews">أضافة الى الاخبار المفضلة</string>
+    <string name="log_in">تسجيل دخول</string>
+    <string name="enterusername">ادخل اسم المستخدم</string>
+    <string name="entertext">أدخل نص</string>
+    <string name="entercode">ادخل الكود</string>
+    <string name="errorDr">(Dr.) cannot be used at the beginning of the name</string>
+    <string name="enterpassword">ادخل الرقم السري</string>
+    <string name="enterpassbigersix">ادخل باسورد اكبر من 6 ارقام</string>
+    <string name="enterpassequalpass">أدخل رقم سري مطابق</string>
+    <string name="nosupportapp">لا يوجد برنامج لفتح الملفات</string>
+    <string name="toopenfile">لفتح الملفات يجب تثبيت برنامج Polaris Viewer من جوجل بلاي</string>
+    <string name="install">تثبيت</string>
+    <string name="no">الغاء</string>
+
+    <string name="nocomments">لا يوجد تعليقات متاحة الان...</string>
+    <string name="newcomment">تم أضافة تعليق جديد</string>
+    <string name="professorName">اسم الدكتور</string>
+
+
+
+
+
+    <string name="name">الاسم</string>
+
+
+    <string name="GraduationYear">سنة التخرج</string>
+
+    <string name="Currentjob">الوظيفة الحالية</string>
+    <string name="CompayName">إسم الشركة</string>
+<string name="dateofemployment">تاريخ التوظيف</string>
+    <string name="dataofbrith">تحديد تاريخ الميلاد</string>
+    <string name="address">العنوان</string>
+
+    <string name="send">ارسال</string>
+
+
+
+    <string name="EnterYourName">أدخل الاسم</string>
+    <string name="EnterDataofBirth">حدد تاريخ الميلاد</string>
+    <string name="EnterYourAddress">أدخل العنوان</string>
+    <string name="EnterYourEmail">أدخل الموبيل</string>
+    <string name="EnterGraduationYear">أدخل البريد الاكتروني</string>
+    <string name="EnterCurentJob">أدخل الوظيفة الحالية</string>
+    <string name="EnterCompanyName">أدخل اسم الشركة</string>
+    <string name="EnterDateofEmployee">أدخل تاريخ التوظيف</string>
+
+
+
+    <string name="sendscuccess">تم الارسال بالنجاح</string>
+    <string name="massegeGruadtion">تم التسجيل بالنجاح سوف يتم اعلامك عند حدوث ملتقي توظيف</string>
+    <string name="exitname">الاسم موجود بالفعل</string>
+
+
+    <string name="noprogram">لا يوجد برامج متاحة الان...</string>
+
+    <string name="programs">البرامج</string>
+    <string name="copy_download_link">نسخ لينك التحميل</string>
+    <string name="scuccessCopy">تم نسخ اللينك بالنجاح</string>
+    <string name="there_are_no_articles_available">لا يوجد مقالات متاحة الان..</string>
+    <string name="Articles">المقالات</string>
+    <string name="nonews">لا يوجد أخبار متاحة الان..</string>
+    <string name="student">طالب</string>
+    <string name="professor">دكتور جامعى</string>
+    <string name="sginUpScuccess">تم التسجيل بنجاح</string>
+    <string name="nameuser">اسم المستخدم : </string>
+    <string name="pass">الباسورد      : </string>
+    <array name="languages">
+        <item>عربي</item>
+        <item>انجليزي</item>
+
+    </array>
+    <string name="RequestAcertificate">طلب شهادة</string>
+    <array name="type">
+        <item>شهادة مؤقت 50 جنيه</item>
+        <item>شهادة معادلة 110 جنيه</item>
+        <item>شهادة تقدير 100 جنيه</item>
+    </array>
+    <array name="yearss">
+        <item>"1998"</item>
+        <item>"1999"</item>
+        <item>"2000"</item>
+        <item>"2001"</item>
+        <item>"2002"</item>
+        <item>"2003"</item>
+        <item>"2004"</item>
+        <item>"2005"</item>
+        <item>"2006"</item>
+        <item>"2007"</item>
+        <item>"2008"</item>
+        <item>"2009"</item>
+        <item>"2010"</item>
+        <item>"2011"</item>
+        <item>"2012"</item>
+        <item>"2013"</item>
+        <item>"2014"</item>
+        <item>"2015"</item>
+        <item>"2016"</item>
+        <item>"2017"</item>
+        <item>"2018"</item>
+    </array>
+    <array name="month">
+        <item>مايو</item>
+        <item>أغسطس</item>
+
+    </array>
+    <string name="Certificatelanguage">لغةالشهادة</string>
+    <string name="Typeofcertificate">نوع الشهادة</string>
+    <string name="departments">الشعبة</string>
+    <string name="entergroupName">أدخل اسم الجروب</string>
+    <string name="Graduationyear">سنة التخرج</string>
+    <string name="Graduationmonth">شهر التخرج</string>
+    <string name="Attachphotoid">أرفاق صورة البطاقة(أختيارية)</string>
+    <string name="Attachagraduationcertificate">أرفاق صورة شهادة التخرج(أختيارية)</string>
+    <string name="Attachapicture">أرفاق صورة</string>
+    <string name="addimage">خطأ يجب اضافة صورة</string>
+    <string name="noposts">لا يوجد منشورات متاحة الان..</string>
+    <string name="favnews">الاخبار المفضلة</string>
+    <string name="senddata">تم أرسال البيانات بالنجاح وسوف يتم تحديد موعد للاستلام الشهادة والاتصال بك</string>
+    <string name="professorname">اسم الدكتور الجامعي</string>
+    <string name="explane">يجب أن يبدأ الاسم بـ (.Dr) مثال: Dr.EhabAhmed</string>
+</resources>
+

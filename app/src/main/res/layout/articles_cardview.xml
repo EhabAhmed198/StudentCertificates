@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    app:cardPreventCornerOverlap="true"
+    app:cardElevation="4dp"
+    app:cardMaxElevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/times"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/data_rime"
+            android:layout_marginEnd="1dp"
+            />
+        <TextView
+            android:id="@+id/data_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/times"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="23dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#C2BCBC"
+            tool:text="2019/2/1 02:2:23"
+            android:paddingTop="7dp"
+            android:layout_marginBottom="2dp"
+            />
+
+
+<ImageView
+    android:id="@+id/image_articles"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/data_time"
+    />
+     <TextView
+         android:id="@+id/tv_articles"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         app:layout_constraintStart_toStartOf="parent"
+         android:layout_margin="16dp"
+         android:textSize="22sp"
+         android:textColor="#000"
+         android:maxLines="3"
+         android:ellipsize="end"
+       app:layout_constraintTop_toBottomOf="@id/image_articles"
+         app:layout_constraintBottom_toBottomOf="parent"
+         />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

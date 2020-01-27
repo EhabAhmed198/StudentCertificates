@@ -1,0 +1,63 @@
+package com.ehabahmed.studentcertificate;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class OneCourseAdapter extends RecyclerView.Adapter<OneCourseAdapter.Holder> {
+Context context;
+ArrayList<OneCourseObject> listitems;
+    Intent intent;
+    public OneCourseAdapter(Context context, ArrayList<OneCourseObject> listitems) {
+        this.context = context;
+        this.listitems = listitems;
+    }
+
+    @NonNull
+    @Override
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new Holder(LayoutInflater.from(context).inflate(R.layout.manycourses_list,parent,false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull Holder holder, final int position) {
+        holder.textView.setText(listitems.get(position).name);
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               intent=new Intent(context,ManyCourceOne.class);
+                intent.putExtra("id",listitems.get(position).id);
+                context.startActivity(intent);
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return
+                listitems.size();
+    }
+
+    public class Holder extends RecyclerView.ViewHolder{
+TextView textView;
+View view;
+    public Holder(@NonNull View itemView) {
+        super(itemView);
+        textView=itemView.findViewById(R.id.manycourses);
+        this.view=itemView;
+
+    }
+}
+
+
+}

@@ -1,0 +1,258 @@
+<resources>
+    es>
+    <string name="app_name">Student Certificates</string>
+    <string name="news">News</string>
+    <string name="sign_or_login">Sign in</string>
+
+
+    <string name="vision">Vision</string>
+    <string name="communication">Communication</string>
+    <string name="sign_up">Sign up</string>
+
+    <string name="code_student">Code</string>
+    <string name="password">Password</string>
+    <string name="login">Sign in</string>
+    <string name="GraduatesForm">Graduates form</string>
+    <string name="lectures">Lectures</string>
+    <string name="guide">Contents</string>
+    <string name="settings">Student Certificates</string>
+    <string name="land1">level 1</string>
+    <string name="land2">level 2</string>
+    <string name="graduate">Graduate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="land3">level 3</string>
+    <string name="land4">level 4</string>
+    <string name="lland1">Semester 1</string>
+    <string name="lland2">Semester 2</string>
+    <string name="address2">Message</string>
+    <string name="subject_address1">High transit institute to be among the top ten Egyptian higher education institutions during the next decade</string>
+    <string name="subject_address2">The Institute contributes to the needs of the local labor market of specialists in accounting, management, information systems and computer science, through a high-quality educational and research process in accordance with national standards and adherence to ethical and professional rules, as well as continuous interaction with various community parties to contribute to the achievement of economic development goals and social</string>
+    <string name="location">Address</string>
+    <string name="address_location"> Kilo 21 Cairo-Belbeis Desert Road
+PO Box 27 El Obour City - 10 minutes from Carrefour El Obour and El Salam International Stadium.</string>
+    <string name="phone">Mobile</string>
+    <string name="table">Tables</string>
+    <string name="map">Maps</string>
+    <string name="courses">Courses</string>
+    <string name="library">Library</string>
+    <string name="examp">Exams</string>
+    <string name="compition">Competition</string>
+    <string name="signout">Sign Out</string>
+    <string name="result">Results</string>
+    <string name="student_info">Student Info</string>
+    <string name="student_fav">Favorite</string>
+    <string name="mobile1">01277773408</string>
+    <string name="mobile2">01221040101</string>
+    <string name="email">info@oi.edu.eg</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="profile_name_page">Your Profile</string>
+    <string name="groups">Groups</string>
+    <string name="doctor_info">Doctor Info</string>
+    <string name="doctor_fav">Favorite</string>
+    <string name="favcourses">Favorite Courses</string>
+    <string name="favexams">Favorite Exams</string>
+    <string name="favbook">Favorite Books</string>
+
+    <string name="favcompitions">Favorite Competitions</string>
+    <string name="add_success">Add Success..</string>
+    <string name="delete_success">Delete Success..</string>
+    <string name="no_communcationInternet">No Internet Connection </string>
+    <string name="create_Success_Group">Done Successfully</string>
+    <string name="upload_post_scuccess">Published Successed</string>
+    <string name="wrong">Wrong</string>
+
+
+    <string name="Sc">Cs</string>
+    <string name="IS">Is</string>
+    <string name="one">One</string>
+    <string name="two">Two</string>
+    <string name="thired">Three</string>
+    <string name="foure">Four</string>
+    <string name="code"> Code :</string>
+    <string name="department">Department :</string>
+    <string name="level"> Level :</string>
+    <string name="UserName">User Name</string>
+    <string name="Password">Password</string>
+    <string name="Email">Email</string>
+    <string name="InEmail">Email</string>
+    <string name="ShowResult">Show</string>
+    <string name="Name">Name</string>
+    <string name="Code">Code</string>
+    <string name="ConPassword">Confirm the Password</string>
+    <string name="noavailable">not available now</string>
+    <string name="update">Update</string>
+    <string name="updateText">A new software update has been released in order to better use and save more
+To update, press the button</string>
+    <string name="download">Download</string>
+    <string name="noCompetition">There are no competitions available now ...</string>
+    <string name="noCourse">No courses available ...</string>
+    <string name="groupName">group name</string>
+    <string name="create">Create</string>
+    <string name="addphoto">Add image</string>
+    <string name="addfile">Add file</string>
+    <string name="writehere">write here</string>
+
+
+    <string name="downloadprogress">Download Progress..</string>
+    <string name="addvideo">Add video</string>
+    <string name="noNews">No news available now ...</string>
+    <string name="createGroup">Create Group</string>
+    <string name="Groups">Groups</string>
+    <string name="showtable">Show table</string>
+    <string name="notable">No tables available now ..</string>
+    <string name="firsttable">First Table</string>
+    <string name="secound">Table II</string>
+    <string name="showexams">Show Exams</string>
+    <string name="noexams">No exams available now ...</string>
+    <string name="nogroup">No groups available now ...</string>
+    <string name="nobook">No books available now ..</string>
+    <string name="log_in">Log In</string>
+    <string name="enterusername">Enter your username</string>
+    <string name="entercode">Enter the code</string>
+    <string name="enterpassword">Enter your password</string>
+    <string name="enterpassbigersix">Enter a password greater than 6 digits</string>
+    <string name="enterpassequalpass">Enter a matching password</string>
+    <string name="nosupportapp">No App Support to open files</string>
+    <string name="toopenfile">To open files you must install Polaris Viewer from Google Play</string>
+    <string name="install">Install</string>
+    <string name="no">Cancell</string>
+    <string name="checkuserandpass">username or password is incorrect</string>
+    <string name="successlogin">Signed in successfully</string>
+    <string name="add">Add</string>
+    <string name="addcompetion">Add to favorite competitions</string>
+    <string name="addbookfav">Add to favorite books</string>
+    <string name="addcoursefav">Add to favorite courses</string>
+    <string name="addfav">Add to favorite exams</string>
+    <string name="deletefav">Delete from favorites</string>
+    <string name="ok">Ok</string>
+    <string name="cancell">Cancell</string>
+    <string name="search">Search</string>
+    <string name="addnews">Add to favorite news</string>
+
+
+    <string-array name="departments">
+        <item>Cs</item>
+
+        <item>IS</item>
+        <item>BM</item>
+
+    </string-array>
+    <string-array name="lans">
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+        <item>Graduates</item>
+    </string-array>
+    <string-array name="level">
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+    </string-array>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="dataofbrith">Select Date of Birth</string>
+    <string name="GraduationYear">Graduation Year</string>
+    <string name="Currentjob">Current job</string>
+    <string name="CompayName">The Company Name</string>
+    <string name="dateofemployment">Select Date of employment</string>
+    <string name="send">Send</string>
+    <string name="EnterYourName">Enter Your Name</string>
+    <string name="EnterDataofBirth">Select Your Date of Birth</string>
+    <string name="EnterYourAddress">Enter your Address</string>
+    <string name="EnterYourEmail">Enter Your Mobile</string>
+    <string name="EnterGraduationYear">Enter your Graduation Year</string>
+    <string name="EnterCurentJob">Enter the current Job</string>
+    <string name="EnterCompanyName">Enter the Company Name</string>
+    <string name="EnterDateofEmployee">Enter the Date of Employment</string>
+    <string name="sendscuccess">Send Scuccess...</string>
+    <string name="massegeGruadtion">Registration has been successful You will be notified and reminded when an employment forum occurs</string>
+    <string name="exitname">This name already exists</string>
+    <string name="noprogram">No software available now...</string>
+    <string name="programs">Software</string>
+    <string name="copy_download_link">Copy Download Link</string>
+    <string name="scuccessCopy">Link was successfully copied</string>
+    <string name="there_are_no_articles_available">There are no articles available..</string>
+    <string name="Articles">Articles</string>
+    <string name="nonews">No News available now...</string>
+    <string name="student">Student</string>
+    <string name="professor">Professor</string>
+    <string name="professorName">Professor Name</string>
+    <string name="sginUpScuccess">Successfully Registered</string>
+    <string name="nameuser">UserName : </string>
+
+    <string name="pass">Password  : </string>
+    <string name="RequestAcertificate">Request a certificate</string>
+    <string name="Certificatelanguage">Certificate Language</string>
+    <string name="Typeofcertificate">Type of certificate</string>
+    <string name="departments">Department </string>
+    <string name="Graduationyear">Graduation Year</string>
+    <string name="Graduationmonth">Graduation Month</string>
+    <string name="Attachphotoid">Attach photo card (optional)</string>
+    <string name="Attachagraduationcertificate">Attach a graduation certificate (optional)</string>
+    <string name="Attachapicture">Attach a picture</string>
+    <string name="addimage">Error You must add an image</string>
+    <string name="senddata">The data has been sent successfully and you will be scheduled to receive the certificate and contact you</string>
+    <string name="professorname">Professor\'s Name</string>
+    <string name="explane">Name should start with (Dr.) Example:  Dr.EhabAhmed</string>
+    <string name="noposts">There are no publications available yet ..</string>
+    <string name="Error">Error</string>
+    <string name="errorupload">No internet connection or large file size</string>
+    <string name="comment">Comment</string>
+    <string name="addcomment">Comment added successfully</string>
+    <string name="addcommenttext">Add Comment</string>
+    <string name="Add">Add</string>
+    <string name="nopostgroup">No Posts available now...</string>
+    <string name="downloadexams">Download</string>
+    <string name="tryagainlater">Please try again later...</string>
+    <string name="shair_app">Share</string>
+    <string name="sendSuggestion">Send suggestions</string>
+    <string name="make_rate">Evaluate</string>
+    <string name="exit_app">Exit</string>
+    <string name="nosendprogrem">There are no programs sent on the phone</string>
+    <string name="entername">Enter Name</string>
+    <string name="errorDr">لا يمكن استخدام (Dr.)فى بداية الاسم</string>
+    <string name="newcomment">New comment added</string>
+    <string name="nocomments">No comments available now ...</string>
+    <string name="entertext">Enter Text</string>
+    <string name="favnews">Favorite News</string>
+    <string name="entergroupName">Enter the name of the group</string>
+    <array name="languages">
+        <item>Arabic</item>
+        <item>English</item>
+    </array>
+    <array name="type">
+        <item>Temporary certificate of 50 LE</item>
+        <item>Certificate of equivalence 110 pounds</item>
+        <item>Certificate of Merit 100 LE</item>
+    </array>
+    <array name="yearss">
+        <item>"1998"</item>
+        <item>"1999"</item>
+        <item>"2000"</item>
+        <item>"2001"</item>
+        <item>"2002"</item>
+        <item>"2003"</item>
+        <item>"2004"</item>
+        <item>"2005"</item>
+        <item>"2006"</item>
+        <item>"2007"</item>
+        <item>"2008"</item>
+        <item>"2009"</item>
+        <item>"2010"</item>
+        <item>"2011"</item>
+        <item>"2012"</item>
+        <item>"2013"</item>
+        <item>"2014"</item>
+        <item>"2015"</item>
+        <item>"2016"</item>
+        <item>"2017"</item>
+        <item>"2018"</item>
+    </array>
+    <array name="month">
+        <item>May</item>
+        <item>August</item>
+
+    </array>
+</resources>

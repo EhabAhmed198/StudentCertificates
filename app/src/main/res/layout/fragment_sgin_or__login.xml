@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
+    tools:context=".Sgin_or_Login">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/makecenter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        >
+
+        <Button
+            android:id="@+id/sign_up"
+            android:text="@string/sign_up"
+            android:textColor="#FFF"
+            android:textSize="20sp"
+            android:layout_width="146dp"
+            android:layout_height="46dp"
+            android:background="@drawable/buttonshape"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <Button
+            android:id="@+id/login1"
+            android:text="@string/login"
+            android:textColor="#FFF"
+            android:textSize="20sp"
+            android:layout_width="146dp"
+            android:layout_height="46dp"
+            android:background="@drawable/buttonshape"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/page_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="60dp"
+            android:visibility="invisible"
+
+            >
+
+
+            <EditText
+                android:id="@+id/enterusername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
+                android:padding="9dp"
+                android:background="@drawable/ship_edittext"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:hint="@string/UserName"
+
+                />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/enterusername"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:passwordToggleEnabled="true"
+            app:hintEnabled="false"
+         android:layout_marginTop="10dp"
+
+                >
+                <EditText
+                    android:id="@+id/enterpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textSize="19sp"
+                    android:gravity="center"
+
+                    android:background="@drawable/ship_edittext"
+                    android:drawableStart="@drawable/ic_password_toggle_space"
+                    android:drawableEnd="@drawable/ic_password_toggle_space"
+                  android:hint="@string/Password"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/login2"
+                android:text="@string/log_in"
+                android:textSize="21sp"
+                android:layout_width="146dp"
+                android:layout_height="46dp"
+                android:textColor="#FFF"
+                android:background="@drawable/clickedcolor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="30dp"
+                app:layout_constraintTop_toBottomOf="@id/tablayout"
+                android:textAllCaps="false"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

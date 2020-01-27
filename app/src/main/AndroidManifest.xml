@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ehabahmed.studentcertificate">
+    <uses-permission
+        android:name="android.permission.VIBRATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".Info"
+        android:allowBackup="false"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Comments"></activity>
+        <activity android:name=".Show_Result" />
+        <activity android:name=".GraduationCertificate" />
+        <activity android:name=".Articles"  android:parentActivityName=".StudentSettings"/>
+        <activity android:name=".Programs"  android:parentActivityName=".StudentSettings"/>
+        <activity android:name=".UpdateApp" />
+        <activity android:name=".DFavNews" />
+        <activity android:name=".DoctorCompetition" android:parentActivityName=".DoctorSetting"/>
+        <activity android:name=".DoctorExams" android:parentActivityName=".DoctorSetting"/>
+        <activity android:name=".DoctorLibrary" android:parentActivityName=".DoctorSetting"/>
+        <activity android:name=".DoctorCourses" android:parentActivityName=".DoctorSetting"/>
+        <activity
+            android:name=".ShowDoctorTable"
+            android:screenOrientation="landscape"
+            android:theme="@style/news_detals" />
+        <activity
+            android:name=".Doctor_Table"
+            android:screenOrientation="landscape" android:parentActivityName=".DoctorSetting"/>
+        <activity android:name=".FavNews" />
+        <activity android:name=".TypeMap" />
+        <activity android:name=".OneCourse"
+
+            android:parentActivityName=".Courses"
+
+            />
+        <activity android:name=".DoctorProfile" android:parentActivityName=".DoctorSetting"/>
+        <activity android:name=".Certificate" />
+        <activity
+            android:name=".Maps"
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".CreatePost_New" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <activity android:name=".CreatePostLecture" />
+        <activity android:name=".DGroup_Post" />
+        <activity android:name=".Doctor" />
+        <activity
+            android:name=".SplishScrean"
+            android:theme="@style/news_detals">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Compition_details"
+            android:theme="@style/news_detals" />
+        <activity android:name=".Compition" android:parentActivityName=".StudentSettings"/>
+        <activity android:name=".Exams" android:parentActivityName=".StudentSettings"/>
+        <activity
+            android:name=".Book_deatls"
+            android:theme="@style/news_detals" />
+        <activity android:name=".Library" android:parentActivityName=".StudentSettings"/>
+        <activity android:name=".Show_Course" />
+        <activity android:name=".ManyCourceOne" android:parentActivityName=".OneCourse"/>
+        <activity android:name=".Courses" android:parentActivityName=".StudentSettings" />
+        <activity
+            android:name=".Result_Student"
+            android:theme="@style/news_detals" />
+        <activity
+            android:name=".Table_student"
+            android:screenOrientation="landscape"
+            android:theme="@style/news_detals"  />
+        <activity android:name=".Student_peofile" />
+        <activity
+            android:name=".Show_image2"
+            android:screenOrientation="landscape" />
+        <activity android:name=".Studentguide12" />
+        <activity android:name=".Show_files" />
+        <activity
+            android:name=".post_detals"
+            android:theme="@style/news_detals" />
+        <activity android:name=".Group_post" />
+        <activity android:name=".Show_video" />
+        <activity android:name=".Student" />
+        <activity android:name=".Sgin_up" />
+        <activity
+            android:name=".Show_image"
+            android:screenOrientation="landscape"
+            android:theme="@style/news_detals" />
+        <activity
+            android:name=".News_detals"
+            android:theme="@style/news_detals" />
+        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.mypackage.myprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:multiprocess="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <receiver
+            android:name=".StudentBroadcastReceiver"
+            android:exported="false" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application>
+
+</manifest>
