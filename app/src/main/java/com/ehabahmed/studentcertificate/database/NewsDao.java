@@ -12,6 +12,7 @@ import java.util.List;
 
 @Dao
 public interface NewsDao {
+    // test
     @Query("select * from news")
     LiveData<List<NewsEntity>> getAllNewsWithLiveData();
     @Query("select * from news")
