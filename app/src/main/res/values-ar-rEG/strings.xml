@@ -11,6 +11,23 @@
 
     <string name="code_student">كود الطالب</string>
     <string name="password">الرقم السري</string>
+    <string name="Members">الاعضاء</string>
+    <string-array name="departments2">
+        <item>ALL</item>
+        <item>Cs</item>
+
+        <item>IS</item>
+        <item>BM</item>
+
+    </string-array>
+    <string-array name="lans2">
+        <item>ALL</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+        <item>Graduates</item>
+    </string-array>
     <string name="login">تسجيل دخول</string>
     <string name="updateText">قد تم أصدار تحديث جديد لبرنامج من أجل أستخدام افضل ومتطلبات اوفر
 للتحديث اضغط على تحديث</string>
@@ -18,11 +35,19 @@
     <string name="lectures">المحاضرات</string>
     <string name="GraduatesForm">استمارة الخرجين</string>
     <string name="guide">دليل الطالب</string>
+    <string name="correctchoose">يرجا تحديد اختيار مناسب</string>
+    <string name="message">رسالة</string>
     <string name="settings">خدمات الطلاب</string>
-
+    <string name="updatelist">تحديث القائمة</string>
+    <string name="codewithoutpoint">الكود</string>
+    <string name="editiphoto">تحديث الصورة</string>
+    <string name="nofound">لا يوجد</string>
     <string name="land1">الفرقة الاولي</string>
     <string name="land2">الفرقة الثانية</string>
     <string name="update">تحديث</string>
+    <string name="messages">Messages</string>
+    <string name="udataprofile">تعديل الصفحة الشخصية</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="land3">الفرقة الثالثة</string>
     <string name="land4">الفرقة الرابعة</string>

@@ -20,7 +20,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
-
+<com.google.android.material.tabs.TabItem
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+  android:icon="@drawable/news"
+    />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/lectures"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/setting"
+            />
 
     </com.google.android.material.tabs.TabLayout>
 

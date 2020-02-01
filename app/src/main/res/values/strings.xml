@@ -137,6 +137,16 @@ To update, press the button</string>
         <item>BM</item>
 
     </string-array>
+
+
+    <string-array name="departments2">
+        <item>ALL</item>
+        <item>Cs</item>
+
+        <item>IS</item>
+        <item>BM</item>
+
+    </string-array>
     <string-array name="lans">
         <item>Level 1</item>
         <item>Level 2</item>
@@ -144,6 +154,16 @@ To update, press the button</string>
         <item>Level 4</item>
         <item>Graduates</item>
     </string-array>
+
+    <string-array name="lans2">
+        <item>ALL</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+        <item>Graduates</item>
+    </string-array>
+
     <string-array name="level">
         <item>Level 1</item>
         <item>Level 2</item>
@@ -255,4 +275,18 @@ To update, press the button</string>
         <item>August</item>
 
     </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="messages">Messages</string>
+    <string name="udataprofile">Edit your personal page</string>
+    <string name="codewithoutpoint">Code</string>
+    <string name="editiphoto">Edite photo</string>
+    <string name="nofound">No Found</string>
+    <string name="Members">Members</string>
+    <string name="updatelist">update List</string>
+    <string name="correctchoose">Detect Correct Choose!</string>
+    <string name="message">MESSAGE</string>
+
+
 </resources>

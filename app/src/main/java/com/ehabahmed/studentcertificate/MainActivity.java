@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import androidx.fragment.app.Fragment;
@@ -12,57 +14,99 @@ import androidx.fragment.app.FragmentManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 
+import com.android.volley.RequestQueue;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
+
     TabLayout tabLayout;
     Bundle bundle;
-Intent intent;
+    Intent intent;
     Handler handler;
-    ViewPager viewPager;
+    ViewPagerAdapter adapter;
+    View view;
+    boolean StateDeletePage=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
         requestphonepermision();
         tabLayout = findViewById(R.id.tlHome);
-       viewPager = findViewById(R.id.container);
-viewPager.setOffscreenPageLimit(0);
-
-
-        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),1));
+       final ViewPager viewPager = findViewById(R.id.container);
+     adapter=new ViewPagerAdapter(getSupportFragmentManager(),1);
+        viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         handler=new Handler();
 
 
 
+viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+   if(position==1){
+if(StateDeletePage==false) {
+
+    viewPager.removeViewAt(0);
+StateDeletePage=true;
+}
+
+
+   }else if(position==0){
+       if(StateDeletePage==true) {
+           viewPager.setAdapter(adapter);
+  StateDeletePage=false;
+       }
+
+   }else if(position==2){
+       if(StateDeletePage==false) {
+
+           viewPager.removeViewAt(0);
+           StateDeletePage=true;
+       }
+
+   }else if(position==3){
+       if(StateDeletePage==false) {
+
+           viewPager.removeViewAt(0);
+           StateDeletePage=true;
+       }
+   }
+    }
+});
 
     }
 
@@ -82,117 +126,15 @@ viewPager.setOffscreenPageLimit(0);
     }
 
 
-    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
-        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-            super(fm, behavior);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-
-
-            switch (position)
-            {
-                case 0:
-
-
-                    return new News();
-                case 1:
-
-
-
-                    return new Sgin_or_Login();
-                    //ChildFragment2 at position 1
-                case 2:
-
-
-                    return new Vision();//ChildFragment3 at position 2
-                case 3:
-
-                    return  new Communication();
-            }
-            return null; //does not happen
-        }
-
-
-        @Override
-        public int getCount() {
-            return 4; //three fragments
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-           switch (position){
-               case 0:
-                   return getResources().getString(R.string.news);
-               case 1:
-                   return getResources().getString(R.string.sign_or_login);
-               case 2:
-                   return getResources().getString(R.string.vision);
-               case 3:
-                   return getResources().getString(R.string.communication);
-                   default: return null;
-
-           }
-
-
-        }
-
-        @Override
-        public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            super.setPrimaryItem(container, position, object);
-            switch (position){
-                case 0:
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setTitle(getResources().getString(R.string.news));
-                        }
-                    }, 1);
-
-                break;
-                case 1:
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setTitle(getResources().getString(R.string.sign_or_login));
-                        }
-                    }, 1);
-
-                break;
-                case 2:
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setTitle(getResources().getString(R.string.vision));
-                        }
-                    }, 1);
-
-                    break;
-                case 3:
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            setTitle(getResources().getString(R.string.communication));
-                        }
-                    }, 1);
-
-
-
-                    break;
-            }
-        }
-    }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menustart,menu);
         return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -261,5 +203,102 @@ viewPager.setOffscreenPageLimit(0);
         intent.putExtra(Intent.EXTRA_TEXT,app_address+"\n"+app_link);
         startActivity(intent);
     }
+
+
+
+    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+
+switch (position){
+    case 0:
+        return new News();
+    case 1:
+        return new Sgin_or_Login();
+    case 2:
+        return new Vision();
+    case 3:
+        return new Communication();
+
 }
+return null;
+
+        }
+
+        @Override
+        public int getCount() {
+            return 4; //three fragments
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return getResources().getString(R.string.news);
+                case 1:
+                    return getResources().getString(R.string.sign_or_login);
+                case 2:
+                    return getResources().getString(R.string.vision);
+                case 3:
+                    return getResources().getString(R.string.communication);
+                default: return null;
+
+            }
+
+
+        }
+
+        @Override
+        public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            super.setPrimaryItem(container, position, object);
+            switch (position) {
+                case 0:
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setTitle(getResources().getString(R.string.news));
+                        }
+                    }, 1);
+
+                    break;
+                case 1:
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setTitle(getResources().getString(R.string.sign_or_login));
+                        }
+                    }, 1);
+
+                    break;
+                case 2:
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setTitle(getResources().getString(R.string.vision));
+                        }
+                    }, 1);
+
+                    break;
+                case 3:
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setTitle(getResources().getString(R.string.communication));
+                        }
+                    }, 1);
+
+
+                    break;
+            }}
+        }
+
+    }
 

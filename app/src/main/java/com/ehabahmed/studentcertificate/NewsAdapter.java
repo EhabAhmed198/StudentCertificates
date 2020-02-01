@@ -2,12 +2,16 @@ package com.ehabahmed.studentcertificate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -42,13 +47,15 @@ ArrayList<object_News> listitems;
     int type,subtype;
     Info info;
     RequestQueue requestQueue;
-    public NewsAdapter(Context context, ArrayList<object_News> listitems,int type,int subtype) {
+    boolean state;
+    public NewsAdapter(Context context, ArrayList<object_News> listitems,int type,int subtype,boolean state) {
         this.context = context;
         this.listitems = listitems;
         this.type=type;
         info= (Info) context.getApplicationContext();
         requestQueue= Volley.newRequestQueue(context);
         this.subtype=subtype;
+        this.state=state;
     }
 
     @Override
@@ -142,17 +149,58 @@ ArrayList<object_News> listitems;
 
                     break;
                 case "video":
+                    holder.VideoName.setText(listitems.get(position).news_text);
                     holder.vv_new.setVideoURI(Uri.parse(listitems.get(position).news_ivname));
                     holder.vv_new.requestFocus();
-                    MediaController mediaController=new MediaController(context);
-                    mediaController.setAnchorView( holder.vv_new);
-                     holder.vv_new.setMediaController(mediaController);
+                    holder.vv_new.setZOrderOnTop(true);
+                   holder.vv_new.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                       @Override
+                       public void onPrepared(MediaPlayer mp) {
+                           holder.PrVideo.setVisibility(View.INVISIBLE);
+                           mp.setVolume(0f,0f);
+                           mp.start();
+                       }
+                   });
 
-                     holder.vv_new.start();
+                    holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                        @Override
+                        public boolean onError(MediaPlayer mp, int what, int extra) {
+                            mp.pause();
+                            holder.PrVideo.setVisibility(View.INVISIBLE);
+                            holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                            return true;
+                        }
+                    });
 
-               
 
-         
+
+                  holder.vv_new.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                      @Override
+                      public void onViewAttachedToWindow(View v) {
+                          holder.VideoNoInternet.setVisibility(View.INVISIBLE);
+                          holder.PrVideo.setVisibility(View.VISIBLE);
+                          holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                              @Override
+                              public boolean onError(MediaPlayer mp, int what, int extra) {
+                                  mp.pause();
+                                  holder.PrVideo.setVisibility(View.INVISIBLE);
+                                  holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                                  return true;
+                              }
+                          });
+
+
+                      }
+
+                      @Override
+                      public void onViewDetachedFromWindow(View v) {
+
+
+                      }
+                  });
+
+
+
 
                     holder.view.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -273,34 +321,63 @@ ArrayList<object_News> listitems;
                     });
                     break;
                 case "video":
-
+                    holder.VideoName.setText(listitems.get(position).news_text);
                     holder.vv_new.setVideoURI(Uri.parse(listitems.get(position).news_ivname));
                     holder.vv_new.requestFocus();
-                    holder.tv_new.setText(listitems.get(position).news_text);
-                    holder.itemView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+
+                    holder.vv_new.setZOrderOnTop(true);
+                    holder.vv_new.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            holder.PrVideo.setVisibility(View.INVISIBLE);
+                            mp.setVolume(0f,0f);
+
+                            mp.start();
+                        }
+                    });
+                    holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                        @Override
+                        public boolean onError(MediaPlayer mp, int what, int extra) {
+                            mp.pause();
+                            holder.PrVideo.setVisibility(View.INVISIBLE);
+                            holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                            return true;
+                        }
+                    });
+
+
+                    holder.vv_new.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                         @Override
                         public void onViewAttachedToWindow(View v) {
-                            holder.vv_new.start();
+                            holder.VideoNoInternet.setVisibility(View.INVISIBLE);
+                            holder.PrVideo.setVisibility(View.VISIBLE);
+                            holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                                @Override
+                                public boolean onError(MediaPlayer mp, int what, int extra) {
+                                    mp.pause();
+                                    holder.PrVideo.setVisibility(View.INVISIBLE);
+                                    holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                                    return true;
+                                }
+                            });
+
+
                         }
 
                         @Override
                         public void onViewDetachedFromWindow(View v) {
-                             holder.vv_new.pause();
+
+
                         }
                     });
-
-
                     holder.view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             intent = new Intent(context, Show_video.class);
-                            intent.putExtra("video", listitems.get(position).news_ivname);
+                            intent.putExtra("video",listitems.get(position).news_ivname);
                             context.startActivity(intent);
                         }
                     });
-
-
-
 
                     break;
                 case "file":
@@ -510,8 +587,8 @@ ArrayList<object_News> listitems;
 
             if (listitems.get(position).news_type.equals("timage")) {
 
-
                 holder.textView.setText(listitems.get(position).news_text);
+
 
 
                 holder.Ndata_time.setText(listitems.get(position).data_time.toUpperCase());
@@ -531,20 +608,64 @@ ArrayList<object_News> listitems;
                     }
                 });
             } else if (listitems.get(position).news_type.equals("video")) {
-
+                try {
+                    holder.VideoName.setText(listitems.get(position).news_text);
+                }catch (Exception e){}
                 holder.vv_new.setVideoURI(Uri.parse(listitems.get(position).news_ivname));
                 holder.vv_new.requestFocus();
-                holder.tv_new.setText(listitems.get(position).news_text);
-                holder.vv_new.start();
+
+                holder.vv_new.setZOrderOnTop(true);
+                holder.vv_new.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        holder.PrVideo.setVisibility(View.INVISIBLE);
+                        mp.setVolume(0f,0f);
+                        mp.start();
+                    }
+                });
+                holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        mp.pause();
+                        holder.PrVideo.setVisibility(View.INVISIBLE);
+                        holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                        return true;
+                    }
+                });
+
+
+                holder.vv_new.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                    @Override
+                    public void onViewAttachedToWindow(View v) {
+                        holder.VideoNoInternet.setVisibility(View.INVISIBLE);
+                        holder.PrVideo.setVisibility(View.VISIBLE);
+                        holder.vv_new.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                            @Override
+                            public boolean onError(MediaPlayer mp, int what, int extra) {
+                                mp.pause();
+                                holder.PrVideo.setVisibility(View.INVISIBLE);
+                                holder.VideoNoInternet.setVisibility(View.VISIBLE);
+                                return true;
+                            }
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onViewDetachedFromWindow(View v) {
+
+
+                    }
+                });
                 holder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         intent = new Intent(context, Show_video.class);
-                        intent.putExtra("video", listitems.get(position).news_ivname);
+                        intent.putExtra("video",listitems.get(position).news_ivname);
                         context.startActivity(intent);
                     }
                 });
-
             } else if (listitems.get(position).news_type.equals("file")) {
                 holder.textgroup.setText(listitems.get(position).news_text);
                 String type = listitems.get(position).news_ivname.substring(listitems.get(position).news_ivname.lastIndexOf("."));
@@ -755,11 +876,13 @@ ArrayList<object_News> listitems;
         ImageView imge_group;
         TextView doctor_name;
         //Text_group
-        TextView textonly;
+        TextView textonly,VideoNoInternet,VideoName;
+ProgressBar PrVideo;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             imageView=itemView.findViewById(R.id.news_image);
+            VideoName=itemView.findViewById(R.id.news_name);
             textView=itemView.findViewById(R.id.new_name);
             vv_new=itemView.findViewById(R.id.vv_new);
             tv_new=itemView.findViewById(R.id.news_name);
@@ -771,6 +894,8 @@ ArrayList<object_News> listitems;
             textgroup=itemView.findViewById(R.id.text_group);
             textonly=itemView.findViewById(R.id.textonly);
             popmenu=itemView.findViewById(R.id.popmenu);
+            PrVideo=itemView.findViewById(R.id.PrVideo);
+            VideoNoInternet=itemView.findViewById(R.id.VideoNoInternet);
             this.view=itemView;
         }
     }

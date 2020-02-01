@@ -20,6 +20,7 @@ import android.widget.AbsListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 
 import com.android.volley.Request;
@@ -63,23 +64,26 @@ public class News extends Fragment {
 String protocal;
     String ivname;
     String type="online";
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+       view = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerView = view.findViewById(R.id.recycleview);
         nonew=view.findViewById(R.id.nonew);
         nonew.setVisibility(View.INVISIBLE);
         requestQueue = Volley.newRequestQueue(getContext());
         linearLayoutManager=new LinearLayoutManager(getContext());
+
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         listitems = new ArrayList<object_News>();
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(R.id.vv_new, 0);
 
         progressBar=view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.INVISIBLE);
-    adapter = new NewsAdapter(getContext(), listitems,0,3);
+    adapter = new NewsAdapter(getContext(), listitems,0,3,true);
 recyclerView.setAdapter(adapter);
         getdata(userpage);
 
@@ -121,16 +125,15 @@ recyclerView.setAdapter(adapter);
         progressBar.setVisibility(View.VISIBLE);
         String url;
 
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-//            url = "https://ehab01998.com/ShowNewsArray.php?page="+userpage;
-//            protocal="https://";
-//        }else{
-//            url = "http://ehab01998.com/ShowNewsArray.php?page="+userpage;
-//            protocal="http://";
-//
-//        }
-        url="http://ehab01998.com/ShowNewsArray1.php?page="+userpage;
-        protocal="http://";
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
+            url = "https://ehab01998.com/ShowNewsArray.php?page="+userpage;
+            protocal="https://";
+        }else{
+            url = "http://ehab01998.com/ShowNewsArray.php?page="+userpage;
+            protocal="http://";
+
+        }
+
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new Response.Listener<JSONObject>() {
 
@@ -236,7 +239,7 @@ recyclerView.setAdapter(adapter);
                                     public void run() {
 
 
-                                        adapter = new NewsAdapter(getContext(), object_news, 0, 3);
+                                        adapter = new NewsAdapter(getContext(), object_news, 0, 3,true);
                                         recyclerView.setAdapter(adapter);
                                         if(object_news.size()!=0)
                                         nonew.setVisibility(View.INVISIBLE);
@@ -277,10 +280,10 @@ new Thread(){
 
 
 
+
+
+
     }
 
-    public void setUserpage(int userpage) {
-        this.userpage = userpage;
-        Toast.makeText(getContext(), ""+userpage, Toast.LENGTH_SHORT).show();
-    }
+
 }

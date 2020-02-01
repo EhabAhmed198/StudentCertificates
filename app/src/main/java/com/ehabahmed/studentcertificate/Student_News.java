@@ -80,7 +80,7 @@ ProgressBar progressBar;
         listitems = new ArrayList<object_News>();
         progressBar=view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.INVISIBLE);
-        adapter = new NewsAdapter(getContext(), listitems,1,0);
+        adapter = new NewsAdapter(getContext(), listitems,1,0,true);
         recyclerView.setAdapter(adapter);
 
             getdata(userpage);
@@ -124,17 +124,16 @@ ProgressBar progressBar;
     private void getdata(int userpage) {
         progressBar.setVisibility(View.VISIBLE);
         String url;
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-//            url = "https://ehab01998.com/ShowNewsArray.php?page="+userpage;
-//            protocal="https://";
-//        }else{
-//            url = "http://ehab01998.com/ShowNewsArray.php?page="+userpage;
-//            protocal="http://";
-//        }
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
+            url = "https://ehab01998.com/ShowNewsArray.php?page="+userpage;
+            protocal="https://";
+        }else{
+            url = "http://ehab01998.com/ShowNewsArray.php?page="+userpage;
+            protocal="http://";
+        }
 
 
-        url="http://ehab01998.com/ShowNewsArray1.php?page="+userpage;
-        protocal="http://";
+
 
 
 
@@ -244,7 +243,7 @@ ProgressBar progressBar;
                                         public void run() {
 
 
-                                            adapter = new NewsAdapter(getContext(), object_news, 1, 0);
+                                            adapter = new NewsAdapter(getContext(), object_news, 1, 0,true);
                                             recyclerView.setAdapter(adapter);
                                             if(object_news.size()!=0)
                                             nonew.setVisibility(View.INVISIBLE);

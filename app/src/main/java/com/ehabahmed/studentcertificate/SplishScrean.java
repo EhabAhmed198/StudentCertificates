@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class SplishScrean extends AppCompatActivity implements Runnable {
@@ -51,6 +52,8 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
     String doctor_id, doctor_name, doctor_password, doctor_photo, mobile, email;
 Thread thread;
 Info info;
+    JSONArray jsonArray;
+    JSONObject current;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,6 @@ Info info;
         type = preferences.getString("type", "NoData");
         username = preferences.getString("username", "NoData");
         password = preferences.getString("password", "NoData");
-
         handler = new Handler(getMainLooper());
         this.context = this;
 
@@ -173,9 +175,9 @@ thread.start();
             public void onResponse(JSONObject response) {
                 try {
 
-                    JSONArray arrayRequest = response.getJSONArray("News");
-                    for (int i = 0; i < arrayRequest.length(); i++) {
-                        JSONObject object = arrayRequest.getJSONObject(i);
+                    jsonArray = response.getJSONArray("News");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
                         int news_id = object.getInt("news_id");
                         String news_text = object.getString("news_text");
                         String news_detals = object.getString("news_detals");
@@ -232,8 +234,8 @@ thread.start();
     private void getDataStudnt() {
         info.setType("student");
         HashMap<String,String> params=new HashMap<String, String>();
-        params.put("student_info_name", username);
-        params.put("student_info_password", password);
+        params.put("student_info_name", username.trim());
+        params.put("student_info_password", password.trim());
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
             url="https://ehab01998.com/ustudentInfo.php";
         }else{
@@ -244,32 +246,38 @@ thread.start();
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                   jsonArray = response.getJSONArray("student");
 
-                    JSONArray array = response.getJSONArray("student");
-                    JSONObject current = array.getJSONObject(0);
-                    id = current.getString("student_info_id");
-                    name = current.getString("student_info_name");
-                    pass = current.getString("student_info_password");
-                    photo = current.getString("student_info_photo");
-                    level = current.getString("student_info_level");
-                    department = current.getString("department_id");
-                    preferences = getSharedPreferences("student", Context.MODE_PRIVATE);
-                    editor = preferences.edit();
-                    editor.putString("id", id);
-                    editor.putString("name", name);
-                    editor.putString("pass", pass);
-                    editor.putString("photo", photo);
-                    editor.putString("department", department);
-                    editor.putString("level", level);
-                    editor.apply();
-                    intent = new Intent(getApplicationContext(), Student.class);
-                    intent.putExtra("Notificationsplish","ok");
-                    intent.putExtra("id", id);
-                    intent.putExtra("name", name);
-                    intent.putExtra("pass", pass);
-                    intent.putExtra("photo", photo);
-                    intent.putExtra("department", department);
-                    intent.putExtra("level", level);
+
+                               JSONObject current = jsonArray.getJSONObject(0);
+                               id = current.getString("student_info_id");
+                               name = current.getString("student_info_name");
+                               pass = current.getString("student_info_password");
+                               photo = current.getString("student_info_photo");
+                               level = current.getString("student_info_level");
+                               department = current.getString("department_id");
+                               preferences = getSharedPreferences("student", Context.MODE_PRIVATE);
+                               editor = preferences.edit();
+                               editor.putString("id", id);
+                               editor.putString("name", name);
+                               editor.putString("pass", pass);
+                               editor.putString("photo", photo);
+                               editor.putString("department", department);
+                               editor.putString("level", level);
+                               editor.apply();
+
+                               intent = new Intent(getApplicationContext(), Student.class);
+                               intent.putExtra("Notificationsplish", "ok");
+                               intent.putExtra("id", id);
+                               intent.putExtra("name", name);
+                               intent.putExtra("pass", pass);
+                               intent.putExtra("photo", photo);
+                               intent.putExtra("department", department);
+                               intent.putExtra("level", level);
+
+
+
+
 
               getStudentNumbersRowNotification();
 
@@ -316,8 +324,8 @@ thread.start();
             public void onResponse(JSONObject response) {
                 try {
 
-                    JSONArray array = response.getJSONArray("student");
-                    JSONObject current = array.getJSONObject(0);
+                   jsonArray= response.getJSONArray("student");
+                    JSONObject current = jsonArray.getJSONObject(0);
                     id = current.getString("student_info_id");
                     name = current.getString("student_info_name");
                     pass = current.getString("student_info_password");

@@ -64,13 +64,16 @@ ArrayList<setting_object> listitem;
         listitem.add(new setting_object(5,getResources().getString(R.string.library),R.drawable.library));
         if(Integer.parseInt(studuentInfo.getLevel())!=5)
         listitem.add(new setting_object(6,getResources().getString(R.string.examp),R.drawable.exams));
+
+        listitem.add(new setting_object(7,getResources().getString(R.string.Members),R.drawable.member));
+
         if(Integer.parseInt(studuentInfo.getLevel())==5)
-       listitem.add(new setting_object(7,getResources().getString(R.string.RequestAcertificate),R.drawable.gr));
-        listitem.add(new setting_object(8,getResources().getString(R.string.compition),R.drawable.compition));
-        listitem.add(new setting_object(9,getResources().getString(R.string.programs),R.drawable.programs));
-        listitem.add(new setting_object(10,getResources().getString(R.string.Articles),R.drawable.articles));
-        listitem.add(new setting_object(11,getResources().getString(R.string.map),R.drawable.map));
-        listitem.add(new setting_object(12,getResources().getString(R.string.signout),R.drawable.signout));
+       listitem.add(new setting_object(8,getResources().getString(R.string.RequestAcertificate),R.drawable.gr));
+        listitem.add(new setting_object(9,getResources().getString(R.string.compition),R.drawable.compition));
+        listitem.add(new setting_object(10,getResources().getString(R.string.programs),R.drawable.programs));
+        listitem.add(new setting_object(11,getResources().getString(R.string.Articles),R.drawable.articles));
+        listitem.add(new setting_object(12,getResources().getString(R.string.map),R.drawable.map));
+        listitem.add(new setting_object(13,getResources().getString(R.string.signout),R.drawable.signout));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter=new SettingAdapter(listitem,getContext());
         recyclerView.setAdapter(adapter);

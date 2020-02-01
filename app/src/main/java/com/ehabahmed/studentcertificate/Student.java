@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -48,23 +49,27 @@ public class Student extends AppCompatActivity  {
     Info studuentInfo;
     FragmentManager fragmentManager;
     Bundle bundle;
-    ViewPager pager;
+;
     Handler handler;
     SharedPreferences sharedPreferences,sharedPreferences2;
     SharedPreferences.Editor editor,editor2;
-RequestQueue requestQueue;
+    RequestQueue requestQueue;
     String fragment_id;
-String url;
+    String url;
     PagerAdapter adapter;
     String Notificationsplish;
     Intent intent;
+    boolean StateDeletePage=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
         studuentInfo = (Info) getApplicationContext();
-        pager = (ViewPager) findViewById(R.id.container);
-     fragment_id=getIntent().getExtras().getString("fragment_id","-1");
+        tabLayout = findViewById(R.id.tlHome);
+        final ViewPager  pager=findViewById(R.id.container);
+        adapter=new PagerAdapter(getSupportFragmentManager(),1);
+        fragment_id=getIntent().getExtras().getString("fragment_id","-1");
         requestQueue= Volley.newRequestQueue(this);
         fragmentManager = getSupportFragmentManager();
         Notificationsplish=getIntent().getExtras().getString("Notificationsplish","no");
@@ -75,8 +80,9 @@ String url;
         studuentInfo.setDepartment(getIntent().getExtras().getString("department"));
         studuentInfo.setLevel(getIntent().getExtras().getString("level"));
         handler=new Handler();
-        tabLayout = findViewById(R.id.tlHome);
-  adapter=new PagerAdapter(getSupportFragmentManager(),1);
+
+
+
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
 
@@ -85,6 +91,45 @@ String url;
         tabLayout.getTabAt(1).setIcon(R.drawable.lectures);
         tabLayout.getTabAt(2).setIcon(R.drawable.guide);
         tabLayout.getTabAt(3).setIcon(R.drawable.setting);
+
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if(position==1) {
+                    if (StateDeletePage == false) {
+
+                        pager.removeViewAt(0);
+                        StateDeletePage = true;
+                    }
+
+                }
+            else if(position==0){
+                if(StateDeletePage==true) {
+                  pager.setAdapter(adapter);
+                    tabLayout.getTabAt(0).setIcon(R.drawable.news);
+                    tabLayout.getTabAt(1).setIcon(R.drawable.lectures);
+                    tabLayout.getTabAt(2).setIcon(R.drawable.guide);
+                    tabLayout.getTabAt(3).setIcon(R.drawable.setting);
+                    StateDeletePage=false;
+                }
+
+            }else if(position==2){
+                if(StateDeletePage==false) {
+
+                  pager.removeViewAt(0);
+                    StateDeletePage=true;
+                }
+
+            }else if(position==3){
+                if(StateDeletePage==false) {
+
+                 pager.removeViewAt(0);
+                    StateDeletePage=true;
+                }
+
+            }}
+        });
 
         if(fragment_id.equals("1")){
             pager.setCurrentItem(1,false);
@@ -98,6 +143,7 @@ String url;
             getNodataRowNotification();
 
         }
+
 
 
     }

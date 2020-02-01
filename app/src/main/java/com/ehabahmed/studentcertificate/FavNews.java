@@ -83,7 +83,7 @@ Info info;
                     recyclerView.setLayoutManager(new LinearLayoutManager(FavNews.this));
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-                    NewsAdapter adapter = new NewsAdapter(FavNews.this, listitems, 1,1);
+                    NewsAdapter adapter = new NewsAdapter(FavNews.this, listitems, 1,1,true);
                     recyclerView.setAdapter(adapter);
                     if(listitems.size()<=0)
                         nonews.setVisibility(View.VISIBLE);

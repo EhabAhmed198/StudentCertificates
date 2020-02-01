@@ -2,6 +2,8 @@ package com.ehabahmed.studentcertificate;
 
 
 
+import java.util.ArrayList;
+
 import okhttp3.MultipartBody;
 
 
@@ -10,10 +12,14 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface ApiConfig {
@@ -73,5 +79,47 @@ public interface ApiConfig {
                 @Part("department") RequestBody department,
                 @Part("code") RequestBody code,@Part("image1") RequestBody image1,@Part MultipartBody.Part image2,@Part MultipartBody.Part image3,
                 @Part("yearGraduation") RequestBody yearGraduation,@Part("monthGraduation") RequestBody monthGraduation);
+
+
+    @GET("GetCPI.php")
+    Call<String>getdata(@Query("code") String code);
+
+
+    @POST("updataData.php")
+    @Multipart
+    Call<String>
+     changeData1(
+             @Part("check") RequestBody check,
+             @Part("OldCode") RequestBody OldCode
+             ,@Part("OldImg") RequestBody OldImg,
+                 @Part("Code") RequestBody Code,
+                 @Part("Name") RequestBody Name,
+                @Part("mobile") RequestBody mobile,
+            @Part("email") RequestBody email
+            ,
+    @Part MultipartBody.Part NewImg
+                 );
+
+
+
+    @POST("updataData.php")
+    @Multipart
+    Call<String>
+    changeData2(
+            @Part("check") RequestBody check,
+            @Part("OldCode") RequestBody OldCode
+            ,@Part("OldImg") RequestBody OldImg,
+            @Part("Code") RequestBody Code,
+            @Part("Name") RequestBody Name,
+            @Part("mobile") RequestBody mobile,
+            @Part("email") RequestBody email
+
+
+    );
+
+@GET("GetMembers.php")
+    Call<ArrayList<member>> getDataMember(@Query("NumberDepartment") String NumberDepartment, @Query("NumberBand") String NumberBand);
+
+
 
 }

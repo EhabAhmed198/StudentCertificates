@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Certificate extends AppCompatActivity  {
+public class Certificate extends AppCompatActivity {
     TabLayout tabLayout;
     Info studuentInfo;
     FragmentManager fragmentManager;
@@ -49,6 +50,8 @@ public class Certificate extends AppCompatActivity  {
     String url;
     PagerAdapter adapter;
     Intent intent;
+    boolean StateDeletePage=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,42 @@ public class Certificate extends AppCompatActivity  {
             getNodataRowNotification();
 
         }
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if(position==1){
+                    if(StateDeletePage==false) {
+
+                    pager.removeViewAt(0);
+                        StateDeletePage=true;
+                    }
+
+
+                }else if(position==0){
+                    if(StateDeletePage==true) {
+                      pager.setAdapter(adapter);
+                        tabLayout.getTabAt(0).setIcon(R.drawable.news);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.guide);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.setting);
+                        StateDeletePage=false;
+                    }
+
+                }else if(position==2){
+                    if(StateDeletePage==false) {
+pager.removeViewAt(0);
+                        StateDeletePage=true;
+                    }
+
+                }else if(position==3){
+                    if(StateDeletePage==false) {
+
+                      pager.removeViewAt(0);
+                        StateDeletePage=true;
+                    }
+                }
+            }
+        });
 
 
     }
@@ -359,8 +398,6 @@ public class Certificate extends AppCompatActivity  {
         requestQueue.add(stringRequest);
     }
 
-
-
     public class PagerAdapter extends FragmentStatePagerAdapter {
 
 
@@ -376,7 +413,7 @@ public class Certificate extends AppCompatActivity  {
                 return new Student_News();
                 case 1:
 
-                     return new Graduatesform();
+                    return new Graduatesform();
                 case 2:
 
                     return  new StudentSettings();
@@ -395,14 +432,14 @@ public class Certificate extends AppCompatActivity  {
             super.setPrimaryItem(container, position, object);
             switch (position){
                 case 0:
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setTitle(getResources().getString(R.string.news));
-                    }
-                }, 1);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setTitle(getResources().getString(R.string.news));
+                        }
+                    }, 1);
 
-                break;
+                    break;
                 case 1:
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -427,6 +464,7 @@ public class Certificate extends AppCompatActivity  {
             }
         }
     }
+
 
     private void getNumsNews() {
         SharedPreferences  sharedPreferences=getSharedPreferences("number_news", Context.MODE_PRIVATE);

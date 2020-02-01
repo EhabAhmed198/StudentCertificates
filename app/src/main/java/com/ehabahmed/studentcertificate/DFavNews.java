@@ -77,7 +77,7 @@ public class DFavNews extends AppCompatActivity {
                     recyclerView.setLayoutManager(new LinearLayoutManager(DFavNews.this));
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-                    NewsAdapter adapter = new NewsAdapter(DFavNews.this, listitems, 2,1);
+                    NewsAdapter adapter = new NewsAdapter(DFavNews.this, listitems, 2,1,true);
                     recyclerView.setAdapter(adapter);
                     if(listitems.size()<=0)
                         nonews.setVisibility(View.VISIBLE);

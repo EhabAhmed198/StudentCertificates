@@ -41,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,10 +59,11 @@ SharedPreferences sharedPreferences,sharedPreferences1,sharedPreferences2;
     ScrollView.LayoutParams params;
     ConstraintLayout makecenter;
     Intent intent;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_sgin_or__login, container, false);
+        view= inflater.inflate(R.layout.fragment_sgin_or__login, container, false);
 
 
 
@@ -365,5 +367,6 @@ switch(v.getId()){
         });
      requestQueue.add(request);
     }
+
 
 }

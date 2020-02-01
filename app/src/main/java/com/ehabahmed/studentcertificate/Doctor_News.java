@@ -79,7 +79,7 @@ public class Doctor_News extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         listitems = new ArrayList<>();
-        adapter = new NewsAdapter(getContext(), listitems, 2, 0);
+        adapter = new NewsAdapter(getContext(), listitems, 2, 0,true);
         recyclerView.setAdapter(adapter);
         getdata(userpage);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -113,16 +113,15 @@ public class Doctor_News extends Fragment {
     private void getdata(int userpage) {
         progressBar.setVisibility(View.VISIBLE);
         String url;
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-//            url = "https://ehab01998.com/ShowNewsArray.php?page=" + userpage;
-//            protocal="https://";
-//        }else{
-//            url = "http://ehab01998.com/ShowNewsArray.php?page=" + userpage;
-//            protocal="http://";
-//
-//        }
-        url="http://ehab01998.com/ShowNewsArray1.php?page="+userpage;
-        protocal="http://";
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
+            url = "https://ehab01998.com/ShowNewsArray.php?page=" + userpage;
+            protocal="https://";
+        }else{
+            url = "http://ehab01998.com/ShowNewsArray.php?page=" + userpage;
+            protocal="http://";
+
+        }
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -220,7 +219,7 @@ public class Doctor_News extends Fragment {
                                 @Override
                                 public void run() {
 
-                                    adapter = new NewsAdapter(getContext(), object_news,1,0);
+                                    adapter = new NewsAdapter(getContext(), object_news,1,0,true);
                                     recyclerView.setAdapter(adapter);
                                     if(object_news.size()!=0)
                                     nonew.setVisibility(View.INVISIBLE);
@@ -270,9 +269,13 @@ public class Doctor_News extends Fragment {
             public void run() {
                 super.run();
                 object_News object_news = listitems.get(i);
-                appDatabase.taskDao().insertNews(new NewsEntity(object_news.news_id,object_news.news_text,
-                        object_news.news_detals,
-                        paths, object_news.news_type, object_news.data_time));
+               try {
+
+
+                   appDatabase.taskDao().insertNews(new NewsEntity(object_news.news_id, object_news.news_text,
+                           object_news.news_detals,
+                           paths, object_news.news_type, object_news.data_time));
+               }catch (Exception e){}
             }
         }.start();
 

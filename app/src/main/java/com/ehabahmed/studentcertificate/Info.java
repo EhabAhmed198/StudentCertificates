@@ -3,9 +3,25 @@ package com.ehabahmed.studentcertificate;
 import android.app.Application;
 
 public class Info extends Application {
-    String id,name,pass,photo,level,department,group_name,ghange_level;
+    String id,name,pass,photo,level,department,group_name,ghange_level,SMobile="NF",SEmail="NF";
     String doctor_id,doctor_name,doctor_photo,doctor_password,doctor_mobile,doctor_email;
 String type;
+
+    public String getSMobile() {
+        return SMobile;
+    }
+
+    public void setSMobile(String SMobile) {
+        this.SMobile = SMobile;
+    }
+
+    public String getSEmail() {
+        return SEmail;
+    }
+
+    public void setSEmail(String SEmail) {
+        this.SEmail = SEmail;
+    }
 
     public String getType() {
         return type;

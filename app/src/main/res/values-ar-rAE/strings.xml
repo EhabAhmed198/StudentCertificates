@@ -20,14 +20,21 @@
 للتحديث اضغط على تحديث</string>
     <string name="Password">الرقم السري</string>
     <string name="lectures">المحاضرات</string>
+
+    <string name="codewithoutpoint">الكود</string>
+
+    <string name="messages">الرسائل</string>
     <string name="Name">اسم الطالب</string>
     <string name="update">تحديث</string>
+    <string name="udataprofile">تعديل الصفحة الشخصية</string>
+
     <string name="Code">كود الطالب</string>
     <string name="ConPassword">تأكيد الرقم السري</string>
     <string name="noavailable">غير متوفر حاليا</string>
     <string name="guide">دليل الطالب</string>
     <string name="settings">خدمات الطلاب</string>
-
+    <string name="editiphoto">تحديث الصورة</string>
+    <string name="nofound">لا يوجد</string>
     <string name="land1">الفرقة الاولي</string>
     <string name="land2">الفرقة الثانية</string>
     <string name="Email">البريد الاكتروني</string>
@@ -39,13 +46,33 @@
     <string name="nosendprogrem">لا يوجد برامج ارسال علي الهاتف</string>
     <string name="entername">أدخل الاسم</string>
     <string name="Error">خطأ</string>
+    <string name="Members">الاعضاء</string>
+    <string-array name="departments2">
+        <item>ALL</item>
+        <item>Cs</item>
+
+        <item>IS</item>
+        <item>BM</item>
+
+    </string-array>
+    <string-array name="lans2">
+        <item>ALL</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+        <item>Graduates</item>
+    </string-array>
     <string name="comment">تعليق</string>
     <string name="downloadexams">تنزيل</string>
     <string name="tryagainlater">يرجا أعادة المحاولة فى وقت اخر...</string>
     <string name="Add">أضافة</string>
     <string name="nopostgroup">لا يوجد منشورات متاحة الان..</string>
     <string name="addcommenttext">أكتب تعليق</string>
+    <string name="correctchoose">يرجا تحديد اختيار مناسب</string>
+    <string name="message">رسالة</string>
     <string name="addcomment">تم اضافة التعليق بالنجاح</string>
+    <string name="updatelist">تحديث القائمة</string>
     <string name="errorupload">لا يوجد أتصال بلانترنت أو حجم الملف كبير</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="land3">الفرقة الثالثة</string>

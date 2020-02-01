@@ -98,7 +98,7 @@ RequestQueue requestQueue;
         sign_up=findViewById(R.id.sgin_up);
         data_department=getResources().getStringArray(R.array.departments);
         data_band=getResources().getStringArray(R.array.lans);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile2);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.iv_profile);
 
         iv_profile.setOnClickListener(this);
         div_profile.setOnClickListener(this);

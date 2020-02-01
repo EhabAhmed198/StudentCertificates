@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ehabahmed.studentcertificate">
-    <uses-permission
-        android:name="android.permission.VIBRATE"></uses-permission>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -24,32 +24,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Comments"></activity>
+        <activity android:name=".ShowStudentProfile"></activity>
+        <activity android:name=".Members" />
+        <activity android:name=".EditYPP" />
+        <activity android:name=".Comments" />
         <activity android:name=".Show_Result" />
         <activity android:name=".GraduationCertificate" />
-        <activity android:name=".Articles"  android:parentActivityName=".StudentSettings"/>
-        <activity android:name=".Programs"  android:parentActivityName=".StudentSettings"/>
+        <activity
+            android:name=".Articles"
+            android:parentActivityName=".StudentSettings" />
+        <activity
+            android:name=".Programs"
+            android:parentActivityName=".StudentSettings" />
         <activity android:name=".UpdateApp" />
         <activity android:name=".DFavNews" />
-        <activity android:name=".DoctorCompetition" android:parentActivityName=".DoctorSetting"/>
-        <activity android:name=".DoctorExams" android:parentActivityName=".DoctorSetting"/>
-        <activity android:name=".DoctorLibrary" android:parentActivityName=".DoctorSetting"/>
-        <activity android:name=".DoctorCourses" android:parentActivityName=".DoctorSetting"/>
+        <activity
+            android:name=".DoctorCompetition"
+            android:parentActivityName=".DoctorSetting" />
+        <activity
+            android:name=".DoctorExams"
+            android:parentActivityName=".DoctorSetting" />
+        <activity
+            android:name=".DoctorLibrary"
+            android:parentActivityName=".DoctorSetting" />
+        <activity
+            android:name=".DoctorCourses"
+            android:parentActivityName=".DoctorSetting" />
         <activity
             android:name=".ShowDoctorTable"
             android:screenOrientation="landscape"
             android:theme="@style/news_detals" />
         <activity
             android:name=".Doctor_Table"
-            android:screenOrientation="landscape" android:parentActivityName=".DoctorSetting"/>
+            android:parentActivityName=".DoctorSetting"
+            android:screenOrientation="landscape" />
         <activity android:name=".FavNews" />
         <activity android:name=".TypeMap" />
-        <activity android:name=".OneCourse"
-
-            android:parentActivityName=".Courses"
-
-            />
-        <activity android:name=".DoctorProfile" android:parentActivityName=".DoctorSetting"/>
+        <activity
+            android:name=".OneCourse"
+            android:parentActivityName=".Courses" />
+        <activity
+            android:name=".DoctorProfile"
+            android:parentActivityName=".DoctorSetting" />
         <activity android:name=".Certificate" />
         <activity
             android:name=".Maps"
@@ -78,22 +94,32 @@
         <activity
             android:name=".Compition_details"
             android:theme="@style/news_detals" />
-        <activity android:name=".Compition" android:parentActivityName=".StudentSettings"/>
-        <activity android:name=".Exams" android:parentActivityName=".StudentSettings"/>
+        <activity
+            android:name=".Compition"
+            android:parentActivityName=".StudentSettings" />
+        <activity
+            android:name=".Exams"
+            android:parentActivityName=".StudentSettings" />
         <activity
             android:name=".Book_deatls"
             android:theme="@style/news_detals" />
-        <activity android:name=".Library" android:parentActivityName=".StudentSettings"/>
+        <activity
+            android:name=".Library"
+            android:parentActivityName=".StudentSettings" />
         <activity android:name=".Show_Course" />
-        <activity android:name=".ManyCourceOne" android:parentActivityName=".OneCourse"/>
-        <activity android:name=".Courses" android:parentActivityName=".StudentSettings" />
+        <activity
+            android:name=".ManyCourceOne"
+            android:parentActivityName=".OneCourse" />
+        <activity
+            android:name=".Courses"
+            android:parentActivityName=".StudentSettings" />
         <activity
             android:name=".Result_Student"
             android:theme="@style/news_detals" />
         <activity
             android:name=".Table_student"
             android:screenOrientation="landscape"
-            android:theme="@style/news_detals"  />
+            android:theme="@style/news_detals" />
         <activity android:name=".Student_peofile" />
         <activity
             android:name=".Show_image2"
@@ -104,7 +130,10 @@
             android:name=".post_detals"
             android:theme="@style/news_detals" />
         <activity android:name=".Group_post" />
-        <activity android:name=".Show_video" />
+        <activity
+            android:name=".Show_video"
+            android:screenOrientation="landscape"
+            android:theme="@style/news_detals" />
         <activity android:name=".Student" />
         <activity android:name=".Sgin_up" />
         <activity

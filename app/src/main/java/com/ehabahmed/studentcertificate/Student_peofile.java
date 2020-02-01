@@ -15,10 +15,13 @@ import android.graphics.Bitmap;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -30,7 +33,6 @@ Info studuentInfo;
 FragmentManager fragmentManager;
 TextView name;
 TabLayout tabLayout;
-Bitmap bitmap;
 ViewPager pager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,11 @@ setTitle(getResources().getString(R.string.profile_name_page));
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
             Glide.with(this).asBitmap()
-                    .placeholder(R.drawable.profile2).circleCrop().load("https://ehab01998.com/images_profile/"+studuentInfo.getPhoto())
+                    .placeholder(R.drawable.iv_profile).circleCrop().load("https://ehab01998.com/images_profile/"+studuentInfo.getPhoto())
                     .into(iv_profile);
         }else{
             Glide.with(this).asBitmap()
-                    .placeholder(R.drawable.profile2).circleCrop().load("http://ehab01998.com/images_profile/"+studuentInfo.getPhoto())
+                    .placeholder(R.drawable.iv_profile).circleCrop().load("http://ehab01998.com/images_profile/"+studuentInfo.getPhoto())
                     .into(iv_profile);
         }
 
@@ -95,14 +97,17 @@ setTitle(getResources().getString(R.string.profile_name_page));
                 case 0:
                     return new profile_infoStudent();
                 case 1:
+                    return new Pmessage();
+                case 2:
                     return new profile_favStudent();
+
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
 
         }
 
@@ -113,9 +118,30 @@ setTitle(getResources().getString(R.string.profile_name_page));
                 case 0:
                     return getResources().getString(R.string.student_info);
                 case 1:
+                    return getResources().getString(R.string.messages);
+                case 2:
                     return getResources().getString(R.string.student_fav);
+
             }
             return super.getPageTitle(position);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.updatadataprofile,menu);
+        
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.EditYPP){
+
+Intent intent=new Intent(Student_peofile.this,EditYPP.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
