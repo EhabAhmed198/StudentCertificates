@@ -287,6 +287,11 @@ To update, press the button</string>
     <string name="updatelist">update List</string>
     <string name="correctchoose">Detect Correct Choose!</string>
     <string name="message">MESSAGE</string>
+    <string name="Inbox">Inbox</string>
+    <string name="title_activity_send">Send</string>
+    <string name="title_of_message">Title of message</string>
+    <string name="id">id</string>
+    <string name="no_image">no image</string>
 
 
 </resources>

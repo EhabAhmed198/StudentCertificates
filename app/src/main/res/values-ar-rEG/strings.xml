@@ -12,6 +12,7 @@
     <string name="code_student">كود الطالب</string>
     <string name="password">الرقم السري</string>
     <string name="Members">الاعضاء</string>
+    <string name="Inbox">صندوق الرسائل</string>
     <string-array name="departments2">
         <item>ALL</item>
         <item>Cs</item>

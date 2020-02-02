@@ -24,7 +24,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowStudentProfile"></activity>
+        <activity android:name=".MessageReader"></activity>
+        <activity
+            android:name=".Send"
+            android:label="@string/title_activity_send"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Inbox" />
+        <activity android:name=".ShowStudentProfile" />
         <activity android:name=".Members" />
         <activity android:name=".EditYPP" />
         <activity android:name=".Comments" />
