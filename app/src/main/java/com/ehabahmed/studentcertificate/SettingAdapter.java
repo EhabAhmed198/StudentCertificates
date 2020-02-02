@@ -93,10 +93,7 @@ else
                     intent=new Intent(context,Exams.class);
                     context.startActivity(intent);
                     break;
-                case 7:
-                    intent=new Intent(context, Members.class);
-                    context.startActivity(intent);
-                    break;
+
 
                 case 8:
                     intent=new Intent(context, Inbox.class);

@@ -294,4 +294,11 @@ To update, press the button</string>
     <string name="no_image">no image</string>
 
 
+    <string name="Reciver">Received</string>
+    <string name="Sender">Sender</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

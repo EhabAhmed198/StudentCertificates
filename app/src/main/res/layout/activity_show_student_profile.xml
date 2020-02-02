@@ -109,7 +109,6 @@
        android:text="@string/message"
        android:fontFamily="monospace"
        android:textColor="#3D5AFE"
-
        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

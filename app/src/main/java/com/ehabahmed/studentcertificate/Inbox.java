@@ -3,13 +3,23 @@ package com.ehabahmed.studentcertificate;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,55 +31,89 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Inbox extends AppCompatActivity {
-    private InboxAdabter mAdapter;
+public class Inbox extends AppCompatActivity implements View.OnClickListener {
 
+TabLayout Tabs;
+ViewPager pager;
+Handler handler;
+  PagerAdapter adapter;
+    com.google.android.material.floatingactionbutton.FloatingActionButton FloatingActionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
-        final Info info = (Info) getApplicationContext();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference().child(info.id);
-        final List<SendForm> list = new ArrayList<>();
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.Inbox_rec);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(layoutManager);
-        final ProgressBar bar = findViewById(R.id.B_bar_inbox);
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                bar.setVisibility(ProgressBar.VISIBLE);
-                list.add(dataSnapshot.getValue(SendForm.class));
-                mAdapter = new InboxAdabter(list, Inbox.this);
-                recyclerView.setAdapter(mAdapter);
-                bar.setVisibility(ProgressBar.INVISIBLE);
-            }
+        FloatingActionButton=findViewById(R.id.fab);
+        FloatingActionButton.setOnClickListener(this);
+        Tabs = findViewById(R.id.htabs);
+        pager = findViewById(R.id.continar);
+        adapter=new PagerAdapter(getSupportFragmentManager(),1);
+        handler=new Handler();
+        pager.setAdapter(adapter);
+        Tabs.setupWithViewPager(pager);
+        Tabs.getTabAt(0).setText(getString(R.string.Reciver));
+        Tabs.getTabAt(1).setText(getString(R.string.Sender));
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        reference.addChildEventListener(childEventListener);
     }
-}
+
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(Inbox.this,Members.class);
+        startActivity(intent);
+    }
+
+    public class PagerAdapter extends FragmentStatePagerAdapter {
+
+
+            public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
+                super(fm, behavior);
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                switch (position){
+                    case 0:
+
+                        return    new ReciverInbox();
+                    case 1:
+
+                        return  new SenderInbox();
+
+
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+
+            @Override
+            public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                super.setPrimaryItem(container, position, object);
+                switch (position) {
+                    case 0:
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                setTitle(getResources().getString(R.string.Reciver));
+                            }
+                        }, 1);
+
+                        break;
+
+                    case 1:
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                setTitle(getResources().getString(R.string.Sender));
+                            }
+                        }, 1);
+
+                        break;
+
+
+                }
+
+            }}
+        }

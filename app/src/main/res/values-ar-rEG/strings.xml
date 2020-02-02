@@ -36,6 +36,12 @@
     <string name="lectures">المحاضرات</string>
     <string name="GraduatesForm">استمارة الخرجين</string>
     <string name="guide">دليل الطالب</string>
+    <string name="Reciver">المستلمة</string>
+    <string name="Sender">المرسالة</string>
+    <string name="title_activity_send">ارسال</string>
+    <string name="title_of_message">عنوان الرسالة</string>
+    <string name="id">الكود</string>
+    <string name="no_image">لا يوجد صورة</string>
     <string name="correctchoose">يرجا تحديد اختيار مناسب</string>
     <string name="message">رسالة</string>
     <string name="settings">خدمات الطلاب</string>

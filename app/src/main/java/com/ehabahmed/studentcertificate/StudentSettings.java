@@ -65,7 +65,6 @@ ArrayList<setting_object> listitem;
         if(Integer.parseInt(studuentInfo.getLevel())!=5)
         listitem.add(new setting_object(6,getResources().getString(R.string.examp),R.drawable.exams));
 
-        listitem.add(new setting_object(7,getResources().getString(R.string.Members),R.drawable.member));
         listitem.add(new setting_object(8,getResources().getString(R.string.Inbox),R.drawable.ic_notifications_active_black_24dp));
 
         if(Integer.parseInt(studuentInfo.getLevel())==5)

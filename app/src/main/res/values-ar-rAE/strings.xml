@@ -71,6 +71,12 @@
     <string name="addcommenttext">أكتب تعليق</string>
     <string name="correctchoose">يرجا تحديد اختيار مناسب</string>
     <string name="message">رسالة</string>
+    <string name="Reciver">المستلمة</string>
+    <string name="Sender">المرسالة</string>
+    <string name="title_activity_send">ارسال</string>
+    <string name="title_of_message">عنوان الرسالة</string>
+    <string name="id">الكود</string>
+    <string name="no_image">لا يوجد صورة</string>
     <string name="addcomment">تم اضافة التعليق بالنجاح</string>
     <string name="updatelist">تحديث القائمة</string>
     <string name="errorupload">لا يوجد أتصال بلانترنت أو حجم الملف كبير</string>
