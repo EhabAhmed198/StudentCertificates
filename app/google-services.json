@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "974445495211",
+    "firebase_url": "https://studentcertificates-c7192.firebaseio.com",
+    "project_id": "studentcertificates-c7192",
+    "storage_bucket": "studentcertificates-c7192.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974445495211:android:460f78da63a2ba302108ee",
+        "android_client_info": {
+          "package_name": "com.ehabahmed.studentcertificate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974445495211-0793hcemnrsj64pq9pbu6vmfebqigt2m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ehabahmed.studentcertificate",
+            "certificate_hash": "aa341850e77b92ff3cd961cdcf4f86678bc0cf48"
+          }
+        },
+        {
+          "client_id": "974445495211-eua4tp63eoublul4ff4c61i5o5okv2bo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3ZagXDuf0Vj1FnYBsdMppXJW8FX4Zcz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974445495211-eua4tp63eoublul4ff4c61i5o5okv2bo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
