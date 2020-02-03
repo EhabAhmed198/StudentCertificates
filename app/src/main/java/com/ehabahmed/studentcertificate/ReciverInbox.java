@@ -39,7 +39,7 @@ public class ReciverInbox extends Fragment {
 
         final Info info = (Info) getContext().getApplicationContext();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference().child(info.id);
+        DatabaseReference reference = database.getReference().child(info.id).child("receiver");
         final List<SendForm> list = new ArrayList<>();
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.Inbox_rec);
         recyclerView.setHasFixedSize(true);

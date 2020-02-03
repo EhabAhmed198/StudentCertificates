@@ -1,5 +1,7 @@
 package com.ehabahmed.studentcertificate;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,13 +9,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ShowStudentProfile extends AppCompatActivity implements View.OnClickListener {
     String ID, Name, Photo, department, level;
     ImageView Im_photo;
-    TextView Iv_name, Iv_code, Iv_department, Iv_level, Iv_mobile, Iv_email;
+    TextView Iv_name, Iv_code, Iv_department, Iv_level, Iv_mobile, Iv_email, did_not_a;
     Button MESSAGE;
     Info info;
 
@@ -33,6 +46,7 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_student_profile);
+
         ID = getIntent().getExtras().getString("ID");
         Name = getIntent().getExtras().getString("Name");
         Photo = getIntent().getExtras().getString("Photo");
@@ -47,11 +61,114 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
         Iv_mobile = findViewById(R.id.Iv_mobile);
         Iv_email = findViewById(R.id.Iv_email);
         MESSAGE = findViewById(R.id.MESSAGE);
+        did_not_a = findViewById(R.id.did_not_a);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference();
+        MESSAGE.setVisibility(Button.INVISIBLE);
+
+        MessageA(reference);
         MESSAGE.setOnClickListener(this);
         getConvertData();
         setData();
         getCpi();
+        setAcceptSwitch(reference);
 
+    }
+
+    private void MessageA(DatabaseReference reference) {
+        final List<String> list = new ArrayList<>();
+        reference = reference.child(ID + "").child("acceptable");
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                list.add(dataSnapshot.getKey());
+                if (list.contains("" + info.getId())) {
+                    MESSAGE.setVisibility(Button.VISIBLE);
+                    did_not_a.setVisibility(TextView.INVISIBLE);
+                } else {
+                    did_not_a.setVisibility(TextView.VISIBLE);
+                    MESSAGE.setVisibility(Button.INVISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                list.remove(dataSnapshot.getKey());
+                if (list.contains("" + info.getId())) {
+                    MESSAGE.setVisibility(Button.VISIBLE);
+                    did_not_a.setVisibility(TextView.INVISIBLE);
+                } else {
+                    MESSAGE.setVisibility(Button.INVISIBLE);
+                    did_not_a.setVisibility(TextView.VISIBLE);
+                }
+                Toast.makeText(ShowStudentProfile.this,""+list.size(),Toast.LENGTH_LONG).show();;
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        reference.addChildEventListener(childEventListener);
+    }
+
+    private void setAcceptSwitch(DatabaseReference reference) {
+        final Switch se = findViewById(R.id.accept_switch);
+        reference = reference.child(info.getId() + "").child("acceptable");
+        final List<String> list = new ArrayList<>();
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                list.add(dataSnapshot.getKey());
+                if (list.contains("" + ID)) {
+                    se.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        final DatabaseReference finalReference = reference;
+        se.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    finalReference.child("" + ID).setValue("");
+                } else {
+                    finalReference.child("" + ID).getRef().removeValue();
+                }
+            }
+        });
+        reference.addChildEventListener(childEventListener);
     }
 
     private void setData() {

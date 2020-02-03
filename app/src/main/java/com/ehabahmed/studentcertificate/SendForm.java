@@ -1,17 +1,22 @@
 package com.ehabahmed.studentcertificate;
 
 public final class SendForm {
-    private String Sender_Name, Sender_id, Sender_image, title, message;
+    private String Sender_Name, Sender_id, Sender_image, title, message,time;
 
     public SendForm() {
     }
 
-    public SendForm(String Sender_name, String Sender_image, String Sender_id, String message, String title) {
+    public SendForm(String Sender_name, String Sender_image, String Sender_id, String message, String title, String time) {
         this.message = message;
         this.Sender_id = Sender_id;
         this.title = title;
         this.Sender_Name = Sender_name;
         this.Sender_image = Sender_image;
+        this.time=time;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public String getMessage() {
@@ -48,6 +53,10 @@ public final class SendForm {
 
     public void setSender_Name(String sender_Name) {
         Sender_Name = sender_Name;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setTitle(String title) {

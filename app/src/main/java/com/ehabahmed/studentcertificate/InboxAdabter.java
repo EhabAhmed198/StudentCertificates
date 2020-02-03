@@ -39,10 +39,12 @@ public final class InboxAdabter extends RecyclerView.Adapter<InboxAdabter.InHold
     public void onBindViewHolder(@NonNull InHolder holder, int position) {
         LinearLayout linearLayout = holder.linearLayout;
         TextView title = linearLayout.findViewById(R.id.inbox_title);
-        final SendForm sendForm=list.get(position);
-        title.setText(sendForm.getTitle() + "");
+        final SendForm sendForm = list.get(position);
+        title.setText((sendForm.getTitle() + ""));
         TextView name = linearLayout.findViewById(R.id.inbox_name);
-        name.setText(sendForm.getSender_Name() + "");
+        name.setText((sendForm.getSender_Name() + ""));
+        TextView time = linearLayout.findViewById(R.id.inbox_time);
+        time.setText((sendForm.getTime() + ""));
         ImageView receiver_image = linearLayout.findViewById(R.id.inbox_image);
         String Photo = sendForm.getSender_image();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -58,11 +60,11 @@ public final class InboxAdabter extends RecyclerView.Adapter<InboxAdabter.InHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageReader.class);
-                intent.putExtra("id",sendForm.getSender_id());
-                intent.putExtra("name",sendForm.getSender_Name());
-                intent.putExtra("image",sendForm.getSender_image());
-                intent.putExtra("message",sendForm.getMessage());
-                intent.putExtra("title",sendForm.getTitle());
+                intent.putExtra("id", sendForm.getSender_id());
+                intent.putExtra("name", sendForm.getSender_Name());
+                intent.putExtra("image", sendForm.getSender_image());
+                intent.putExtra("message", sendForm.getMessage());
+                intent.putExtra("title", sendForm.getTitle());
                 context.startActivity(intent);
             }
         });
