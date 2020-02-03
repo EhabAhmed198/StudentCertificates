@@ -107,7 +107,7 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
                     MESSAGE.setVisibility(Button.INVISIBLE);
                     did_not_a.setVisibility(TextView.VISIBLE);
                 }
-                Toast.makeText(ShowStudentProfile.this,""+list.size(),Toast.LENGTH_LONG).show();;
+
             }
 
             @Override
