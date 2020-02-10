@@ -87,7 +87,6 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
             }).start();
 
         }
-        Toast.makeText(this.context, "sdsd", Toast.LENGTH_LONG).show();
         setAlarm(context);
     }
 
