@@ -8,7 +8,13 @@
         <item name="colorAccent">#000</item>
 
     </style>
+    <style name="CustomForMessage" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#2A3D60</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#000</item>
 
+    </style>
 
     <style name="news_detals" parent="Theme.AppCompat.Light.NoActionBar" />
 
