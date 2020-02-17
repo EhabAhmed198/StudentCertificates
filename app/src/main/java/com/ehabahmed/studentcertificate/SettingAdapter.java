@@ -93,36 +93,39 @@ else
                     intent=new Intent(context,Exams.class);
                     context.startActivity(intent);
                     break;
-
-
                 case 8:
+                    intent=new Intent(context,Groups.class);
+                    context.startActivity(intent);
+                    break;
+
+                case 9:
                     intent=new Intent(context, Inbox.class);
                     context.startActivity(intent);
                     break;
-                case 9:
+                case 10:
                     intent=new Intent(context,GraduationCertificate.class);
                     context.startActivity(intent);
                     break;
 
-                case 10:
+                case 11:
                     intent=new Intent(context,Compition.class);
                     context.startActivity(intent);
                     break;
-                case 11:
+                case 12:
                     intent=new Intent(context,Programs.class);
                     context.startActivity(intent);
                     break;
 
-                case 12:
+                case 13:
                     intent=new Intent(context,Articles.class);
                     context.startActivity(intent);
                     break;
 
-                case 13:
+                case 14:
                     intent=new Intent(context,TypeMap.class);
                     context.startActivity(intent);
                     break;
-                case 14:
+                case 15:
                     info=(Info)context.getApplicationContext();
 
                     info.setId("-1");

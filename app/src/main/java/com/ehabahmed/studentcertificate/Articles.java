@@ -73,6 +73,7 @@ String protocal;
                 if(inscrolling & (out+curr)==total){
                     inscrolling=false;
                     userpage++;
+                    if(userpage<3)
                     getdata(userpage);
                 }
             }
@@ -83,12 +84,13 @@ String protocal;
 
     private void getdata(int userpage) {
         String url;
+
         progressBar.setVisibility(View.VISIBLE);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-            url="https://ehab01998.com/Articles.php?page="+userpage+"&department_id="+info.getDepartment();
+            url="https://ehab01998.com/Articles.php?page="+userpage;
             protocal="https://";
         }else{
-            url="http://ehab01998.com/Articles.php?page="+userpage+"&department_id="+info.getDepartment();
+            url="http://ehab01998.com/Articles.php?page="+userpage;
             protocal="http://";
 
         }
@@ -106,7 +108,9 @@ String protocal;
                         String detals=current.getString("articles_details");
                         String date=current.getString("articles_date");
                         String Nphoto=protocal+photo;
-                        listitems.add(new Articles_Object(id,title,Nphoto,detals,date));
+                        Articles_Object object=new Articles_Object(id,title,Nphoto,detals,date);
+                        if(!listitems.contains(object))
+                        listitems.add(object);
                     }
 
                     adapter.notifyDataSetChanged();

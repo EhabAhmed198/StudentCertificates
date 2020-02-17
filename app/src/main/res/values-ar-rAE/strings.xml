@@ -45,6 +45,8 @@
     <string name="exit_app">الخروج من التطبيق</string>
     <string name="nosendprogrem">لا يوجد برامج ارسال علي الهاتف</string>
     <string name="entername">أدخل الاسم</string>
+
+
     <string name="Error">خطأ</string>
     <string name="Members">الاعضاء</string>
     <string-array name="departments2">
@@ -53,7 +55,7 @@
 
         <item>IS</item>
         <item>BM</item>
-
+        <item>Professor</item>
     </string-array>
     <string-array name="lans2">
         <item>ALL</item>
@@ -67,6 +69,7 @@
     <string name="downloadexams">تنزيل</string>
     <string name="tryagainlater">يرجا أعادة المحاولة فى وقت اخر...</string>
     <string name="Add">أضافة</string>
+    <string name="Inbox">الرسائل</string>
     <string name="nopostgroup">لا يوجد منشورات متاحة الان..</string>
     <string name="addcommenttext">أكتب تعليق</string>
     <string name="correctchoose">يرجا تحديد اختيار مناسب</string>
@@ -289,6 +292,7 @@
         <item>"2017"</item>
         <item>"2018"</item>
     </array>
+    <string name="nomessage">لا يوجد رسائل متاحة الان...</string>
     <array name="month">
         <item>مايو</item>
         <item>أغسطس</item>

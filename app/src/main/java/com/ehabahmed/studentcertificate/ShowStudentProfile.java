@@ -40,19 +40,30 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
     TextView Iv_name, Iv_code, Iv_department, Iv_level, Iv_mobile, Iv_email, did_not_a;
     Button MESSAGE;
     Info info;
+String type;
+    GsonBuilder gsonBuilder;
+    Gson gson;
+    Retrofit retrofit;
 
     //TODO: start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_student_profile);
-
+        type=getIntent().getExtras().getString("type");
         ID = getIntent().getExtras().getString("ID");
         Name = getIntent().getExtras().getString("Name");
-        Photo = getIntent().getExtras().getString("Photo");
-        department = getIntent().getExtras().getString("department");
-        level = getIntent().getExtras().getString("level");
         info = (Info) getApplicationContext();
+        Photo = getIntent().getExtras().getString("Photo");
+      gsonBuilder = new GsonBuilder();
+        gsonBuilder.setLenient();
+        gson = gsonBuilder.create();
+        if(type.equals("student") ) {
+            department = getIntent().getExtras().getString("department");
+            level = getIntent().getExtras().getString("level");
+            getConvertData();
+        }
+
         Im_photo = findViewById(R.id.photo);
         Iv_name = findViewById(R.id.Iv_name);
         Iv_code = findViewById(R.id.Iv_code);
@@ -68,11 +79,57 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
 
         MessageA(reference);
         MESSAGE.setOnClickListener(this);
-        getConvertData();
+
         setData();
-        getCpi();
+        if(type.equals("student") ||info.getType().equals("certificate")) {
+            getCpi();
+        }else if(type.equals("doctor")){
+            getDoctorCpi();
+        }
         setAcceptSwitch(reference);
 
+    }
+
+    private void getDoctorCpi() {
+
+        retrofit = new Retrofit.Builder()
+
+                .baseUrl("http://ehab01998.com")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        ApiConfig apiConfig = retrofit.create(ApiConfig.class);
+        apiConfig.getDoctordata(ID).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!response.body().equals("NF")) {
+                    boolean phone = response.body().startsWith("NF");
+                    boolean email = response.body().endsWith("NF");
+                    if (phone == false && email == false) {
+                        Iv_mobile.setText(response.body().substring(0, 11));
+                        Iv_email.setText(response.body().substring(11));
+                        Iv_mobile.setVisibility(View.VISIBLE);
+                        Iv_email.setVisibility(View.VISIBLE);
+
+                    } else if (phone == false && email == true) {
+                        Iv_mobile.setText(response.body().substring(0, 11));
+                        Iv_email.setText(R.string.nofound);
+                        Iv_mobile.setVisibility(View.VISIBLE);
+
+
+                    } else if (phone == true && email == false) {
+                        Iv_email.setText(response.body().substring(2));
+                        Iv_mobile.setText(R.string.nofound);
+                        Iv_email.setVisibility(View.VISIBLE);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     private void MessageA(DatabaseReference reference) {
@@ -82,12 +139,24 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 list.add(dataSnapshot.getKey());
-                if (list.contains("" + info.getId())) {
-                    MESSAGE.setVisibility(Button.VISIBLE);
-                    did_not_a.setVisibility(TextView.INVISIBLE);
-                } else {
-                    did_not_a.setVisibility(TextView.VISIBLE);
-                    MESSAGE.setVisibility(Button.INVISIBLE);
+                if(info.getType().equals("student") || info.getType().equals("certificate")) {
+                    if (list.contains("" + info.getId())) {
+                        MESSAGE.setVisibility(Button.VISIBLE);
+                        did_not_a.setVisibility(TextView.INVISIBLE);
+                    } else {
+                        did_not_a.setVisibility(TextView.VISIBLE);
+                        MESSAGE.setVisibility(Button.INVISIBLE);
+
+                    }
+                }else if(info.getType().equals("doctor")){
+                    if (list.contains("" + info.getDoctor_id())) {
+                        MESSAGE.setVisibility(Button.VISIBLE);
+                        did_not_a.setVisibility(TextView.INVISIBLE);
+                    } else {
+                        did_not_a.setVisibility(TextView.VISIBLE);
+                        MESSAGE.setVisibility(Button.INVISIBLE);
+
+                    }
 
                 }
             }
@@ -100,13 +169,24 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 list.remove(dataSnapshot.getKey());
-                if (list.contains("" + info.getId())) {
-                    MESSAGE.setVisibility(Button.VISIBLE);
-                    did_not_a.setVisibility(TextView.INVISIBLE);
-                } else {
-                    MESSAGE.setVisibility(Button.INVISIBLE);
-                    did_not_a.setVisibility(TextView.VISIBLE);
+                if(info.getType().equals("student") || info.getType().equals("certificate")) {
+                    if (list.contains("" + info.getId())) {
+                        MESSAGE.setVisibility(Button.VISIBLE);
+                        did_not_a.setVisibility(TextView.INVISIBLE);
+                    } else {
+                        MESSAGE.setVisibility(Button.INVISIBLE);
+                        did_not_a.setVisibility(TextView.VISIBLE);
+                    }
+                }else if(info.getType().equals("doctor")){
+                    if (list.contains("" + info.getDoctor_id())) {
+                        MESSAGE.setVisibility(Button.VISIBLE);
+                        did_not_a.setVisibility(TextView.INVISIBLE);
+                    } else {
+                        MESSAGE.setVisibility(Button.INVISIBLE);
+                        did_not_a.setVisibility(TextView.VISIBLE);
+                    }
                 }
+
 
             }
 
@@ -124,8 +204,13 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
     }
 
     private void setAcceptSwitch(DatabaseReference reference) {
+        String id = null;
+        if(info.getType().equals("student") || info.getType().equals("certificate"))
+            id=info.getId();
+            else if(info.getType().equals("doctor"))
+                id=info.getDoctor_id();
         final Switch se = findViewById(R.id.accept_switch);
-        reference = reference.child(info.getId() + "").child("acceptable");
+        reference = reference.child(id + "").child("acceptable");
         final List<String> list = new ArrayList<>();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -183,8 +268,10 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
         }
         Iv_name.setText(Name);
         Iv_code.setText(ID);
-        Iv_department.setText(department);
-        Iv_level.setText(level);
+        if(type.equals("student")) {
+            Iv_department.setText(department);
+            Iv_level.setText(level);
+        }
     }
 
     public void getConvertData() {
@@ -218,11 +305,9 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
     private void getCpi() {
         // Get String with retrofit
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setLenient();
-        Gson gson = gsonBuilder.create();
 
-        Retrofit retrofit = new Retrofit.Builder()
+
+     retrofit = new Retrofit.Builder()
 
                 .baseUrl("http://ehab01998.com")
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -266,9 +351,20 @@ public class ShowStudentProfile extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         //Sender
-        String SenderID = info.getId();
-        String SenderName = info.getName();
-        String Senderphoto = "https://ehab01998.com/images_profile/" + info.getPhoto();
+        String SenderID = null,SenderName=null,Senderphoto=null;
+        if(type.equals("student") || info.getType().equals("certificate")) {
+            SenderID = info.getId();
+           SenderName= info.getName();
+            Senderphoto= "https://ehab01998.com/images_profile/" + info.getPhoto();
+
+
+        }else if(type.equals("doctor")){
+            SenderID = info.getId();
+            SenderName=info.getDoctor_name();
+            Senderphoto= "https://ehab01998.com/images_profile/" + info.getDoctor_photo();
+
+        }
+
 
         //Receiver
         String ReceiverID = ID;

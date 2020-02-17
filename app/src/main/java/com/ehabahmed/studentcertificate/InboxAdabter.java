@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -30,17 +31,18 @@ public final class InboxAdabter extends RecyclerView.Adapter<InboxAdabter.InHold
     @NonNull
     @Override
     public InHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
+        CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.inbox_holder, parent, false);
         return new InHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull InHolder holder, int position) {
-        LinearLayout linearLayout = holder.linearLayout;
+        CardView linearLayout = holder.linearLayout;
         TextView title = linearLayout.findViewById(R.id.inbox_title);
         final SendForm sendForm = list.get(position);
-        title.setText((sendForm.getTitle() + ""));
+        String utitle=sendForm.getTitle().substring(0,1).toUpperCase()+sendForm.getTitle().substring(1);
+        title.setText((utitle + ""));
         TextView name = linearLayout.findViewById(R.id.inbox_name);
         name.setText((sendForm.getSender_Name() + ""));
         TextView time = linearLayout.findViewById(R.id.inbox_time);
@@ -49,11 +51,11 @@ public final class InboxAdabter extends RecyclerView.Adapter<InboxAdabter.InHold
         String Photo = sendForm.getSender_image();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Glide.with(context).asBitmap()
-                    .placeholder(R.drawable.iv_profile).circleCrop().load("https://ehab01998.com/images_profile/" + Photo)
+                    .placeholder(R.drawable.iv_profile).circleCrop().load(Photo)
                     .into(receiver_image);
         } else {
             Glide.with(context).asBitmap()
-                    .placeholder(R.drawable.iv_profile).circleCrop().load("http://ehab01998.com/images_profile/" + Photo)
+                    .placeholder(R.drawable.iv_profile).circleCrop().load(Photo)
                     .into(receiver_image);
         }
         linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +78,11 @@ public final class InboxAdabter extends RecyclerView.Adapter<InboxAdabter.InHold
     }
 
     public class InHolder extends RecyclerView.ViewHolder {
-        LinearLayout linearLayout;
+        CardView linearLayout;
 
         public InHolder(@NonNull View itemView) {
             super(itemView);
-            linearLayout = (LinearLayout) itemView;
+            linearLayout = (CardView) itemView;
         }
     }
 }

@@ -11,15 +11,17 @@
 
     <string name="code_student">كود الطالب</string>
     <string name="password">الرقم السري</string>
+
+
     <string name="Members">الاعضاء</string>
-    <string name="Inbox">صندوق الرسائل</string>
+    <string name="Inbox">الرسائل</string>
     <string-array name="departments2">
         <item>ALL</item>
         <item>Cs</item>
 
         <item>IS</item>
         <item>BM</item>
-
+        <item>Professor</item>
     </string-array>
     <string-array name="lans2">
         <item>ALL</item>
@@ -231,6 +233,7 @@
     <string name="sginUpScuccess">تم التسجيل بنجاح</string>
     <string name="nameuser">اسم المستخدم : </string>
     <string name="pass">الباسورد      : </string>
+    <string name="nomessage">لا يوجد رسائل متاحة الان...</string>
     <array name="languages">
         <item>عربي</item>
         <item>انجليزي</item>

@@ -45,8 +45,10 @@ putdata();
         listitems.add(new setting_object(5,getResources().getString(R.string.examp),R.drawable.exams));
         listitems.add(new setting_object(6,getResources().getString(R.string.compition),R.drawable.compition));
         listitems.add(new setting_object(7,getResources().getString(R.string.programs),R.drawable.programs));
-        listitems.add(new setting_object(8,getResources().getString(R.string.map),R.drawable.map));
-        listitems.add(new setting_object(9,getResources().getString(R.string.signout),R.drawable.signout));
+        listitems.add(new setting_object(8,getResources().getString(R.string.Inbox),R.drawable.ic_notifications_active_black_24dp));
+
+        listitems.add(new setting_object(9,getResources().getString(R.string.map),R.drawable.map));
+        listitems.add(new setting_object(10,getResources().getString(R.string.signout),R.drawable.signout));
         DoctorSettingAdapter doctorSettingAdapter=new DoctorSettingAdapter(getContext(),listitems);
         recyclerView.setAdapter(doctorSettingAdapter);
     }

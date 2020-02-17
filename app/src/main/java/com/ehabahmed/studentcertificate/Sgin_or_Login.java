@@ -60,6 +60,7 @@ SharedPreferences sharedPreferences,sharedPreferences1,sharedPreferences2;
     ConstraintLayout makecenter;
     Intent intent;
     View view;
+    Info info;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ SharedPreferences sharedPreferences,sharedPreferences1,sharedPreferences2;
 
 
 
-
+info=(Info)getContext().getApplicationContext();
 
         page_login=view.findViewById(R.id.page_login);
        login1=view.findViewById(R.id.login1);
@@ -207,6 +208,7 @@ switch(v.getId()){
                     editor.putString("username",user);
                     editor.putString("password",pass);
                     editor.putString("type","certificate");
+                    info.setType("certificate");
                     editor.apply();
 
                     getActivity().finish();
@@ -268,6 +270,7 @@ switch(v.getId()){
                     editor.putString("username",user);
                     editor.putString("password",pass);
                     editor.putString("type","doctor");
+                    info.setType("doctor");
                     editor.apply();
 
 
@@ -340,6 +343,7 @@ switch(v.getId()){
                     editor.putString("username",user);
                     editor.putString("password",pass);
                     editor.putString("type","student");
+                    info.setType("student");
                     editor.apply();
 
                     editor1=sharedPreferences1.edit();

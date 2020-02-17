@@ -19,10 +19,11 @@ import java.util.ArrayList;
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.Holder> {
 Context context;
 ArrayList<member> listitems;
-
-    public MemberAdapter(Context context, ArrayList<member> listitems) {
+String type;
+    public MemberAdapter(Context context, ArrayList<member> listitems,String type) {
         this.context = context;
         this.listitems = listitems;
+        this.type=type;
     }
 
     @NonNull
@@ -44,11 +45,13 @@ ArrayList<member> listitems;
                     .into(holder.PersonPhoto);
         }
         holder.PersonName.setText(listitems.get(position).PersonName);
+        if(type.equals("student")){
         holder.department.setText(convertDepartment(listitems.get(position).Personaldepartment));
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(context,ShowStudentProfile.class);
+                intent.putExtra("type",type);
                 intent.putExtra("ID",listitems.get(position).PersonalId);
                 intent.putExtra("Name",listitems.get(position).PersonName);
                 intent.putExtra("Photo",listitems.get(position).PersonalPhoto);
@@ -57,6 +60,23 @@ ArrayList<member> listitems;
                 context.startActivity(intent);
             }
         });
+        }else if(type.equals("doctor")){
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(context,ShowStudentProfile.class);
+                    intent.putExtra("type",type);
+                    intent.putExtra("ID",listitems.get(position).PersonalId);
+                    intent.putExtra("Name",listitems.get(position).PersonName);
+                    intent.putExtra("Photo",listitems.get(position).PersonalPhoto);
+                    context.startActivity(intent);
+
+                }
+            });
+
+
+
+        }
 
     }
 
@@ -90,5 +110,10 @@ ArrayList<member> listitems;
             return data_department[2];
         }
         return null;
+    }
+    public void updateList(ArrayList<member> newList){
+        listitems=new ArrayList<>();
+        listitems.addAll(newList);
+        notifyDataSetChanged();
     }
 }

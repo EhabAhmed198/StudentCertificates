@@ -84,6 +84,9 @@ public interface ApiConfig {
     @GET("GetCPI.php")
     Call<String>getdata(@Query("code") String code);
 
+    @GET("getCPIDoctor.php")
+    Call<String>getDoctordata(@Query("code") String code);
+
 
     @POST("updataData.php")
     @Multipart
@@ -118,8 +121,21 @@ public interface ApiConfig {
     );
 
 @GET("GetMembers.php")
-    Call<ArrayList<member>> getDataMember(@Query("NumberDepartment") String NumberDepartment, @Query("NumberBand") String NumberBand);
+    Call<ArrayList<member>> getDataMember(@Query("NumberDepartment") String NumberDepartment, @Query("NumberBand") String NumberBand,@Query("code") String code) ;
 
 
+@GET("getCountArticles.php")
+    Call<String> getNumArticles();
 
+
+@GET("getStudentGroup.php")
+    Call<ArrayList<DataGroup>> getDataGroup(@Query("code") String code);
+
+@POST("CreateStudentGroup.php")
+@Multipart
+    Call<String> CreateGroup(@Part("group_name") RequestBody name,@Part MultipartBody.Part photo);
+
+
+    @GET("SetMemberGroup.php")
+    Call<String> SetMember(@Query("code") String code,@Query("Group_id") String Group_id,@Query("type") String type,@Query("state") String state);
 }

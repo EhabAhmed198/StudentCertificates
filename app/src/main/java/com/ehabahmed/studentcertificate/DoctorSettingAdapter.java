@@ -95,15 +95,17 @@ Info info;
                    context.startActivity(intent);
 
                    break;
-
-
-               case 10:
+               case 8:
+                   intent=new Intent(context,Inbox.class);
+                   context.startActivity(intent);
+                   break;
+               case 9:
                    intent=new Intent(context,TypeMap.class);
                    context.startActivity(intent);
 
                    break;
 
-               case 9:
+               case 10:
                    editor.putString("type","NoData");
                    editor.apply();
                    sharedPreferences1 = context.getSharedPreferences("doctor", Context.MODE_PRIVATE);

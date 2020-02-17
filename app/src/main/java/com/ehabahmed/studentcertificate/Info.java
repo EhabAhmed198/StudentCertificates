@@ -4,7 +4,7 @@ import android.app.Application;
 
 public class Info extends Application {
     String id,name,pass,photo,level,department,group_name,ghange_level,SMobile="NF",SEmail="NF";
-    String doctor_id,doctor_name,doctor_photo,doctor_password,doctor_mobile,doctor_email;
+    String doctor_id,doctor_name,doctor_photo,doctor_password,doctor_mobile="NF",doctor_email="NF";
 String type;
 
     public String getSMobile() {

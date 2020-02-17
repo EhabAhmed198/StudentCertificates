@@ -29,11 +29,11 @@ public class MessageReader extends AppCompatActivity {
         String Photo = intent.getStringExtra("image");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Glide.with(this).asBitmap()
-                    .placeholder(R.drawable.iv_profile).circleCrop().load("https://ehab01998.com/images_profile/" + Photo)
+                    .placeholder(R.drawable.iv_profile).circleCrop().load(Photo)
                     .into(image);
         } else {
             Glide.with(this).asBitmap()
-                    .placeholder(R.drawable.iv_profile).circleCrop().load("http://ehab01998.com/images_profile/" + Photo)
+                    .placeholder(R.drawable.iv_profile).circleCrop().load( Photo)
                     .into(image);
         }
     }

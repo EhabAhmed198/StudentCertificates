@@ -1,10 +1,13 @@
 package com.ehabahmed.studentcertificate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Members extends AppCompatActivity implements View.OnClickListener {
+public class Members extends AppCompatActivity implements View.OnClickListener , SearchView.OnQueryTextListener{
     Spinner department,band;
     String[] data_department,data_band;
     ArrayAdapter<String> adapter1,adapter2;
@@ -29,12 +32,16 @@ public class Members extends AppCompatActivity implements View.OnClickListener {
     Retrofit retrofit;
     ApiConfig apiConfig;
     ArrayList<member> listitems;
+
     MemberAdapter adapter;
     Button updateList;
+    Info info;
+    String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
+        info=(Info)getApplicationContext();
         department=findViewById(R.id.department);
         MemberList=findViewById(R.id.memberList);
         updateList=findViewById(R.id.updateList);
@@ -58,7 +65,12 @@ setTitle(getResources().getString(R.string.Members));
     }
 
     private void getdata(int numberDepartment, int numberband) {
+        if(info.getType().equals("doctor"))
+            id=info.getDoctor_id();
+        else
+            id=info.getId();
         listitems=new ArrayList<>();
+
         listitems.clear();
         retrofit=new Retrofit.Builder()
                 .baseUrl("http://ehab01998.com")
@@ -66,15 +78,24 @@ setTitle(getResources().getString(R.string.Members));
                 .build();
 
         apiConfig=retrofit.create(ApiConfig.class);
-        apiConfig.getDataMember(String.valueOf(numberDepartment),String.valueOf(numberband)).enqueue(new Callback<ArrayList<member>>() {
+        apiConfig.getDataMember(String.valueOf(numberDepartment),String.valueOf(numberband),id).enqueue(new Callback<ArrayList<member>>() {
             @Override
             public void onResponse(Call<ArrayList<member>> call, Response<ArrayList<member>> response) {
-                if ((NumberDepartment == 0 && Numberband != 0) == false) {
+                if(NumberDepartment==4){
                     listitems = response.body();
-                    adapter = new MemberAdapter(Members.this, listitems);
+                    adapter = new MemberAdapter(Members.this, listitems,"doctor");
                     MemberList.setAdapter(adapter);
 
-                } else {
+                }
+                else if ((NumberDepartment == 0 && Numberband != 0) == false) {
+                    listitems = response.body();
+                    adapter = new MemberAdapter(Members.this, listitems,"student");
+                    MemberList.setAdapter(adapter);
+
+                }
+
+
+                 else {
                     Toast.makeText(Members.this, getResources().getString(R.string.correctchoose), Toast.LENGTH_SHORT).show();
 
                 }
@@ -103,7 +124,8 @@ setTitle(getResources().getString(R.string.Members));
         else   if(department.getSelectedItem().toString().equals(data_department[3])){
 
             NumberDepartment=3;
-        }
+        }else if(department.getSelectedItem().toString().equals(data_department[4]))
+            NumberDepartment=4;
 
 
         if(band.getSelectedItem().toString().equals(data_band[0])){
@@ -134,5 +156,33 @@ setTitle(getResources().getString(R.string.Members));
 
             getdata(NumberDepartment, Numberband);
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.search,menu);
+        MenuItem menuItem=menu.findItem(R.id.action_search);
+        SearchView searchView= (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+    
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        String userInput=newText.toLowerCase();
+        ArrayList<member> newlist=new ArrayList<>();
+        for(member item:listitems){
+            if(item.getPersonName().toLowerCase().contains(userInput)){
+                newlist.add(item);
+            }
+        }
+        adapter.updateList(newlist);
+        return false;
     }
 }

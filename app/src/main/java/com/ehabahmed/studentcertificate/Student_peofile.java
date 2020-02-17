@@ -97,8 +97,7 @@ setTitle(getResources().getString(R.string.profile_name_page));
                 case 0:
                     return new profile_infoStudent();
                 case 1:
-                    return new Pmessage();
-                case 2:
+
                     return new profile_favStudent();
 
             }
@@ -107,7 +106,7 @@ setTitle(getResources().getString(R.string.profile_name_page));
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
 
         }
 
@@ -118,8 +117,7 @@ setTitle(getResources().getString(R.string.profile_name_page));
                 case 0:
                     return getResources().getString(R.string.student_info);
                 case 1:
-                    return getResources().getString(R.string.messages);
-                case 2:
+
                     return getResources().getString(R.string.student_fav);
 
             }

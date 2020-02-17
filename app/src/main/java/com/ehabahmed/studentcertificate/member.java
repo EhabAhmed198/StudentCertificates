@@ -22,11 +22,7 @@ public class member {
         Personallevel = personallevel;
     }
 
-
-
-
-
-
-
-
+    public String getPersonName() {
+        return PersonName;
+    }
 }
