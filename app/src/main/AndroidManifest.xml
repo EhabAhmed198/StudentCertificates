@@ -24,15 +24,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateStudentGroup" android:parentActivityName=".Groups"></activity>
+        <activity
+            android:name=".CreateStudentGroup"
+            android:parentActivityName=".Groups"></activity>
         <activity android:name=".Groups" />
-        <activity android:name=".MessageReader" />
+        <activity android:name=".MessageReader"
+            android:theme="@style/CustomForMessage"/>
         <activity
             android:name=".Send"
             android:label="@string/title_activity_send"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/CustomForMessage" />
         <activity android:name=".Inbox" />
-        <activity android:name=".ShowStudentProfile" />
+        <activity android:name=".ShowStudentProfile"
+            android:theme="@style/CustomForMessage"/>
         <activity android:name=".Members" />
         <activity android:name=".EditYPP" />
         <activity android:name=".Comments" />
@@ -173,10 +177,9 @@
 
         <receiver
             android:name=".StudentBroadcastReceiver"
-            android:exported="false">
+            android:process=":remote">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 
