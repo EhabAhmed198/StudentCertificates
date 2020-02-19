@@ -143,7 +143,7 @@ public interface ApiConfig {
     @GET("ShowStudentGroupPost.php")
     Call<objectPostGroup> getposts(@Query("group_Id") String group_Id);
 
-    http://ehab01998.com
+//    http://ehab01998.com
     @GET("getGroupMember.php")
     Call<ArrayList<member>> getGroupMember(@Query("Group_id") String GroupId) ;
 
