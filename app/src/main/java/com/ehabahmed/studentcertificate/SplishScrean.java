@@ -3,6 +3,8 @@ package com.ehabahmed.studentcertificate;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -84,26 +87,34 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         password = preferences.getString("password", "NoData");
         handler = new Handler(getMainLooper());
         this.context = this;
-
-        setAlarm(this);
-
-
+        setService();
+        Log.e("aaaal", "aaaal");
     }
-    public void setAlarm(Context context){
 
-        // get a Calendar object with current time
-        Calendar cal = Calendar.getInstance();
-        // add 30 seconds to the calendar object
-        cal.add(Calendar.SECOND, 30);
-        Intent intent = new Intent(context, StudentBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        if (am != null) {
-            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void setService() {
+        ServiecesForMessageAndNotification serviecesForMessageAndNotification =
+                new ServiecesForMessageAndNotification();
+        Intent service = new Intent(getApplicationContext(),serviecesForMessageAndNotification.getClass());
+        if (!isMyServiceRun(service.getClass())) {
+            Toast.makeText(this, "tttt", Toast.LENGTH_LONG).show();
+            startService(service);
+            Log.e("aaaal", "aaaal");
         }
+
     }
+
+    private boolean isMyServiceRun(Class<?> service) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo info : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (service.getName().equals(info.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
     private void getStudentNumbersRowNotification() {
 
         new Thread(new Runnable() {
@@ -217,9 +228,6 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         requestQueue.add(jsonObjectRequest);
 
     }
-
-
-
 
 
     private void getDataStudnt() {

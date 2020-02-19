@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".Info"
@@ -28,15 +30,17 @@
             android:name=".CreateStudentGroup"
             android:parentActivityName=".Groups"></activity>
         <activity android:name=".Groups" />
-        <activity android:name=".MessageReader"
-            android:theme="@style/CustomForMessage"/>
+        <activity
+            android:name=".MessageReader"
+            android:theme="@style/CustomForMessage" />
         <activity
             android:name=".Send"
             android:label="@string/title_activity_send"
             android:theme="@style/CustomForMessage" />
         <activity android:name=".Inbox" />
-        <activity android:name=".ShowStudentProfile"
-            android:theme="@style/CustomForMessage"/>
+        <activity
+            android:name=".ShowStudentProfile"
+            android:theme="@style/CustomForMessage" />
         <activity android:name=".Members" />
         <activity android:name=".EditYPP" />
         <activity android:name=".Comments" />
@@ -177,12 +181,16 @@
 
         <receiver
             android:name=".StudentBroadcastReceiver"
-            android:process=":remote">
+            android:enabled="true">
             <intent-filter>
+                <action android:name="ac.in.ActivityRecognition.RestartSensor" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
+        <service
+            android:name=".ServiecesForMessageAndNotification"
+            android:enabled="true"
+            android:exported="false" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
