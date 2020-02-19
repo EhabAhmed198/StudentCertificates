@@ -9,6 +9,24 @@ public class DataGroup {
     String GroupName;
     @SerializedName("group_photo")
     String GroupPhoto;
+    @SerializedName("group_info")
+    String GroupInfo;
+    @SerializedName("type")
+    String type;
+    @SerializedName("NumMember")
+    String NumMember;
+
+    public String getNumMember() {
+        return NumMember;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getGroupInfo() {
+        return GroupInfo;
+    }
 
     public String getGroupId() {
         return GroupId;

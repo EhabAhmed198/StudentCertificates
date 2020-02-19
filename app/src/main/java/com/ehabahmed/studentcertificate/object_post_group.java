@@ -1,6 +1,6 @@
 package com.ehabahmed.studentcertificate;
 
-public class object_post_group{
+public class object_post_group {
 
     String id;
     String text;
@@ -10,7 +10,7 @@ public class object_post_group{
 String data_time;
 
 
-    public object_post_group(String id, String text, String pvf_name, String type, String group_id,String data_time) {
+    public object_post_group(String id, String text, String pvf_name, String type, String group_id, String data_time) {
         this.id = id;
         this.text = text;
         this.pvf_name = pvf_name;

@@ -53,6 +53,9 @@ public class GroupNameAdapter  extends RecyclerView.Adapter<GroupNameAdapter.Hol
                intent.putExtra("GroupId",listitems.get(position).GroupId);
                intent.putExtra("GroupName",listitems.get(position).GroupName);
                intent.putExtra("GroupPhoto",listitems.get(position).GroupPhoto);
+               intent.putExtra("GroupInfo",listitems.get(position).GroupInfo);
+               intent.putExtra("type",listitems.get(position).type);
+               intent.putExtra("NumMember",listitems.get(position).NumMember);
                context.startActivity(intent);
            }
        });

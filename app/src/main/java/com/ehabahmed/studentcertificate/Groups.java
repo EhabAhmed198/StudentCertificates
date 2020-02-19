@@ -52,7 +52,7 @@ String urlPhoto="NF";
     Dialog dialog;
     GsonBuilder builder;
     Gson gson;
-    EditText name;
+    EditText name,infogroup;
     ProgressBar pb_group;
     Button ok,cacell;
     @Override
@@ -122,6 +122,7 @@ String urlPhoto="NF";
             dialog.getWindow().setLayout(ConstraintLayout.LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
        name=dialog.findViewById(R.id.nameGroup);
+       infogroup=dialog.findViewById(R.id.infoGroup);
             TextView tv_uploadPhoto=dialog.findViewById(R.id.tv_uploadPhotoGroup);
           iv_uiploadPhoto=dialog.findViewById(R.id.iv_uploadPhotoGroup);
             tv_uploadPhoto.setOnClickListener(this);
@@ -152,11 +153,18 @@ String urlPhoto="NF";
                 name.setError("Enter Group Name");
             }else if(urlPhoto.equals("NF")){
                 Toast.makeText(info, "Upload photo Group", Toast.LENGTH_SHORT).show();
-            }else{
+            }else if(infogroup.getText().toString().isEmpty()){
+
+                infogroup.setError("Enter Group Information");
+            }else if(infogroup.getText().toString().trim().length()<29){
+                infogroup.setError("Group Information must be at least 30 character");
+            }
+            else{
                 pb_group.setVisibility(View.VISIBLE);
                dialog.dismiss();
                 String groupName=name.getText().toString().trim();
-                createGroup(urlPhoto,groupName);
+                String information=infogroup.getText().toString().trim();
+                createGroup(urlPhoto,groupName,information);
 
             }
 
@@ -180,17 +188,18 @@ String urlPhoto="NF";
 
         }
     }
-    private void createGroup(String urlPhoto,String groupName) {
+    private void createGroup(String urlPhoto,String groupName,String group_info) {
         retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com")
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiConfig=retrofit.create(ApiConfig.class);
         File photo=new File(urlPhoto);
 
         RequestBody name=RequestBody.create(MediaType.parse("multipart/form-data"), groupName);
+        RequestBody info=RequestBody.create(MediaType.parse("multipart/form-data"), group_info);
         RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"), photo);
         MultipartBody.Part multipartBody1 = MultipartBody.Part.createFormData("file", photo.getName(), image);
 
-        apiConfig.CreateGroup(name,multipartBody1).enqueue(new Callback<String>() {
+        apiConfig.CreateGroup(name,info,multipartBody1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String group_id=response.body();

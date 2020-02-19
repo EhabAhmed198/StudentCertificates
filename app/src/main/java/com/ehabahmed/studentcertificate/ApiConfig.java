@@ -133,9 +133,19 @@ public interface ApiConfig {
 
 @POST("CreateStudentGroup.php")
 @Multipart
-    Call<String> CreateGroup(@Part("group_name") RequestBody name,@Part MultipartBody.Part photo);
+    Call<String> CreateGroup(@Part("group_name") RequestBody name,@Part("group_info") RequestBody infogroup,@Part MultipartBody.Part photo);
 
 
     @GET("SetMemberGroup.php")
     Call<String> SetMember(@Query("code") String code,@Query("Group_id") String Group_id,@Query("type") String type,@Query("state") String state);
+
+
+    @GET("ShowStudentGroupPost.php")
+    Call<objectPostGroup> getposts(@Query("group_Id") String group_Id);
+
+    http://ehab01998.com
+    @GET("getGroupMember.php")
+    Call<ArrayList<member>> getGroupMember(@Query("Group_id") String GroupId) ;
+
+
 }

@@ -21,6 +21,20 @@
         android:textColor="#FFF"
 
         />
+    <EditText
+        android:id="@+id/infoGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameGroup"
+    android:background="@drawable/edittextpost"
+        android:layout_margin="20dp"
+        android:hint="Write Goals And Restraction Of Group"
+        android:gravity="center"
+      android:textSize="16dp"
+        android:textColor="#fff"
+        />
     <TextView
         android:id="@+id/tv_uploadPhotoGroup"
         android:layout_width="wrap_content"
@@ -29,7 +43,7 @@
         android:fontFamily="serif-monospace"
         android:textColor="#FFF"
         android:textSize="19sp"
-        app:layout_constraintTop_toBottomOf="@id/nameGroup"
+        app:layout_constraintTop_toBottomOf="@id/infoGroup"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
