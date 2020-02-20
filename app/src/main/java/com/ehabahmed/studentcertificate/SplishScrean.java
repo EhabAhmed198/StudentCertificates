@@ -87,32 +87,23 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         password = preferences.getString("password", "NoData");
         handler = new Handler(getMainLooper());
         this.context = this;
-        setService();
-        Log.e("aaaal", "aaaal");
+        setAlarm(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void setService() {
-        ServiecesForMessageAndNotification serviecesForMessageAndNotification =
-                new ServiecesForMessageAndNotification();
-        Intent service = new Intent(getApplicationContext(),serviecesForMessageAndNotification.getClass());
-        if (!isMyServiceRun(service.getClass())) {
-            Toast.makeText(this, "tttt", Toast.LENGTH_LONG).show();
-            startService(service);
-            Log.e("aaaal", "aaaal");
+    public void setAlarm(Context context) {
+        Calendar cal = Calendar.getInstance();
+        // add 30 seconds to the calendar object
+        cal.add(Calendar.SECOND, 10);
+        Intent intent = new Intent(context, StudentBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Get the AlarmManager service
+        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        if (am != null) {
+            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
         }
-
     }
-
-    private boolean isMyServiceRun(Class<?> service) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo info : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (service.getName().equals(info.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     private void getStudentNumbersRowNotification() {
