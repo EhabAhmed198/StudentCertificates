@@ -44,13 +44,19 @@ import android.widget.VideoView;
 
 
 import com.android.volley.RequestQueue;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     Bundle bundle;
@@ -58,57 +64,57 @@ public class MainActivity extends AppCompatActivity  {
     Handler handler;
     ViewPagerAdapter adapter;
     View view;
-    boolean StateDeletePage=false;
+    boolean StateDeletePage = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestphonepermision();
         tabLayout = findViewById(R.id.tlHome);
-       final ViewPager viewPager = findViewById(R.id.container);
-     adapter=new ViewPagerAdapter(getSupportFragmentManager(),1);
+        final ViewPager viewPager = findViewById(R.id.container);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), 1);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        handler=new Handler();
+        handler = new Handler();
 
 
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == 1) {
+                    if (StateDeletePage == false) {
 
-viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
-    @Override
-    public void onPageSelected(int position) {
-        super.onPageSelected(position);
-   if(position==1){
-if(StateDeletePage==false) {
-
-    viewPager.removeViewAt(0);
-StateDeletePage=true;
-}
+                        viewPager.removeViewAt(0);
+                        StateDeletePage = true;
+                    }
 
 
-   }else if(position==0){
-       if(StateDeletePage==true) {
-           viewPager.setAdapter(adapter);
-  StateDeletePage=false;
-       }
+                } else if (position == 0) {
+                    if (StateDeletePage == true) {
+                        viewPager.setAdapter(adapter);
+                        StateDeletePage = false;
+                    }
 
-   }else if(position==2){
-       if(StateDeletePage==false) {
+                } else if (position == 2) {
+                    if (StateDeletePage == false) {
 
-           viewPager.removeViewAt(0);
-           StateDeletePage=true;
-       }
+                        viewPager.removeViewAt(0);
+                        StateDeletePage = true;
+                    }
 
-   }else if(position==3){
-       if(StateDeletePage==false) {
+                } else if (position == 3) {
+                    if (StateDeletePage == false) {
 
-           viewPager.removeViewAt(0);
-           StateDeletePage=true;
-       }
-   }
+                        viewPager.removeViewAt(0);
+                        StateDeletePage = true;
+                    }
+                }
+            }
+        });
     }
-});
 
-    }
 
 
     private void requestphonepermision() {
@@ -126,24 +132,20 @@ StateDeletePage=true;
     }
 
 
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menustart,menu);
+        getMenuInflater().inflate(R.menu.menustart, menu);
         return super.onCreateOptionsMenu(menu);
 
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.shair_app:
                 shair();
 
-            break;
+                break;
             case R.id.sendSuggestions:
                 sendSuggestions();
                 break;
@@ -160,7 +162,7 @@ StateDeletePage=true;
     }
 
     private void rate_app() {
-        Intent intent=new Intent(Intent.ACTION_VIEW);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
         try {
             intent.setData(Uri.parse("market://details?id=" + getPackageName()));
             startActivity(intent);
@@ -171,15 +173,15 @@ StateDeletePage=true;
     }
 
     private void sendSuggestions() {
-        intent=new Intent(Intent.ACTION_SEND);
-        String into="السلام علكم ورحمتة الله وبركاته"+"\n"+"اقتراحي عن التطبيق هو : ";
+        intent = new Intent(Intent.ACTION_SEND);
+        String into = "السلام علكم ورحمتة الله وبركاته" + "\n" + "اقتراحي عن التطبيق هو : ";
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"ehabahmed01998@gmail.com"});
-        intent.putExtra(Intent.EXTRA_SUBJECT,"Student Certificate");
-        intent.putExtra(Intent.EXTRA_TEXT,into);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ehabahmed01998@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Student Certificate");
+        intent.putExtra(Intent.EXTRA_TEXT, into);
         try {
-            startActivity(Intent.createChooser(intent,"Send Emial"));
-        }catch (Exception e){
+            startActivity(Intent.createChooser(intent, "Send Emial"));
+        } catch (Exception e) {
             Toast.makeText(this, getResources().getString(R.string.nosendprogrem), Toast.LENGTH_SHORT).show();
         }
 
@@ -188,22 +190,21 @@ StateDeletePage=true;
 
     private void shair() {
 
-        String app_address="Student Certificate";
+        String app_address = "Student Certificate";
         String app_link;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-            app_link="https://play.google.com/store/apps/details?id=com.ehabahmed.studentcertificate";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            app_link = "https://play.google.com/store/apps/details?id=com.ehabahmed.studentcertificate";
 
-        }else{
-        app_link="http://play.google.com/store/apps/details?id=com.ehabahmed.studentcertificate";
+        } else {
+            app_link = "http://play.google.com/store/apps/details?id=com.ehabahmed.studentcertificate";
 
         }
 
-    intent=new Intent(Intent.ACTION_SEND);
+        intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT,app_address+"\n"+app_link);
+        intent.putExtra(Intent.EXTRA_TEXT, app_address + "\n" + app_link);
         startActivity(intent);
     }
-
 
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -217,18 +218,18 @@ StateDeletePage=true;
         public Fragment getItem(int position) {
 
 
-switch (position){
-    case 0:
-        return new News();
-    case 1:
-        return new Sgin_or_Login();
-    case 2:
-        return new Vision();
-    case 3:
-        return new Communication();
+            switch (position) {
+                case 0:
+                    return new News();
+                case 1:
+                    return new Sgin_or_Login();
+                case 2:
+                    return new Vision();
+                case 3:
+                    return new Communication();
 
-}
-return null;
+            }
+            return null;
 
         }
 
@@ -240,7 +241,7 @@ return null;
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return getResources().getString(R.string.news);
                 case 1:
@@ -249,7 +250,8 @@ return null;
                     return getResources().getString(R.string.vision);
                 case 3:
                     return getResources().getString(R.string.communication);
-                default: return null;
+                default:
+                    return null;
 
             }
 
@@ -297,8 +299,9 @@ return null;
 
 
                     break;
-            }}
+            }
         }
-
     }
+
+}
 

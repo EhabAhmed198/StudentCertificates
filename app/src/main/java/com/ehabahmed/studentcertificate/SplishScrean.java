@@ -1,5 +1,6 @@
 package com.ehabahmed.studentcertificate;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -31,6 +32,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +95,7 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         handler = new Handler(getMainLooper());
         this.context = this;
         setAlarm(this);
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +111,7 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
             am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
         }
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     private void getStudentNumbersRowNotification() {

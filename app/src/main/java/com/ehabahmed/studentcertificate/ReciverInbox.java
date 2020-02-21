@@ -16,12 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,27 +45,28 @@ public class ReciverInbox extends Fragment {
     TextView noavalible;
     DatabaseReference reference;
     String id;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       View view= inflater.inflate(R.layout.fragment_reciver_inbox, container, false);
+        View view = inflater.inflate(R.layout.fragment_reciver_inbox, container, false);
 
-   info = (Info) getContext().getApplicationContext();
+        info = (Info) getContext().getApplicationContext();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        if(info.getType().equals("student")) {
-            id=info.getId();
+        if (info.getType().equals("student")) {
+            id = info.getId();
 
-        }else if(info.getType().equals("doctor")){
-            id=info.getDoctor_id();
+        } else if (info.getType().equals("doctor")) {
+            id = info.getDoctor_id();
 
-        }else if(info.getType().equals("certificate")){
-            id=info.getId();
+        } else if (info.getType().equals("certificate")) {
+            id = info.getId();
         }
-        reference = database.getReference().child(id).child("receiver");
-        noavalible=view.findViewById(R.id.noavalible);
+        reference = database.getReference().child(id);
+        noavalible = view.findViewById(R.id.noavalible);
         bar = view.findViewById(R.id.B_bar_inbox);
-getData(id);
-       list = new ArrayList<>();
+        getData(id);
+        list = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.Inbox_rec);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -75,10 +80,10 @@ getData(id);
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 bar.setVisibility(ProgressBar.VISIBLE);
                 list.add(dataSnapshot.getValue(SendForm.class));
-                    mAdapter = new InboxAdabter(list, getContext());
-                    recyclerView.setAdapter(mAdapter);
-                    bar.setVisibility(ProgressBar.INVISIBLE);
-                    noavalible.setVisibility(View.INVISIBLE);
+                mAdapter = new InboxAdabter(list, getContext());
+                recyclerView.setAdapter(mAdapter);
+                bar.setVisibility(ProgressBar.INVISIBLE);
+                noavalible.setVisibility(View.INVISIBLE);
 
             }
 
@@ -105,9 +110,20 @@ getData(id);
 
         };
 
-        reference.addChildEventListener(childEventListener);
-
+        reference.child("receiver").addChildEventListener(childEventListener);
+        setNotification();
         return view;
+    }
+
+    private void setNotification() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (task.isSuccessful()) {
+                    reference.child("token").setValue("" + task.getResult().getToken());
+                }
+            }
+        });
     }
 
     private void getData(String id) {
@@ -116,20 +132,20 @@ getData(id);
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                          if(dataSnapshot.hasChildren()){
+                        if (dataSnapshot.hasChildren()) {
 
-                              noavalible.setVisibility(View.INVISIBLE);
+                            noavalible.setVisibility(View.INVISIBLE);
 
 
-                          }else{
-                              noavalible.setVisibility(View.VISIBLE);
-                              bar.setVisibility(View.INVISIBLE);
-                          }
+                        } else {
+                            noavalible.setVisibility(View.VISIBLE);
+                            bar.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(info, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(info, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });

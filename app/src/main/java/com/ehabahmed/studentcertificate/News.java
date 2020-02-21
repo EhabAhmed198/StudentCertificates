@@ -33,6 +33,12 @@ import com.android.volley.toolbox.Volley;
 
 import com.ehabahmed.studentcertificate.database.AppDatabase;
 import com.ehabahmed.studentcertificate.database.NewsEntity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.krishna.fileloader.FileLoader;
 import com.krishna.fileloader.listener.FileRequestListener;
 import com.krishna.fileloader.pojo.FileResponse;
@@ -52,44 +58,46 @@ import java.util.List;
 public class News extends Fragment {
     RecyclerView recyclerView;
     ArrayList<object_News> listitems;
-    String url ;
+    String url;
     TextView nonew;
     RequestQueue requestQueue;
     NewsAdapter adapter;
     LinearLayoutManager linearLayoutManager;
-    boolean inscrolling=false;
-    int current,out,total;
-    int userpage=1;
+    boolean inscrolling = false;
+    int current, out, total;
+    int userpage = 1;
     ProgressBar progressBar;
-String protocal;
+    String protocal;
     String ivname;
-    String type="online";
+    String type = "online";
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-       view = inflater.inflate(R.layout.fragment_news, container, false);
+        view = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerView = view.findViewById(R.id.recycleview);
-        nonew=view.findViewById(R.id.nonew);
+        nonew = view.findViewById(R.id.nonew);
         nonew.setVisibility(View.INVISIBLE);
         requestQueue = Volley.newRequestQueue(getContext());
-        linearLayoutManager=new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         listitems = new ArrayList<object_News>();
         recyclerView.getRecycledViewPool().setMaxRecycledViews(R.id.vv_new, 0);
 
-        progressBar=view.findViewById(R.id.progressbar);
+        progressBar = view.findViewById(R.id.progressbar);
         progressBar.setVisibility(View.INVISIBLE);
-    adapter = new NewsAdapter(getContext(), listitems,0,3,true);
-recyclerView.setAdapter(adapter);
+        adapter = new NewsAdapter(getContext(), listitems, 0, 3, true);
+        recyclerView.setAdapter(adapter);
         getdata(userpage);
 
-    loadonline();
+        loadonline();
         return view;
     }
+
 
 
 
@@ -98,8 +106,8 @@ recyclerView.setAdapter(adapter);
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState== AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    inscrolling=true;
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    inscrolling = true;
 
 
             }
@@ -107,14 +115,14 @@ recyclerView.setAdapter(adapter);
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                current=linearLayoutManager.getChildCount();
-                out=linearLayoutManager.findFirstVisibleItemPosition();
-                total=linearLayoutManager.getItemCount();
-                if(inscrolling && (current+out)==total){
-                    inscrolling=false;
+                current = linearLayoutManager.getChildCount();
+                out = linearLayoutManager.findFirstVisibleItemPosition();
+                total = linearLayoutManager.getItemCount();
+                if (inscrolling && (current + out) == total) {
+                    inscrolling = false;
                     userpage++;
-                 if(type.equals("online"))
-                    getdata(userpage);
+                    if (type.equals("online"))
+                        getdata(userpage);
                 }
             }
         });
@@ -125,12 +133,12 @@ recyclerView.setAdapter(adapter);
         progressBar.setVisibility(View.VISIBLE);
         String url;
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-            url = "https://ehab01998.com/ShowNewsArray.php?page="+userpage;
-            protocal="https://";
-        }else{
-            url = "http://ehab01998.com/ShowNewsArray.php?page="+userpage;
-            protocal="http://";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            url = "https://ehab01998.com/ShowNewsArray.php?page=" + userpage;
+            protocal = "https://";
+        } else {
+            url = "http://ehab01998.com/ShowNewsArray.php?page=" + userpage;
+            protocal = "http://";
 
         }
 
@@ -151,7 +159,7 @@ recyclerView.setAdapter(adapter);
                         String news_ivname = object.getString("news_ivname");
                         String news_type = object.getString("news_type");
                         String data_time = object.getString("data_time");
-                      ivname=protocal+news_ivname;
+                        ivname = protocal + news_ivname;
 
                         listitems.add(new object_News(news_id, news_text, news_detals, ivname, news_type, data_time));
                     }
@@ -162,35 +170,38 @@ recyclerView.setAdapter(adapter);
 
                             final AppDatabase appDatabase = AppDatabase.getInstance(getContext());
                             appDatabase.taskDao().deleteNews();
-          for (int i = 0;  i <Math.min(listitems.size(),8) ; i++) {
+                            for (int i = 0; i < Math.min(listitems.size(), 8); i++) {
 
 
                                 final int finalI1 = i;
 
-                            if(!listitems.get(i).news_type.equals("none")){
-                               try{
-                                FileLoader.with(getContext())
-                                        .load(listitems.get(i).news_ivname).fromDirectory("StudentCertificate/image", FileLoader.DIR_EXTERNAL_PUBLIC)
-                                        .asFile(new FileRequestListener<File>() {
-                                            @Override
-                                            public void onLoad(FileLoadRequest request, FileResponse<File> response) {
-                                                File file = response.getBody();
+                                if (!listitems.get(i).news_type.equals("none")) {
+                                    try {
+                                        FileLoader.with(getContext())
+                                                .load(listitems.get(i).news_ivname).fromDirectory("StudentCertificate/image", FileLoader.DIR_EXTERNAL_PUBLIC)
+                                                .asFile(new FileRequestListener<File>() {
+                                                    @Override
+                                                    public void onLoad(FileLoadRequest request, FileResponse<File> response) {
+                                                        File file = response.getBody();
 
 
-                                                load(file.getAbsolutePath(), finalI1, appDatabase, listitems);
+                                                        load(file.getAbsolutePath(), finalI1, appDatabase, listitems);
 
 
-                                            }
+                                                    }
 
 
-                                            @Override
-                                            public void onError(FileLoadRequest request, Throwable t) {
+                                                    @Override
+                                                    public void onError(FileLoadRequest request, Throwable t) {
 
-                                            }
-                                        });}catch (Exception e){}}else{
-                                load("none", finalI1, appDatabase, listitems);
+                                                    }
+                                                });
+                                    } catch (Exception e) {
+                                    }
+                                } else {
+                                    load("none", finalI1, appDatabase, listitems);
 
-                            }
+                                }
 
 
                             }
@@ -198,7 +209,6 @@ recyclerView.setAdapter(adapter);
 
                         }
                     }.start();
-
 
 
                     adapter.notifyDataSetChanged();
@@ -213,7 +223,8 @@ recyclerView.setAdapter(adapter);
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                type="offline";
+                Toast.makeText(getContext(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                type = "offline";
                 nonew.setVisibility(View.VISIBLE);
                 try {
 
@@ -226,7 +237,7 @@ recyclerView.setAdapter(adapter);
                             try {
                                 final List<NewsEntity> list = AppDatabase.getInstance(getContext()).taskDao().getAllNews();
 
-                                for (int i = (list.size()-1); i >=0; i--) {
+                                for (int i = (list.size() - 1); i >= 0; i--) {
                                     NewsEntity entity = list.get(i);
                                     object_news.add(new object_News(entity.getId(),
                                             entity.getNews_text(), entity.getNews_detals(),
@@ -239,14 +250,15 @@ recyclerView.setAdapter(adapter);
                                     public void run() {
 
 
-                                        adapter = new NewsAdapter(getContext(), object_news, 0, 3,true);
+                                        adapter = new NewsAdapter(getContext(), object_news, 0, 3, true);
                                         recyclerView.setAdapter(adapter);
-                                        if(object_news.size()!=0)
-                                        nonew.setVisibility(View.INVISIBLE);
+                                        if (object_news.size() != 0)
+                                            nonew.setVisibility(View.INVISIBLE);
                                         progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 });
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
 
                         }
                     }.start();
@@ -260,27 +272,18 @@ recyclerView.setAdapter(adapter);
 
     }
 
-    private  void load(final String paths, final int i, final AppDatabase appDatabase, final ArrayList<object_News> listitems) {
+    private void load(final String paths, final int i, final AppDatabase appDatabase, final ArrayList<object_News> listitems) {
 
-new Thread(){
-    @Override
-    public void run() {
-        super.run();
-        object_News object_news = listitems.get(i);
-        appDatabase.taskDao().insertNews(new NewsEntity(object_news.news_id,object_news.news_text,
-                object_news.news_detals,
-                paths, object_news.news_type, object_news.data_time));
-    }
-}.start();
-
-
-
-
-
-
-
-
-
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                object_News object_news = listitems.get(i);
+                appDatabase.taskDao().insertNews(new NewsEntity(object_news.news_id, object_news.news_text,
+                        object_news.news_detals,
+                        paths, object_news.news_type, object_news.data_time));
+            }
+        }.start();
 
 
     }

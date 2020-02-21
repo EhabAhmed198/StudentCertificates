@@ -9,13 +9,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,14 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,8 +25,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,7 +41,6 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
     PendingIntent pendingIntent;
     String id, name, pass, photo, level, department;
     Intent intent;
-    private long numberOfMessage;
 
     private boolean isConnected() {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -101,7 +85,6 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                 }
             });
         }
-        Log.e("idOfU", "" + id);
         setAlarm(context);
     }
 
@@ -112,7 +95,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context, StudentBroadcastReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (am != null) {
             am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
         }
