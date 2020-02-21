@@ -5,14 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardUseCompatPadding="true"
-    android:layout_margin="6dp">
+    android:layout_margin="3dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/PersonPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/profile2"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Ehab Ahmed"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:fontFamily="monospace"
             android:textStyle="bold"
             android:textColor="#000"
@@ -37,10 +37,10 @@
             app:layout_constraintStart_toEndOf="@id/PersonPhoto"
             app:layout_constraintTop_toBottomOf="@id/PersonName"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Cs"
-            android:textSize="18sp"
-
+           android:text="Cs"
+            android:textSize="15sp"
             />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

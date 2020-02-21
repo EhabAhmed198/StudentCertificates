@@ -101,7 +101,6 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                 }
             });
         }
-        Toast.makeText(this.context, "sdsd", Toast.LENGTH_LONG).show();
         Log.e("idOfU", "" + id);
         setAlarm(context);
     }

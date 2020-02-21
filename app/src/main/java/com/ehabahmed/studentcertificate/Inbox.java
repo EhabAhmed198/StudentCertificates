@@ -58,6 +58,8 @@ Handler handler;
     @Override
     public void onClick(View v) {
         Intent intent=new Intent(Inbox.this,Members.class);
+        intent.putExtra("invite","NoInvite");
+
         startActivity(intent);
     }
 

@@ -16,31 +16,24 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.Holder> {
-Context context;
-ArrayList<member> listitems;
-String type,checkInvite;
-    public MemberAdapter(Context context, ArrayList<member> listitems,String type,String checkInvite) {
+public class MemberGroupAdapter extends RecyclerView.Adapter<MemberGroupAdapter.Holder> {
+    Context context;
+    ArrayList<member> listitems;
+    public MemberGroupAdapter(Context context, ArrayList<member> listitems) {
         this.context = context;
         this.listitems = listitems;
-        this.type=type;
-        this.checkInvite=checkInvite;
+
     }
+
 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(checkInvite.equals("invite"))
         return new Holder(LayoutInflater.from(context).inflate(R.layout.member,parent,false));
-        else if(checkInvite.equals("NoInvite"))
-            return new Holder(LayoutInflater.from(context).inflate(R.layout.member,parent,false));
-        return null;
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
-        holder.setIsRecyclable(false);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
             Glide.with(context).asBitmap()
                     .placeholder(R.drawable.profile2).circleCrop().load("https://ehab01998.com/images_profile/"+listitems.get(position).PersonalPhoto)
@@ -51,27 +44,27 @@ String type,checkInvite;
                     .into(holder.PersonPhoto);
         }
         holder.PersonName.setText(listitems.get(position).PersonName);
-        if(type.equals("student")){
-        holder.department.setText(convertDepartment(listitems.get(position).Personaldepartment));
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context,ShowStudentProfile.class);
-                intent.putExtra("type",type);
-                intent.putExtra("ID",listitems.get(position).PersonalId);
-                intent.putExtra("Name",listitems.get(position).PersonName);
-                intent.putExtra("Photo",listitems.get(position).PersonalPhoto);
-                intent.putExtra("department",listitems.get(position).Personaldepartment);
-                intent.putExtra("level",listitems.get(position).Personallevel);
-                context.startActivity(intent);
-            }
-        });
-        }else if(type.equals("doctor")){
+
+        if(!listitems.get(position).getPersonName().startsWith("Dr")){
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(context,ShowStudentProfile.class);
-                    intent.putExtra("type",type);
+                    intent.putExtra("type","student");
+                    intent.putExtra("ID",listitems.get(position).PersonalId);
+                    intent.putExtra("Name",listitems.get(position).PersonName);
+                    intent.putExtra("Photo",listitems.get(position).PersonalPhoto);
+                    intent.putExtra("department",listitems.get(position).Personaldepartment);
+                    intent.putExtra("level",listitems.get(position).Personallevel);
+                    context.startActivity(intent);
+                }
+            });
+        }else if(listitems.get(position).getPersonName().startsWith("Dr")){
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(context,ShowStudentProfile.class);
+                    intent.putExtra("type","doctor");
                     intent.putExtra("ID",listitems.get(position).PersonalId);
                     intent.putExtra("Name",listitems.get(position).PersonName);
                     intent.putExtra("Photo",listitems.get(position).PersonalPhoto);
@@ -82,10 +75,7 @@ String type,checkInvite;
 
 
 
-        }
-        if(checkInvite.equals("invite")){}
-
-    }
+        }}
 
     @Override
     public int getItemCount() {
@@ -95,32 +85,13 @@ String type,checkInvite;
     class Holder extends RecyclerView.ViewHolder{
         ImageView PersonPhoto;
         TextView PersonName;
-        TextView department;
         View view;
         public Holder(@NonNull View itemView) {
             super(itemView);
             PersonPhoto=itemView.findViewById(R.id.PersonPhoto);
             PersonName=itemView.findViewById(R.id.PersonName);
-            department=itemView.findViewById(R.id.department);
             this.view=itemView;
-        }
-    }
-    String convertDepartment(String department){
-      String  data_department[]=context.getResources().getStringArray(R.array.departments);
-        int id=Integer.parseInt(department);
-        if(id==1){
-            return data_department[0];
-        }else if(id==2){
-            return data_department[1];
 
-        } else if(id==3){
-            return data_department[2];
         }
-        return null;
-    }
-    public void updateList(ArrayList<member> newList){
-        listitems=new ArrayList<>();
-        listitems.addAll(newList);
-        notifyDataSetChanged();
     }
 }

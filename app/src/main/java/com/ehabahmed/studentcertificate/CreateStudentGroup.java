@@ -330,5 +330,13 @@ Container2.setOnClickListener(new View.OnClickListener() {
 
     }
 });
+invite.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(CreateStudentGroup.this,Members.class);
+        intent.putExtra("invite","invite");
+        startActivity(intent);
+    }
+});
     }
 }

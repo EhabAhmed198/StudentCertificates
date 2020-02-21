@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,11 +37,14 @@ public class Members extends AppCompatActivity implements View.OnClickListener ,
     MemberAdapter adapter;
     Button updateList;
     Info info;
-    String id;
+    String id,invite;
+ProgressBar pb_member;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
+        pb_member=findViewById(R.id.pb_member);
+        invite=getIntent().getExtras().getString("invite");
         info=(Info)getApplicationContext();
         department=findViewById(R.id.department);
         MemberList=findViewById(R.id.memberList);
@@ -81,15 +85,16 @@ setTitle(getResources().getString(R.string.Members));
         apiConfig.getDataMember(String.valueOf(numberDepartment),String.valueOf(numberband),id).enqueue(new Callback<ArrayList<member>>() {
             @Override
             public void onResponse(Call<ArrayList<member>> call, Response<ArrayList<member>> response) {
+                pb_member.setVisibility(View.INVISIBLE);
                 if(NumberDepartment==4){
                     listitems = response.body();
-                    adapter = new MemberAdapter(Members.this, listitems,"doctor");
+                    adapter = new MemberAdapter(Members.this, listitems,"doctor",invite);
                     MemberList.setAdapter(adapter);
 
                 }
                 else if ((NumberDepartment == 0 && Numberband != 0) == false) {
                     listitems = response.body();
-                    adapter = new MemberAdapter(Members.this, listitems,"student");
+                    adapter = new MemberAdapter(Members.this, listitems,"student",invite);
                     MemberList.setAdapter(adapter);
 
                 }
@@ -152,8 +157,9 @@ setTitle(getResources().getString(R.string.Members));
 
     @Override
     public void onClick(View v) {
-        getConvertSpinnerData();
+        pb_member.setVisibility(View.VISIBLE);
 
+        getConvertSpinnerData();
             getdata(NumberDepartment, Numberband);
 
     }
