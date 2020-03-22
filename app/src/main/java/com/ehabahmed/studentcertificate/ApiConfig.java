@@ -48,6 +48,21 @@ public interface ApiConfig {
     uploadtextnew(@Part("news_text") RequestBody name,@Part("news_type") RequestBody type, @Part("file") RequestBody noth);
 
 
+
+    @POST("uploadPostSGroup.php")
+    @Multipart
+    Call<ResponseBody>
+    uploadtextPostGroup(@Part("post_text") RequestBody name,@Part("post_type") RequestBody type,@Part("group_Id") RequestBody groupId,@Part("code") RequestBody code,@Part("file") RequestBody noth);
+
+
+    @POST("uploadPostSGroup.php")
+    @Multipart
+    Call<ResponseBody>
+    uploadPostSGroup(@Part("post_text") RequestBody name,@Part("post_type") RequestBody type,@Part("group_Id") RequestBody groupId,@Part("code") RequestBody code, @Part MultipartBody.Part file);
+
+
+
+
 @POST("GraduationCertificate.php")
     @Multipart
     Call<ResponseBody>
@@ -123,6 +138,9 @@ public interface ApiConfig {
 @GET("GetMembers.php")
     Call<ArrayList<member>> getDataMember(@Query("NumberDepartment") String NumberDepartment, @Query("NumberBand") String NumberBand,@Query("code") String code) ;
 
+@GET("getMemberToAddGroup.php")
+Call<ArrayList<member>> getDataMemberGroup(@Query("NumberDepartment") String NumberDepartment, @Query("NumberBand") String NumberBand,@Query("code") String code,@Query("Group_id") String Group_ID) ;
+
 
 @GET("getCountArticles.php")
     Call<String> getNumArticles();
@@ -141,11 +159,40 @@ public interface ApiConfig {
 
 
     @GET("ShowStudentGroupPost.php")
-    Call<objectPostGroup> getposts(@Query("group_Id") String group_Id);
+    Call<ArrayList<objectPostGroup>> getposts(@Query("group_Id") String group_Id);
 
 
     @GET("getGroupMember.php")
     Call<ArrayList<member>> getGroupMember(@Query("Group_id") String GroupId) ;
 
 
+    @GET("checkExitMember.php")
+    Call<ArrayList<NewGroupAdd>> checkIfAdd(@Query("code") String code);
+
+   // http://ehab01998.com/?Id=72&state=YES
+
+    @GET("changeStudentStateGroup.php")
+    Call<String> changeState(@Query("Id") String IdExsitGroup,@Query("state") String state);
+
+
+
+    @GET("getStateWaitStudentGroup.php")
+    Call<ArrayList<NewGroupAdd>> getWaitStateStudentGroup(@Query("code") String code);
+//http://ehab01998.com/?=ehab&=uy.jpg&=616006&=1
+    @GET("addLikePostGroup.php")
+    Call<String> addLikeStudentGroup(@Query("name") String name,@Query("photo") String photo,@Query("code") String code,@Query("postid") String postid);
+
+
+    @GET("checkcolorLike.php")
+    Call<String> checkColorLikeButton(@Query("code") String code,@Query("postid") String postid);
+// http://ehab01998.com/?postid=15
+
+
+    @GET("getNumberLikeInGroup.php")
+    Call<String> getNumberLike(@Query("postid") String postid);
+
+
+
+    @GET("getMemberLikeInGroup.php")
+    Call<ArrayList<member>> getMemberLike(@Query("postid") String postid);
 }

@@ -1,10 +1,15 @@
 package com.ehabahmed.studentcertificate;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 
 public class Result_Student extends AppCompatActivity implements View.OnClickListener {
@@ -30,10 +36,20 @@ RequestQueue requestQueue;
 Button senddata;
 Info info;
     String pass,user;
+    SharedPreferences sharedPreferences;
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private  BiometricPrompt.PromptInfo promptInfo;
+    SharedPreferences resultlock;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result__student);
+        resultlock=getSharedPreferences("fingreprint", Context.MODE_PRIVATE);;
+        if( resultlock.getBoolean("resultlock",false)){
+            fingreprint();
+
+        }
 requestQueue= Volley.newRequestQueue(Result_Student.this);
 username=findViewById(R.id.enterusername);
 password=findViewById(R.id.enterpass);
@@ -100,5 +116,36 @@ info=(Info) getApplicationContext();
             }
         };
         requestQueue.add(request);
+    }
+    void fingreprint(){
+        executor= ContextCompat.getMainExecutor(this);
+        biometricPrompt=new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                if(errString.toString().contains("No")){}else{
+                    onBackPressed();
+                }
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+        promptInfo=new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Confirm fingerprint")
+                .setSubtitle("Touch the fingerprint sensor")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
     }
 }

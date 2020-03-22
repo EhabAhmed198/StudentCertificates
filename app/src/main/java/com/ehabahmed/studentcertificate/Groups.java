@@ -3,14 +3,19 @@ package com.ehabahmed.studentcertificate;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -28,6 +33,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -39,12 +45,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Groups extends AppCompatActivity implements View.OnClickListener {
-RecyclerView groupNames,groupPosts;
+RecyclerView groupNames,groupWiat;
 LinearLayoutManager vertical,horzental;
 Retrofit retrofit;
 ApiConfig apiConfig;
 GroupNameAdapter adapter;
+GroupWaitAdapter waitAdapter;
 ArrayList<DataGroup> listitems;
+ArrayList<NewGroupAdd> listitemGroupWait;
 Info info;
 String id;
 String urlPhoto="NF";
@@ -55,10 +63,25 @@ String urlPhoto="NF";
     EditText name,infogroup;
     ProgressBar pb_group;
     Button ok,cacell;
+    String AddGroupFromNotification="NO",changeStateId;
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private  BiometricPrompt.PromptInfo promptInfo;
+    SharedPreferences grouplock;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
+        grouplock=getSharedPreferences("fingreprint", Context.MODE_PRIVATE);;
+        if( grouplock.getBoolean("grouplock",false)){
+            fingreprint();
+
+        }
+        builder=new GsonBuilder();
+        builder.setLenient();
+        gson=builder.create();
+
+
         pb_group=findViewById(R.id.pb_group);
         info=(Info)getApplicationContext();
         if(info.getType().equals("student")){
@@ -67,26 +90,50 @@ String urlPhoto="NF";
         else    if(info.getType().equals("doctor")){
             id=info.getDoctor_id();
         }
-        builder=new GsonBuilder();
-        builder.setLenient();
-        gson=builder.create();
+
         groupNames=findViewById(R.id.rv_groupsName);
-        groupPosts=findViewById(R.id.rv_groupsNotification);
+        groupWiat=findViewById(R.id.rv_groupsNotification);
         horzental=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         vertical=new LinearLayoutManager(this);
         groupNames.setLayoutManager(horzental);
-        groupPosts.setLayoutManager(vertical);
+        groupWiat.setLayoutManager(vertical);
         listitems=new ArrayList<>();
-        getGroups();
+        retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        apiConfig=retrofit.create(ApiConfig.class);
+        getGroupsWait();
+       getGroups();
 
 
 
 
     }
 
+    private void getGroupsWait() {
+        apiConfig.getWaitStateStudentGroup(id).enqueue(new Callback<ArrayList<NewGroupAdd>>() {
+            @Override
+            public void onResponse(Call<ArrayList<NewGroupAdd>> call, Response<ArrayList<NewGroupAdd>> response) {
+                listitemGroupWait=response.body();
+                waitAdapter=new GroupWaitAdapter(Groups.this,listitemGroupWait);
+                groupWiat.setAdapter(waitAdapter);
+                pb_group.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<NewGroupAdd>> call, Throwable t) {
+                Toast.makeText(info, t.getMessage(), Toast.LENGTH_SHORT).show();
+                pb_group.setVisibility(View.INVISIBLE);
+
+
+            }
+        });
+    }
+
     private void getGroups() {
-        retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com").addConverterFactory(GsonConverterFactory.create())
-                .build();
+        retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com")
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiConfig=retrofit.create(ApiConfig.class);
         apiConfig.getDataGroup(id).enqueue(new Callback<ArrayList<DataGroup>>() {
             @Override
@@ -216,9 +263,6 @@ String urlPhoto="NF";
     }
 
     private void SetMember(String code,String group_id,String type,String state) {
-        retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com")
-                .addConverterFactory(GsonConverterFactory.create(gson)).build();
-        apiConfig=retrofit.create(ApiConfig.class);
         apiConfig.SetMember(code,group_id,type,state).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -238,6 +282,51 @@ String urlPhoto="NF";
             }
         });
 
+
+    }
+    void changeStateStudentGroup(String changeState){
+        apiConfig.changeState(changeState, "YES").enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Toast.makeText(Groups.this, "ok   "+id, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(Groups.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    void fingreprint(){
+        executor= ContextCompat.getMainExecutor(this);
+        biometricPrompt=new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                if(errString.toString().contains("No")){}else{
+                   onBackPressed();
+                }
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+        promptInfo=new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Confirm fingerprint")
+                .setSubtitle("Touch the fingerprint sensor")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
 
     }
 }

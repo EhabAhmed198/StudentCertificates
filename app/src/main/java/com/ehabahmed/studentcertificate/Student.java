@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -41,7 +44,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
+import okhttp3.internal.Version;
 
 
 public class Student extends AppCompatActivity  {
@@ -60,7 +65,11 @@ public class Student extends AppCompatActivity  {
     String Notificationsplish;
     Intent intent;
     boolean StateDeletePage=false;
-
+    SharedPreferences applock,opensplish;
+    SharedPreferences.Editor eopensplish;
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private  BiometricPrompt.PromptInfo promptInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +90,18 @@ public class Student extends AppCompatActivity  {
         studuentInfo.setLevel(getIntent().getExtras().getString("level"));
         handler=new Handler();
 
+        applock=getSharedPreferences("fingreprint", Context.MODE_PRIVATE);;
+        opensplish=getSharedPreferences("splish",Context.MODE_PRIVATE);
 
+        if(opensplish.getBoolean("splish",false) && applock.getBoolean("applock",false)){
+            fingreprint();
+            eopensplish=opensplish.edit();
+            eopensplish.putBoolean("splish",false);
+            eopensplish.apply();
+        }
 
         pager.setAdapter(adapter);
+
         tabLayout.setupWithViewPager(pager);
 
 
@@ -619,5 +637,36 @@ public class Student extends AppCompatActivity  {
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT,app_address+"\n"+app_link);
         startActivity(intent);
+    }
+    void fingreprint(){
+        executor= ContextCompat.getMainExecutor(this);
+        biometricPrompt=new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                if(errString.toString().contains("No")){}else{
+                    finish();
+                }
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+        promptInfo=new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Confirm fingerprint")
+                .setSubtitle("Touch the fingerprint sensor")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
     }
 }

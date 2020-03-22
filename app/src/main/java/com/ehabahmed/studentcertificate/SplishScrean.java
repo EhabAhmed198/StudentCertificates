@@ -2,20 +2,27 @@ package com.ehabahmed.studentcertificate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -46,6 +53,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -65,19 +73,22 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
     Thread thread;
     Info info;
     JSONArray jsonArray;
-    JSONObject current;
-
+    SharedPreferences opensplish;
+    SharedPreferences.Editor eopensplish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splish_screan);
-        update();
+
         info = (Info) getApplicationContext();
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         sharedPreferences2 = getSharedPreferences("Notification", Context.MODE_PRIVATE);
-
+       opensplish=getSharedPreferences("splish",Context.MODE_PRIVATE);
+       eopensplish=opensplish.edit();
+       eopensplish.putBoolean("splish",true);
+       eopensplish.apply();
         requestQueue = Volley.newRequestQueue(this);
-
+        update();
 
         welcome = findViewById(R.id.welcome);
 
@@ -94,24 +105,21 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         password = preferences.getString("password", "NoData");
         handler = new Handler(getMainLooper());
         this.context = this;
-        setAlarm(this);
+        Intent serviceIntent = new Intent(this, StudentBroadcastReceiver.class);
+        serviceIntent.putExtra("inputExtra", "Welcome In Student Certificate...");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent);
+        }else{
+            ContextCompat.startForegroundService(this,serviceIntent);
+        }
+
 
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void setAlarm(Context context) {
-        Calendar cal = Calendar.getInstance();
-        // add 30 seconds to the calendar object
-        cal.add(Calendar.SECOND, 10);
-        Intent intent = new Intent(context, StudentBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        if (am != null) {
-            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
-        }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////private
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     private void getStudentNumbersRowNotification() {

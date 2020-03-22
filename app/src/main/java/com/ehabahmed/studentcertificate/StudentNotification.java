@@ -40,7 +40,6 @@ public final class StudentNotification  {
                         .setAutoCancel(true);
 
                     notification.setPriority(NotificationCompat.PRIORITY_HIGH);
-
                 notificationManager.notify(NOTIFICATION_ID, notification.build());
 
             }

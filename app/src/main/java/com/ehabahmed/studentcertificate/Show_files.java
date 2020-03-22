@@ -58,7 +58,7 @@ ProgressBar progressBar;
 
                     @Override
                     public void onError(FileLoadRequest request, Throwable t) {
-                        Toast.makeText(Show_files.this, getResources().getString(R.string.no_communcationInternet), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Show_files.this, t.getMessage()+" "+getResources().getString(R.string.no_communcationInternet), Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
                 });

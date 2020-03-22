@@ -6,7 +6,9 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +22,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.Holder> {
 Context context;
 ArrayList<member> listitems;
 String type,checkInvite;
+Sendinvite sendinvite;
+ArrayList<String> list=new ArrayList<>();
     public MemberAdapter(Context context, ArrayList<member> listitems,String type,String checkInvite) {
         this.context = context;
         this.listitems = listitems;
         this.type=type;
         this.checkInvite=checkInvite;
+        if(context instanceof Sendinvite){
+            sendinvite= (Sendinvite) context;
+        }
     }
 
     @NonNull
@@ -33,13 +40,13 @@ String type,checkInvite;
         if(checkInvite.equals("invite"))
         return new Holder(LayoutInflater.from(context).inflate(R.layout.member,parent,false));
         else if(checkInvite.equals("NoInvite"))
-            return new Holder(LayoutInflater.from(context).inflate(R.layout.member,parent,false));
+            return new Holder(LayoutInflater.from(context).inflate(R.layout.member2,parent,false));
         return null;
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, final int position) {
+    public void onBindViewHolder(@NonNull final Holder holder, final int position) {
         holder.setIsRecyclable(false);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
             Glide.with(context).asBitmap()
@@ -83,7 +90,20 @@ String type,checkInvite;
 
 
         }
-        if(checkInvite.equals("invite")){}
+        if(checkInvite.equals("invite") && sendinvite!=null){
+            if(list.contains(listitems.get(position).PersonalId)){
+                holder.send.setVisibility(View.INVISIBLE);
+            }
+            holder.send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                      list.add(listitems.get(position).PersonalId);
+                    sendinvite.invite(holder.pb_send,holder.send,holder.correct,listitems.get(position).PersonalId);
+
+                }
+            });
+
+        }
 
     }
 
@@ -97,13 +117,21 @@ String type,checkInvite;
         TextView PersonName;
         TextView department;
         View view;
+        ProgressBar pb_send;
+        Button send;
+        ImageView correct;
         public Holder(@NonNull View itemView) {
             super(itemView);
             PersonPhoto=itemView.findViewById(R.id.PersonPhoto);
             PersonName=itemView.findViewById(R.id.PersonName);
             department=itemView.findViewById(R.id.department);
             this.view=itemView;
+            pb_send=itemView.findViewById(R.id.pb_send);
+            send=itemView.findViewById(R.id.send);
+            correct=itemView.findViewById(R.id.correct);
+
         }
+
     }
     String convertDepartment(String department){
       String  data_department[]=context.getResources().getStringArray(R.array.departments);
@@ -122,5 +150,9 @@ String type,checkInvite;
         listitems=new ArrayList<>();
         listitems.addAll(newList);
         notifyDataSetChanged();
+    }
+
+    public  interface Sendinvite{
+        void invite(ProgressBar bar,Button Send,ImageView correct,String code);
     }
 }

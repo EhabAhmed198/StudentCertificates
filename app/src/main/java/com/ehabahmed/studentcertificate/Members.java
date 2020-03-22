@@ -5,15 +5,20 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
@@ -23,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Members extends AppCompatActivity implements View.OnClickListener , SearchView.OnQueryTextListener{
+public class Members extends AppCompatActivity implements View.OnClickListener , SearchView.OnQueryTextListener,MemberAdapter.Sendinvite{
     Spinner department,band;
     String[] data_department,data_band;
     ArrayAdapter<String> adapter1,adapter2;
@@ -37,12 +42,20 @@ public class Members extends AppCompatActivity implements View.OnClickListener ,
     MemberAdapter adapter;
     Button updateList;
     Info info;
-    String id,invite;
-ProgressBar pb_member;
+    String id,invite,GroupId;
+ProgressBar pb_member,pb_send;
+Button send;
+ImageView correct;
+    GsonBuilder builder;
+    Gson gson;
+    String codes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
+        builder=new GsonBuilder();
+        builder.setLenient();
+        gson=builder.create();
         pb_member=findViewById(R.id.pb_member);
         invite=getIntent().getExtras().getString("invite");
         info=(Info)getApplicationContext();
@@ -60,7 +73,13 @@ setTitle(getResources().getString(R.string.Members));
         department.setAdapter(adapter1);
         MemberList.setNestedScrollingEnabled(false);
         band.setAdapter(adapter2);
-        getdata(NumberDepartment,Numberband);
+        if(invite.equals("NoInvite")) {
+            getdata(NumberDepartment, Numberband);
+        }else if(invite.equals("invite")){
+            getdataInvite(NumberDepartment, Numberband);
+            GroupId=getIntent().getExtras().getString("GroupId");
+
+        }
         updateList.setOnClickListener(this);
 
 
@@ -160,8 +179,11 @@ setTitle(getResources().getString(R.string.Members));
         pb_member.setVisibility(View.VISIBLE);
 
         getConvertSpinnerData();
+        if(invite.equals("NoInvite")) {
             getdata(NumberDepartment, Numberband);
-
+        }else if(invite.equals("invite")){
+            getdataInvite(NumberDepartment, Numberband);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -190,5 +212,90 @@ setTitle(getResources().getString(R.string.Members));
         }
         adapter.updateList(newlist);
         return false;
+    }
+
+
+    private void getdataInvite(int numberDepartment, int numberband) {
+        if(info.getType().equals("doctor"))
+            id=info.getDoctor_id();
+        else
+            id=info.getId();
+        listitems=new ArrayList<>();
+
+        listitems.clear();
+        retrofit=new Retrofit.Builder()
+                .baseUrl("http://ehab01998.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiConfig=retrofit.create(ApiConfig.class);
+        apiConfig.getDataMemberGroup(String.valueOf(numberDepartment),String.valueOf(numberband),id,GroupId).enqueue(new Callback<ArrayList<member>>() {
+            @Override
+            public void onResponse(Call<ArrayList<member>> call, Response<ArrayList<member>> response) {
+                pb_member.setVisibility(View.INVISIBLE);
+                if(NumberDepartment==4){
+                    listitems = response.body();
+                    adapter = new MemberAdapter(Members.this, listitems,"doctor",invite);
+                    MemberList.setAdapter(adapter);
+
+                }
+                else if ((NumberDepartment == 0 && Numberband != 0) == false) {
+                    listitems = response.body();
+                    adapter = new MemberAdapter(Members.this, listitems,"student",invite);
+                    MemberList.setAdapter(adapter);
+
+                }
+
+
+                else {
+                    Toast.makeText(Members.this, getResources().getString(R.string.correctchoose), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<member>> call, Throwable t) {
+                Toast.makeText(Members.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void invite(ProgressBar bar, Button Send, final ImageView correct,  String code) {
+       this.pb_send=bar;
+       this.send=Send;
+       this.correct=correct;
+       this.codes=code;
+                pb_send.setVisibility(View.VISIBLE);
+                 send.setVisibility(View.INVISIBLE);
+                SetMember(codes,GroupId,"Member","NO");
+
+
+    }
+    private void SetMember(String code,String group_id,String type,String state) {
+
+        retrofit=new Retrofit.Builder().baseUrl("http://ehab01998.com")
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+        apiConfig=retrofit.create(ApiConfig.class);
+        apiConfig.SetMember(code,group_id,type,state).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                pb_send.setVisibility(View.INVISIBLE);
+                send.setVisibility(View.INVISIBLE);
+                correct.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                pb_send.setVisibility(View.INVISIBLE);
+                send.setVisibility(View.VISIBLE);
+                correct.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
     }
 }

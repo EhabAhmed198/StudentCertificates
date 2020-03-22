@@ -22,6 +22,7 @@ public class Show_Result extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show__result);
+
         iv_show = findViewById(R.id.show_photo);
         progressBar=findViewById(R.id.progressbar);
         frameLayout=findViewById(R.id.continner);

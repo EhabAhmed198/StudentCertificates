@@ -125,7 +125,12 @@ else
                     intent=new Intent(context,TypeMap.class);
                     context.startActivity(intent);
                     break;
+
                 case 15:
+                    intent=new Intent(context,Settings.class);
+                    context.startActivity(intent);
+                    break;
+                case 16:
                     info=(Info)context.getApplicationContext();
 
                     info.setId("-1");

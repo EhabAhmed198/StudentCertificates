@@ -64,12 +64,19 @@ ArrayList<objectPostGroup> listitems;
 StudentgroupAdapter adapter;
     Intent intent;
 Info info;
+String code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_student_group);
-        rv_group=findViewById(R.id.rv_group);
         info= (Info) getApplicationContext();
+
+        if(info.getType().equals("student")){
+            code=info.getId();
+        }else if(info.getType().equals("doctor")){
+            code=info.getDoctor_id();
+        }
+        rv_group=findViewById(R.id.rv_group);
         layoutManager=new LinearLayoutManager(this);
         rv_group.setLayoutManager(layoutManager);
         toolbar=findViewById(R.id.toolbar);
@@ -89,8 +96,8 @@ Info info;
         makeTranslucent();
         showPhotoGroup();
         setTitle(GroupName);
-        listitems.add(new objectPostGroup("info","info","info","info","info","info"));
-        listitems.add(new objectPostGroup("post","post","post","post","post","post"));
+        listitems.add(new objectPostGroup("info","info","info","info","info","info","info","info","info"));
+        listitems.add(new objectPostGroup("post","post","post","post","post","post","info","info","info"));
 
         getposts();
 
@@ -107,15 +114,20 @@ Info info;
                 .baseUrl("http://ehab01998.com").addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiConfig=retrofit.create(ApiConfig.class);
-        apiConfig.getposts(GroupId).enqueue(new Callback<objectPostGroup>() {
+        apiConfig.getposts(GroupId).enqueue(new Callback<ArrayList<objectPostGroup>>() {
             @Override
-            public void onResponse(Call<objectPostGroup> call, Response<objectPostGroup> response) {
-                Toast.makeText(CreateStudentGroup.this, "ok", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<ArrayList<objectPostGroup>> call, Response<ArrayList<objectPostGroup>> response) {
+
+           for(int i=0;i<response.body().size();i++){
+               listitems.add(response.body().get(i));
+           }
+               adapter=new StudentgroupAdapter(CreateStudentGroup.this,listitems);
+               rv_group.setAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<objectPostGroup> call, Throwable t) {
-                Toast.makeText(CreateStudentGroup.this, "false", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ArrayList<objectPostGroup>> call, Throwable t) {
+                Toast.makeText(CreateStudentGroup.this, t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -335,8 +347,22 @@ invite.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
         Intent intent=new Intent(CreateStudentGroup.this,Members.class);
         intent.putExtra("invite","invite");
+        intent.putExtra("GroupId",GroupId);
         startActivity(intent);
     }
 });
+    }
+
+    @Override
+    public void sendDataIntoGroup() {
+        Intent intent=new Intent(CreateStudentGroup.this,CreatePostGroup.class);
+        intent.putExtra("GroupId",GroupId);
+        intent.putExtra("code",code);
+        intent.putExtra("GroupName",GroupName);
+        intent.putExtra("GroupPhoto",GroupPhoto);
+        intent.putExtra("GroupInfo",GroupInfo);
+        intent.putExtra("type",GroupType);
+        intent.putExtra("NumMember",NumMember);
+        startActivity(intent);
     }
 }

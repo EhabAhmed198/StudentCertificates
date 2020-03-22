@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fingreprint">
+    <Switch
+        android:id="@+id/appLock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="authenticate App"
+        tools:layout_editor_absoluteX="114dp"
+        android:gravity="start"
+        android:layout_margin="5dp"
+        android:textSize="22sp"
+        tools:layout_editor_absoluteY="195dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+     android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"
+        />
+
+    <Switch
+        android:id="@+id/grouplock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="authenticate Groups"
+        tools:layout_editor_absoluteX="114dp"
+        android:gravity="start"
+        android:layout_margin="5dp"
+        android:textSize="22sp"
+        tools:layout_editor_absoluteY="195dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"
+        />
+    <Switch
+        android:id="@+id/csmaillock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="authenticate Mail"
+        tools:layout_editor_absoluteX="114dp"
+        android:gravity="start"
+        android:layout_margin="5dp"
+        android:textSize="22sp"
+        tools:layout_editor_absoluteY="195dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"
+        />
+    <Switch
+        android:id="@+id/resultlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="authenticate Result"
+        tools:layout_editor_absoluteX="114dp"
+        android:gravity="start"
+        android:layout_margin="5dp"
+        android:textSize="22sp"
+        tools:layout_editor_absoluteY="195dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"
+        />
+</LinearLayout>

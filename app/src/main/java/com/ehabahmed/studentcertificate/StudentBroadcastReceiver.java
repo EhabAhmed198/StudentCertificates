@@ -1,16 +1,34 @@
 package com.ehabahmed.studentcertificate;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,19 +36,32 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
 
 
-public final class StudentBroadcastReceiver extends BroadcastReceiver {
-    Context context;
+public final class StudentBroadcastReceiver extends Service {
+
+    public static final String CHANNEL_ID = "ForegroundServiceChannel";
     SharedPreferences sharedPreferences, sharedPreferences1, sharedPreferences2,
             sharedPreferences5, sharedPreferences6, sharedPreferences7, sharedPreferences8, sharedPreferences9, sharedPreferences10, sharedPreferences11, sharedPreferences12;
     SharedPreferences.Editor editor, editor1, editor10, editor11, editor12;
@@ -41,70 +72,143 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
     PendingIntent pendingIntent;
     String id, name, pass, photo, level, department;
     Intent intent;
-
-    private boolean isConnected() {
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = null;
-        if (manager != null) {
-            info = manager.getActiveNetworkInfo();
-            if (info != null && info.isAvailable() && info.isConnected()) {
-                return true;
-            }
-        }
-        return false;
+Retrofit retrofit;
+ApiConfig apiConfig;
+Bitmap bitmap;
+//    private boolean isConnected() {
+//        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo info = null;
+//        if (manager != null) {
+//            info = manager.getActiveNetworkInfo();
+//            if (info != null && info.isAvailable() && info.isConnected()) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
-    public void onReceive(final Context cont, Intent intent) {
-        this.context = cont.getApplicationContext();
-        if (isConnected()) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    info = (Info) context.getApplicationContext();
-                    requestQueue = Volley.newRequestQueue(context);
-                    sharedPreferences = context.getSharedPreferences("student", MODE_PRIVATE);
-                    id = sharedPreferences.getString("id", "-1");
-                    name = sharedPreferences.getString("name", "-1");
-                    pass = sharedPreferences.getString("pass", "-1");
-                    photo = sharedPreferences.getString("photo", "-1");
-                    department = sharedPreferences.getString("department", "-1");
-                    level = sharedPreferences.getString("level", "-1");
-                    checkgroup(context);
-                    checkgrouppost(context);
-                    checktable(context);
-                    checkcourse(context);
-                    checklibraryBook(context);
-                    checkexams(context);
-                    checkcompition(context);
-                    checknews(context);
-                    checkprograms(context);
-                    checkcomments();
-                    Log.e("kkkkk", "");
-                }
-            });
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String input = intent.getStringExtra("inputExtra");
+
+
+        createNotificationChannel();
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, notificationIntent, 0);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Student Certificate")
+                .setContentText(input)
+                .setSmallIcon(R.drawable.logo)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+
+    onReceive();
+        return START_STICKY;
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Foreground Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
         }
-        setAlarm(context);
     }
 
-    public void setAlarm(Context context) {
-        Calendar cal = Calendar.getInstance();
-        // add 30 seconds to the calendar object
-        cal.add(Calendar.SECOND, 10);
-        Intent intent = new Intent(context, StudentBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (am != null) {
-            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+
+void onReceive(){
+    info = (Info)StudentBroadcastReceiver.this.getApplicationContext();
+    requestQueue = Volley.newRequestQueue(StudentBroadcastReceiver.this);
+    sharedPreferences = StudentBroadcastReceiver.this.getSharedPreferences("student", MODE_PRIVATE);
+    id = sharedPreferences.getString("id", "-1");
+    name = sharedPreferences.getString("name", "-1");
+    pass = sharedPreferences.getString("pass", "-1");
+    photo = sharedPreferences.getString("photo", "-1");
+    department = sharedPreferences.getString("department", "-1");
+    level = sharedPreferences.getString("level", "-1");
+    checkgroup();
+    checkgrouppost();
+    checktable();
+    checkcourse();
+    checklibraryBook();
+    checkexams();
+    checkcompition();
+    checknews();
+    checkprograms();
+    checkcomments();
+   checkAddToGroup(id);
+
+    Handler handler=new Handler(Looper.getMainLooper());
+    handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            onReceive();
         }
+    },7000);
+}
+
+
+
+    private void checkAddToGroup( String id) {
+        retrofit=new Retrofit.Builder()
+                .baseUrl("http://ehab01998.com").addConverterFactory(GsonConverterFactory.create()).build();
+
+        apiConfig=retrofit.create(ApiConfig.class);
+        apiConfig.checkIfAdd(id).enqueue(new Callback<ArrayList<NewGroupAdd>>() {
+            @Override
+            public void onResponse(Call<ArrayList<NewGroupAdd>> call, final retrofit2.Response<ArrayList<NewGroupAdd>> response) {
+                try{
+                if(response.body().size()>0) {
+                    apiConfig.changeState(response.body().get(0).Id, "Wait").enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                    intent = new Intent(StudentBroadcastReceiver.this, Groups.class);
+;
+
+                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this,
+                            0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    String text = response.body().get(0).name + " Invites you to join the " + response.body().get(0).group_name + " group\n" + response.body().get(0).group_info;
+
+                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 220, "ADDToNewGroup", pendingIntent, response.body().get(0).group_name, text, text);
+
+
+                }}catch (Exception e){}
+          }
+
+            @Override
+            public void onFailure(Call<ArrayList<NewGroupAdd>> call, Throwable t) {
+
+            }
+        });
+
     }
+
+
 
     private void checkcomments() {
         final ArrayList<String> listitems = new ArrayList<>();
         listitems.clear();
-        SharedPreferences shared = context.getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences shared = getSharedPreferences("login", MODE_PRIVATE);
         final String type = shared.getString("type", "NoData");
         if (type.equals("student")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -114,7 +218,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
             }
 
         } else if (type.equals("doctor")) {
-            SharedPreferences sh = context.getSharedPreferences("doctor", MODE_PRIVATE);
+            SharedPreferences sh = getSharedPreferences("doctor", MODE_PRIVATE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 url = "https://ehab01998.com/checkComments.php?code=" + sh.getString("id", "-1");
             } else {
@@ -147,11 +251,11 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     StringRequest request1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            SharedPreferences sharedcomment = context.getSharedPreferences(listitems.get(finalI), MODE_PRIVATE);
+                            SharedPreferences sharedcomment =getSharedPreferences(listitems.get(finalI), MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedcomment.edit();
                             if (Integer.parseInt(sharedcomment.getString(listitems.get(finalI), "1000000000")) < Integer.parseInt(response)) {
 
-                                Intent intent = new Intent(context, Comments.class);
+                                Intent intent = new Intent(StudentBroadcastReceiver.this, Comments.class);
                                 intent.putExtra("postid", listitems.get(finalI).substring(0, listitems.get(finalI).indexOf("t")));
                                 intent.putExtra("type", type);
                                 intent.putExtra("fav", "fav");
@@ -159,13 +263,13 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                     intent.putExtra("SName", name);
                                     intent.putExtra("SId", id);
                                 } else if (type.equals("doctor")) {
-                                    SharedPreferences doctordata = context.getSharedPreferences("doctor", MODE_PRIVATE);
+                                    SharedPreferences doctordata = getSharedPreferences("doctor", MODE_PRIVATE);
                                     intent.putExtra("DName", doctordata.getString("name", "-1"));
                                     intent.putExtra("DId", doctordata.getString("id", "-1"));
 
                                 }
-                                pendingIntent = PendingIntent.getActivity(context, 35, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                StudentNotification.showNotification(context, 40, context.getResources().getString(R.string.comment), pendingIntent, stu_title, context.getResources().getString(R.string.newcomment), context.getResources().getString(R.string.newcomment));
+                                pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 35, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 40, getResources().getString(R.string.comment), pendingIntent, stu_title,getResources().getString(R.string.newcomment), getResources().getString(R.string.newcomment));
                                 editor.putString(listitems.get(finalI), response);
                                 editor.apply();
                             }
@@ -193,8 +297,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void checkcompition(final Context context) {
-        sharedPreferences12 = context.getSharedPreferences("compition", MODE_PRIVATE);
+    private void checkcompition() {
+        sharedPreferences12 = getSharedPreferences("compition", MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getcount.php?type=5&department=" + department;
         } else {
@@ -221,12 +325,12 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                 JSONArray array = response.getJSONArray("compition");
                                 JSONObject object = array.getJSONObject(0);
                                 String name_compition = object.getString("name");
-                                intent = new Intent(context, Compition.class);
+                                intent = new Intent(StudentBroadcastReceiver.this, Compition.class);
                                 intent.putExtra("type", "1");
                                 intent.putExtra("department", department);
-                                pendingIntent = PendingIntent.getActivity(context, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 String text = name_compition + " compition has been added to Compition";
-                                StudentNotification.showNotification(context, 26, "Compitiion", pendingIntent, stu_title, text, text);
+                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 26, "Compitiion", pendingIntent, stu_title, text, text);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -253,8 +357,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         requestQueue.add(request);
     }
 
-    private void checkexams(final Context context) {
-        sharedPreferences11 = context.getSharedPreferences("exams", MODE_PRIVATE);
+    private void checkexams() {
+        sharedPreferences11 = getSharedPreferences("exams", MODE_PRIVATE);
         editor11 = sharedPreferences11.edit();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getcount.php?type=4&department=" + department + "&level=" + level;
@@ -283,13 +387,13 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                 JSONArray array = response.getJSONArray("exam");
                                 JSONObject object = array.getJSONObject(0);
                                 String name_exam = object.getString("name");
-                                intent = new Intent(context, Exams.class);
+                                intent = new Intent(StudentBroadcastReceiver.this, Exams.class);
                                 intent.putExtra("type", "1");
                                 intent.putExtra("department", department);
                                 intent.putExtra("level", level);
-                                pendingIntent = PendingIntent.getActivity(context, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 String text = name_exam + " has been added to Exams";
-                                StudentNotification.showNotification(context, 25, "Exams", pendingIntent, stu_title, text, text);
+                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 25, "Exams", pendingIntent, stu_title, text, text);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -317,8 +421,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void checklibraryBook(final Context context) {
-        sharedPreferences10 = context.getSharedPreferences("library", MODE_PRIVATE);
+    private void checklibraryBook() {
+        sharedPreferences10 = getSharedPreferences("library", MODE_PRIVATE);
         editor10 = sharedPreferences10.edit();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getcount.php?type=3&department_id=" + department;
@@ -344,12 +448,12 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                 JSONArray array = response.getJSONArray("book");
                                 JSONObject object = array.getJSONObject(0);
                                 String name_book = object.getString("books_name");
-                                intent = new Intent(context, Library.class);
+                                intent = new Intent(StudentBroadcastReceiver.this, Library.class);
                                 intent.putExtra("type", "1");
                                 intent.putExtra("department", department);
-                                pendingIntent = PendingIntent.getActivity(context, 9, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 9, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 String text = name_book + " book has been added to Library";
-                                StudentNotification.showNotification(context, 24, "Libarary", pendingIntent, stu_title, text, text);
+                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 24, "Libarary", pendingIntent, stu_title, text, text);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -380,8 +484,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         requestQueue.add(request);
     }
 
-    private void checkcourse(final Context context) {
-        sharedPreferences8 = context.getSharedPreferences("course", MODE_PRIVATE);
+    private void checkcourse() {
+        sharedPreferences8 = getSharedPreferences("course", MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getcount.php?type=" + 2;
         } else {
@@ -399,11 +503,11 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     editor8.apply();
 
 
-                    intent = new Intent(context, Courses.class);
+                    intent = new Intent(StudentBroadcastReceiver.this, Courses.class);
                     intent.putExtra("type", "1");
                     intent.putExtra("department", department);
-                    pendingIntent = PendingIntent.getActivity(context, 8, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    StudentNotification.showNotification(context, 23, "courses", pendingIntent, stu_title, "A new course has been added", "A new course has been added");
+                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 8, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 23, "courses", pendingIntent, stu_title, "A new course has been added", "A new course has been added");
 
                 }
 
@@ -420,9 +524,9 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void checktable(final Context context) {
+    private void checktable() {
 
-        sharedPreferences9 = context.getSharedPreferences("enter", MODE_PRIVATE);
+        sharedPreferences9 = getSharedPreferences("enter", MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/checktable.php?department_id=" + department + "&table_level=" + level;
         } else {
@@ -436,12 +540,12 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     SharedPreferences.Editor editor9 = sharedPreferences9.edit();
                     editor9.putString("type", "yes");
                     editor9.apply();
-                    intent = new Intent(context, Table_student.class);
+                    intent = new Intent(StudentBroadcastReceiver.this, Table_student.class);
                     intent.putExtra("notiftable", "1");
                     intent.putExtra("department", department);
                     intent.putExtra("level", level);
-                    pendingIntent = PendingIntent.getActivity(context, 13, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    StudentNotification.showNotification(context, 22, "table", pendingIntent, stu_title, "تم أضافة جدول المحاضرات", "تم أضافة جدول المحاضرات");
+                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 13, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 22, "table", pendingIntent, stu_title, "تم أضافة جدول المحاضرات", "تم أضافة جدول المحاضرات");
 
 
                 } else if (response.equals("2") && sharedPreferences9.getString("type", "no").equals("no")) {
@@ -449,13 +553,13 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     SharedPreferences.Editor editor9 = sharedPreferences9.edit();
                     editor9.putString("type", "yes");
                     editor9.apply();
-                    intent = new Intent(context, Table_student.class);
+                    intent = new Intent(StudentBroadcastReceiver.this, Table_student.class);
                     intent.putExtra("notiftable", "1");
                     intent.putExtra("department", department);
                     intent.putExtra("level", level);
 
-                    pendingIntent = PendingIntent.getActivity(context, 17, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    StudentNotification.showNotification(context, 22, "table", pendingIntent, stu_title, "تم أضافة جدول الامتحانات", "تم أضافة جدول المحاضرات");
+                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 17, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 22, "table", pendingIntent, stu_title, "تم أضافة جدول الامتحانات", "تم أضافة جدول المحاضرات");
 
 
                 } else if (response.equals("0")) {
@@ -481,7 +585,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
     }
 
 
-    private void checkgroup(final Context context) {
+    private void checkgroup() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getGroupCount.php?department_id=" + department + "&groups_level=" + level;
         } else {
@@ -492,15 +596,15 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                sharedPreferences1 = context.getSharedPreferences("Groups", MODE_PRIVATE);
+                sharedPreferences1 = getSharedPreferences("Groups", MODE_PRIVATE);
                 if (Integer.parseInt(response) > sharedPreferences1.getInt("NumsGroups", 100)) {
 
-                    sharedPreferences1 = context.getSharedPreferences("Groups", MODE_PRIVATE);
+                    sharedPreferences1 = getSharedPreferences("Groups", MODE_PRIVATE);
                     editor1 = sharedPreferences1.edit();
                     editor1.putInt("NumsGroups", Integer.parseInt(response));
                     editor1.apply();
 
-                    intent = new Intent(context, Student.class);
+                    intent = new Intent(StudentBroadcastReceiver.this, Student.class);
                     intent.putExtra("id", id);
                     intent.putExtra("name", name);
                     intent.putExtra("pass", pass);
@@ -508,8 +612,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     intent.putExtra("department", department);
                     intent.putExtra("level", level);
                     intent.putExtra("fragment_id", "1");
-                    pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    StudentNotification.showNotification(context, 2, "Groups", pendingIntent, "Student Certificate", "New Group", "New Group");
+                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 2, "Groups", pendingIntent, "Student Certificate", "New Group", "New Group");
 
                 }
 
@@ -527,7 +631,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void checknews(final Context context) {
+    private void checknews() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/getcount.php?type=" + 0;
         } else {
@@ -537,9 +641,9 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                sharedPreferences = context.getSharedPreferences("number_news", MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences("number_news", MODE_PRIVATE);
                 if (Integer.parseInt(response) > sharedPreferences.getInt("News", 100)) {
-                    sharedPreferences = context.getSharedPreferences("number_news", MODE_PRIVATE);
+                    sharedPreferences = getSharedPreferences("number_news", MODE_PRIVATE);
                     editor = sharedPreferences.edit();
                     editor.putInt("News", Integer.parseInt(response));
                     editor.apply();
@@ -552,7 +656,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            sharedPreferences = context.getSharedPreferences("login", MODE_PRIVATE);
+                            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                             String type = sharedPreferences.getString("type", "NoData");
                             try {
                                 JSONArray array = response.getJSONArray("new");
@@ -562,34 +666,34 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                 switch (type) {
                                     case "NoData":
 
-                                        intent = new Intent(context, MainActivity.class);
-                                        pendingIntent = PendingIntent.getActivity(context, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        StudentNotification.showNotification(context, 1, "NEWS", pendingIntent, title, text, text);
+                                        intent = new Intent(StudentBroadcastReceiver.this, MainActivity.class);
+                                        pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        StudentNotification.showNotification(StudentBroadcastReceiver.this, 1, "NEWS", pendingIntent, title, text, text);
                                         break;
                                     case "student":
 
-                                        intent = new Intent(context, Student.class);
+                                        intent = new Intent(StudentBroadcastReceiver.this, Student.class);
                                         intent.putExtra("id", id);
                                         intent.putExtra("name", name);
                                         intent.putExtra("pass", pass);
                                         intent.putExtra("photo", photo);
                                         intent.putExtra("department", department);
                                         intent.putExtra("level", level);
-                                        pendingIntent = PendingIntent.getActivity(context, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        StudentNotification.showNotification(context, 1, "NEWS", pendingIntent, title, text, text);
+                                        pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        StudentNotification.showNotification(StudentBroadcastReceiver.this, 1, "NEWS", pendingIntent, title, text, text);
 
                                         break;
                                     case "doctor":
-                                        sharedPreferences2 = context.getSharedPreferences("doctor", MODE_PRIVATE);
-                                        intent = new Intent(context, Doctor.class);
+                                        sharedPreferences2 = getSharedPreferences("doctor", MODE_PRIVATE);
+                                        intent = new Intent(StudentBroadcastReceiver.this, Doctor.class);
                                         intent.putExtra("doctor_id", sharedPreferences2.getString("id", "-1"));
                                         intent.putExtra("doctor_name", sharedPreferences2.getString("name", "-1"));
                                         intent.putExtra("doctor_password", sharedPreferences2.getString("pass", "-1"));
                                         intent.putExtra("doctor_photo", sharedPreferences2.getString("photo", "-1"));
                                         intent.putExtra("mobile", sharedPreferences2.getString("mobile", "-1"));
                                         intent.putExtra("email", sharedPreferences2.getString("email", "-1"));
-                                        pendingIntent = PendingIntent.getActivity(context, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        StudentNotification.showNotification(context, 1, "NEWS", pendingIntent, title, text, text);
+                                        pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        StudentNotification.showNotification(StudentBroadcastReceiver.this, 1, "NEWS", pendingIntent, title, text, text);
                                         break;
                                     case "certificate":
 
@@ -629,11 +733,11 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    private void checkgrouppost(final Context context) {
+    private void checkgrouppost() {
         try {
-            sharedPreferences5 = context.getSharedPreferences("NameGroups", MODE_PRIVATE);
-            sharedPreferences6 = context.getSharedPreferences("Groups", MODE_PRIVATE);
-            sharedPreferences7 = context.getSharedPreferences("Numberpost", MODE_PRIVATE);
+            sharedPreferences5 = getSharedPreferences("NameGroups", MODE_PRIVATE);
+            sharedPreferences6 = getSharedPreferences("Groups", MODE_PRIVATE);
+            sharedPreferences7 = getSharedPreferences("Numberpost", MODE_PRIVATE);
         } catch (Exception e) {
         }
         final SharedPreferences.Editor editor7 = sharedPreferences7.edit();
@@ -678,25 +782,25 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                     StringRequest request1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            intent = new Intent(context, Group_post.class);
+                                            intent = new Intent(StudentBroadcastReceiver.this, Group_post.class);
                                             intent.putExtra("group_id", sharedPreferences5.getString("Ngroup" + finalI, "Nodata"));
                                             intent.putExtra("doctor_id", response);
-                                            pendingIntent = PendingIntent.getActivity(context, 6, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 6, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                             switch (type) {
                                                 case "timage":
-                                                    StudentNotification.showNotification(context, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
+                                                    StudentNotification.showNotification(StudentBroadcastReceiver.this, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
                                                     break;
                                                 case "video":
-                                                    StudentNotification.showNotification(context, finalI, "post" + finalI, pendingIntent, "Student Certificate", "تم أضافة فديو", "تم أضافة فديو");
+                                                    StudentNotification.showNotification(StudentBroadcastReceiver.this, finalI, "post" + finalI, pendingIntent, "Student Certificate", "تم أضافة فديو", "تم أضافة فديو");
                                                     break;
                                                 case "file":
-                                                    StudentNotification.showNotification(context, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
+                                                    StudentNotification.showNotification(StudentBroadcastReceiver.this, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
                                                     break;
                                                 case "image":
-                                                    StudentNotification.showNotification(context, finalI, "post" + finalI, pendingIntent, "Student Certificate", "تم أضافة صورة", "تم أضافة صورة");
+                                                    StudentNotification.showNotification(StudentBroadcastReceiver.this, finalI, "post" + finalI, pendingIntent, "Student Certificate", "تم أضافة صورة", "تم أضافة صورة");
                                                     break;
                                                 case "none":
-                                                    StudentNotification.showNotification(context, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
+                                                    StudentNotification.showNotification(StudentBroadcastReceiver.this, finalI, "post" + finalI, pendingIntent, "Student Certificate", text, text);
                                                     break;
                                             }
 
@@ -704,7 +808,6 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                                     }, new Response.ErrorListener() {
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(context, "faild1", Toast.LENGTH_SHORT).show();
 
 
                                         }
@@ -748,7 +851,8 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
 
     }
 
-    public void checkprograms(final Context context) {
+    public void checkprograms() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             url = "https://ehab01998.com/progrems.php?page=" + 0;
         } else {
@@ -756,7 +860,7 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
         }
 
 
-        final SharedPreferences sharedPreferences = context.getSharedPreferences("number_programs", MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getSharedPreferences("number_programs", MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
@@ -765,9 +869,9 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
                     JSONArray array = response.getJSONArray("Programs");
                     if ((array.length()) > Integer.parseInt(sharedPreferences.getString("programs", "300"))) {
 
-                        Intent intent = new Intent(context, Programs.class);
-                        pendingIntent = PendingIntent.getActivity(context, 7, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        StudentNotification.showNotification(context, 44, "programs", pendingIntent, "Student Certificate", "SoftWare", "New Software has been added");
+                        Intent intent = new Intent(StudentBroadcastReceiver.this, Programs.class);
+                        pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 7, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        StudentNotification.showNotification(StudentBroadcastReceiver.this, 44, "programs", pendingIntent, "Student Certificate", "SoftWare", "New Software has been added");
                         editor.putString("programs", String.valueOf(array.length()));
                         editor.apply();
                     }
@@ -791,4 +895,9 @@ public final class StudentBroadcastReceiver extends BroadcastReceiver {
     }
 
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }

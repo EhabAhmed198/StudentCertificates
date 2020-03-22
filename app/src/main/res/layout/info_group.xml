@@ -121,7 +121,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="85dp"
+            android:layout_marginStart="70dp"
             android:visibility="invisible"
 
             />
@@ -133,7 +133,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="85dp"
+            android:layout_marginStart="70dp"
             android:visibility="invisible"
 
             />
@@ -145,7 +145,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="135dp"
+            android:layout_marginStart="100dp"
             android:visibility="invisible"
             />
         <ImageView
@@ -156,7 +156,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="135dp"
+            android:layout_marginStart="100dp"
             android:visibility="invisible"
             />
         <ImageView
@@ -167,7 +167,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="185dp"
+            android:layout_marginStart="135dp"
             android:visibility="invisible"
 
             />
@@ -179,7 +179,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="185dp"
+            android:layout_marginStart="135dp"
             android:visibility="invisible"
 
             />

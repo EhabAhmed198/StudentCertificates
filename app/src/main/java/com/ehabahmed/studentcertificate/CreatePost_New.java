@@ -29,6 +29,7 @@ import android.widget.VideoView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
@@ -45,18 +46,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class CreatePost_New extends AppCompatActivity implements  View.OnClickListener {
-    ListView listView;
+
     ConstraintLayout body;
     ProgressBar progressBar;
 
     String group_id;
     EditText text;
     ImageView imageView;
-    VideoView videoView;
-    Bitmap bitmap;
     int type=-1, progressbar = 10;
     String name;
-    RequestQueue requestQueue;
     String url, filepath;
     Intent intent;
     String types;
@@ -70,7 +68,7 @@ public class CreatePost_New extends AppCompatActivity implements  View.OnClickLi
         body = findViewById(R.id.body);
         progressBar = findViewById(R.id.pr);
         waitupload = findViewById(R.id.waitupload);
-        requestQueue = Volley.newRequestQueue(this);
+
         sharedPreferences =getSharedPreferences("number_news", Context.MODE_PRIVATE);
 
         imageView = findViewById(R.id.image);
@@ -101,7 +99,7 @@ public class CreatePost_New extends AppCompatActivity implements  View.OnClickLi
             case R.id.ok:
                 item.setVisible(false);
                 if (type == 0) {
-                    if (!text.getText().equals(""))
+                    if (!text.getText().toString().trim().isEmpty())
                     types="timage";
                     else
                         types="image";
@@ -143,22 +141,9 @@ public class CreatePost_New extends AppCompatActivity implements  View.OnClickLi
             cursor.close();
             filepath = picturePath;
             type = 0;
-            if (android.os.Build.VERSION.SDK_INT >= 29) {
-                try {
-                    bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), data.getData()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
-                imageView.setBackground(drawable);
 
-            }
+                Glide.with(CreatePost_New.this).load(filepath).into(imageView);
+
 
 
         } else if (requestCode == 2 && resultCode == RESULT_OK) {

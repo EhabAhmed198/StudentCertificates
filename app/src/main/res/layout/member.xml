@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,6 +41,41 @@
            android:text="Cs"
             android:textSize="15sp"
             />
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_margin="5dp"
+    >
+
+    <ProgressBar
+        android:id="@+id/pb_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:background="@drawable/btn2"
+
+        />
+    <ImageView
+        android:id="@+id/correct"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:background="@drawable/check"
+        android:visibility="invisible"
+        />
+
+
+</FrameLayout>
 
 
 

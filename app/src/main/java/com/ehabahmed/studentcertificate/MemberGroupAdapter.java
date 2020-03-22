@@ -29,7 +29,7 @@ public class MemberGroupAdapter extends RecyclerView.Adapter<MemberGroupAdapter.
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(context).inflate(R.layout.member,parent,false));
+        return new Holder(LayoutInflater.from(context).inflate(R.layout.member2,parent,false));
     }
 
     @Override

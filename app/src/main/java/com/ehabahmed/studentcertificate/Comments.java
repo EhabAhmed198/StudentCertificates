@@ -102,9 +102,10 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));
                         String comment_user=current.getString("comment_user");
                         String comment_text=current.getString("comment_text");
                         String code=current.getString("code");
+                        String photo=current.getString("photo");
                         String data_time=current.getString("data_time");
                         if(type.equals("doctor")) code="";
-                        listitems.add(new comment(comment_user,comment_text,code,data_time));
+                        listitems.add(new comment(comment_user,comment_text,code,photo,data_time));
 
                     }
                     adapter=new CommentAdapter(Comments.this,listitems);

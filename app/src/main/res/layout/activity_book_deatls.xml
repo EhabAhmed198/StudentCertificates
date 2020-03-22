@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+android:background="#FFF"
        tools:context=".Book_deatls">
 
 
@@ -68,7 +68,7 @@
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:textColor="#000"
-                    android:paddingBottom="20dp"
+
                     android:textIsSelectable="true"
                     />
 
@@ -78,9 +78,9 @@
                      android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                      app:layout_constraintTop_toBottomOf="@id/detals"
-                    app:layout_constraintBottom_toBottomOf="parent"
+
                      android:text="@string/download"
-                    android:layout_margin="16dp"
+                    android:layout_margin="10dp"
                      android:textAllCaps="false"
                     android:background="@drawable/buttonship2"
 
@@ -93,8 +93,8 @@
     app:layout_constraintEnd_toEndOf="parent"
 
     app:layout_constraintTop_toBottomOf="@id/detals"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_margin="16dp"
+
+    android:layout_margin="10dp"
 android:layout_marginBottom="10dp"
     android:textAllCaps="false"
     android:background="@drawable/buttonship2"

@@ -42,12 +42,12 @@ Info studentinfo;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
             Glide.with(context).asBitmap().apply(new RequestOptions().override(150, 150))
                     .placeholder(R.drawable.profile2).circleCrop()
-                    .load("https://ehab01998.com/images_profile/"+studentinfo.getPhoto())
+                    .load("https://ehab01998.com/images_profile/"+listitems.get(position).comment_photo)
                     .into(holder.photoperson);
         }else{
             Glide.with(context).asBitmap().apply(new RequestOptions().override(150, 150))
                     .placeholder(R.drawable.profile2).circleCrop()
-                    .load("http://ehab01998.com/images_profile/"+studentinfo.getPhoto())
+                    .load("http://ehab01998.com/images_profile/"+listitems.get(position).comment_photo)
                     .into(holder.photoperson);
         }
 
