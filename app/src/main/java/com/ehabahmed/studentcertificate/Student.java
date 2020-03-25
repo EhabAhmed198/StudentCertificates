@@ -54,7 +54,7 @@ public class Student extends AppCompatActivity  {
     Info studuentInfo;
     FragmentManager fragmentManager;
     Bundle bundle;
-;
+String voice;
     Handler handler;
     SharedPreferences sharedPreferences,sharedPreferences2;
     SharedPreferences.Editor editor,editor2;
@@ -78,16 +78,20 @@ public class Student extends AppCompatActivity  {
         tabLayout = findViewById(R.id.tlHome);
         final ViewPager  pager=findViewById(R.id.container);
         adapter=new PagerAdapter(getSupportFragmentManager(),1);
-        fragment_id=getIntent().getExtras().getString("fragment_id","-1");
+
+voice=getIntent().getExtras().getString("voic","-1");
+
+            fragment_id = getIntent().getExtras().getString("fragment_id", "-1");
         requestQueue= Volley.newRequestQueue(this);
         fragmentManager = getSupportFragmentManager();
-        Notificationsplish=getIntent().getExtras().getString("Notificationsplish","no");
-        studuentInfo.setId(getIntent().getExtras().getString("id"));
-        studuentInfo.setName(getIntent().getExtras().getString("name"));
-        studuentInfo.setPass(getIntent().getExtras().getString("pass"));
-        studuentInfo.setPhoto(getIntent().getExtras().getString("photo"));
-        studuentInfo.setDepartment(getIntent().getExtras().getString("department"));
-        studuentInfo.setLevel(getIntent().getExtras().getString("level"));
+            Notificationsplish = getIntent().getExtras().getString("Notificationsplish", "no");
+            studuentInfo.setId(getIntent().getExtras().getString("id"));
+            studuentInfo.setName(getIntent().getExtras().getString("name"));
+            studuentInfo.setPass(getIntent().getExtras().getString("pass"));
+            studuentInfo.setPhoto(getIntent().getExtras().getString("photo"));
+            studuentInfo.setDepartment(getIntent().getExtras().getString("department"));
+            studuentInfo.setLevel(getIntent().getExtras().getString("level"));
+
         handler=new Handler();
 
         applock=getSharedPreferences("fingreprint", Context.MODE_PRIVATE);;
@@ -101,6 +105,15 @@ public class Student extends AppCompatActivity  {
         }
 
         pager.setAdapter(adapter);
+        if(voice.equalsIgnoreCase("0")){
+            pager.setCurrentItem(0);
+        }else if(voice.equalsIgnoreCase("1")){
+            pager.setCurrentItem(1);
+        }else if(voice.equalsIgnoreCase("2")){
+            pager.setCurrentItem(2);
+        }else if(voice.equalsIgnoreCase("3")){
+            pager.setCurrentItem(3);
+        }
 
         tabLayout.setupWithViewPager(pager);
 
@@ -117,7 +130,7 @@ public class Student extends AppCompatActivity  {
                 if(position==1) {
                     if (StateDeletePage == false) {
 
-                        pager.removeViewAt(0);
+                            pager.removeViewAt(0);
                         StateDeletePage = true;
                     }
 
@@ -151,6 +164,7 @@ public class Student extends AppCompatActivity  {
 
         if(fragment_id.equals("1")){
             pager.setCurrentItem(1,false);
+
 
         }
         sharedPreferences2 = getSharedPreferences("Notification", Context.MODE_PRIVATE);
