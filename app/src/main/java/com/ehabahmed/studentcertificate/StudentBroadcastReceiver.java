@@ -72,10 +72,11 @@ public final class StudentBroadcastReceiver extends Service {
     PendingIntent pendingIntent;
     String id, name, pass, photo, level, department;
     Intent intent;
-Retrofit retrofit;
-ApiConfig apiConfig;
-Bitmap bitmap;
-//    private boolean isConnected() {
+    Retrofit retrofit;
+    ApiConfig apiConfig;
+    Bitmap bitmap;
+
+    //    private boolean isConnected() {
 //        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 //        NetworkInfo info = null;
 //        if (manager != null) {
@@ -90,6 +91,7 @@ Bitmap bitmap;
     public void onCreate() {
         super.onCreate();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -101,20 +103,20 @@ Bitmap bitmap;
 
 
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, VoiceController.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Student Certificate")
                 .setContentText(input)
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
 
-    onReceive();
+        onReceive();
         return START_STICKY;
     }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
@@ -128,72 +130,73 @@ Bitmap bitmap;
     }
 
 
-void onReceive(){
-    info = (Info)StudentBroadcastReceiver.this.getApplicationContext();
-    requestQueue = Volley.newRequestQueue(StudentBroadcastReceiver.this);
-    sharedPreferences = StudentBroadcastReceiver.this.getSharedPreferences("student", MODE_PRIVATE);
-    id = sharedPreferences.getString("id", "-1");
-    name = sharedPreferences.getString("name", "-1");
-    pass = sharedPreferences.getString("pass", "-1");
-    photo = sharedPreferences.getString("photo", "-1");
-    department = sharedPreferences.getString("department", "-1");
-    level = sharedPreferences.getString("level", "-1");
-    checkgroup();
-    checkgrouppost();
-    checktable();
-    checkcourse();
-    checklibraryBook();
-    checkexams();
-    checkcompition();
-    checknews();
-    checkprograms();
-    checkcomments();
-   checkAddToGroup(id);
+    void onReceive() {
+        info = (Info) StudentBroadcastReceiver.this.getApplicationContext();
+        requestQueue = Volley.newRequestQueue(StudentBroadcastReceiver.this);
+        sharedPreferences = StudentBroadcastReceiver.this.getSharedPreferences("student", MODE_PRIVATE);
+        id = sharedPreferences.getString("id", "-1");
+        name = sharedPreferences.getString("name", "-1");
+        pass = sharedPreferences.getString("pass", "-1");
+        photo = sharedPreferences.getString("photo", "-1");
+        department = sharedPreferences.getString("department", "-1");
+        level = sharedPreferences.getString("level", "-1");
+        checkgroup();
+        checkgrouppost();
+        checktable();
+        checkcourse();
+        checklibraryBook();
+        checkexams();
+        checkcompition();
+        checknews();
+        checkprograms();
+        checkcomments();
+        checkAddToGroup(id);
 
-    Handler handler=new Handler(Looper.getMainLooper());
-    handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            onReceive();
-        }
-    },7000);
-}
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onReceive();
+            }
+        }, 7000);
+    }
 
 
-
-    private void checkAddToGroup( String id) {
-        retrofit=new Retrofit.Builder()
+    private void checkAddToGroup(String id) {
+        retrofit = new Retrofit.Builder()
                 .baseUrl("http://ehab01998.com").addConverterFactory(GsonConverterFactory.create()).build();
 
-        apiConfig=retrofit.create(ApiConfig.class);
+        apiConfig = retrofit.create(ApiConfig.class);
         apiConfig.checkIfAdd(id).enqueue(new Callback<ArrayList<NewGroupAdd>>() {
             @Override
             public void onResponse(Call<ArrayList<NewGroupAdd>> call, final retrofit2.Response<ArrayList<NewGroupAdd>> response) {
-                try{
-                if(response.body().size()>0) {
-                    apiConfig.changeState(response.body().get(0).Id, "Wait").enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                        }
+                try {
+                    if (response.body().size() > 0) {
+                        apiConfig.changeState(response.body().get(0).Id, "Wait").enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                            }
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
 
-                        }
-                    });
-                    intent = new Intent(StudentBroadcastReceiver.this, Groups.class);
-;
+                            }
+                        });
+                        intent = new Intent(StudentBroadcastReceiver.this, Groups.class);
+                        ;
 
-                    pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this,
-                            0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this,
+                                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    String text = response.body().get(0).name + " Invites you to join the " + response.body().get(0).group_name + " group\n" + response.body().get(0).group_info;
+                        String text = response.body().get(0).name + " Invites you to join the " + response.body().get(0).group_name + " group\n" + response.body().get(0).group_info;
 
-                    StudentNotification.showNotification(StudentBroadcastReceiver.this, 220, "ADDToNewGroup", pendingIntent, response.body().get(0).group_name, text, text);
+                        StudentNotification.showNotification(StudentBroadcastReceiver.this, 220, "ADDToNewGroup", pendingIntent, response.body().get(0).group_name, text, text);
 
 
-                }}catch (Exception e){}
-          }
+                    }
+                } catch (Exception e) {
+                }
+            }
 
             @Override
             public void onFailure(Call<ArrayList<NewGroupAdd>> call, Throwable t) {
@@ -202,7 +205,6 @@ void onReceive(){
         });
 
     }
-
 
 
     private void checkcomments() {
@@ -251,7 +253,7 @@ void onReceive(){
                     StringRequest request1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            SharedPreferences sharedcomment =getSharedPreferences(listitems.get(finalI), MODE_PRIVATE);
+                            SharedPreferences sharedcomment = getSharedPreferences(listitems.get(finalI), MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedcomment.edit();
                             if (Integer.parseInt(sharedcomment.getString(listitems.get(finalI), "1000000000")) < Integer.parseInt(response)) {
 
@@ -269,7 +271,7 @@ void onReceive(){
 
                                 }
                                 pendingIntent = PendingIntent.getActivity(StudentBroadcastReceiver.this, 35, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 40, getResources().getString(R.string.comment), pendingIntent, stu_title,getResources().getString(R.string.newcomment), getResources().getString(R.string.newcomment));
+                                StudentNotification.showNotification(StudentBroadcastReceiver.this, 40, getResources().getString(R.string.comment), pendingIntent, stu_title, getResources().getString(R.string.newcomment), getResources().getString(R.string.newcomment));
                                 editor.putString(listitems.get(finalI), response);
                                 editor.apply();
                             }

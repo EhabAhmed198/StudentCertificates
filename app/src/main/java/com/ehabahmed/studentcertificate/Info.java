@@ -12,7 +12,6 @@ String type;
 
 
 
-
     public String getSMobile() {
         return SMobile;
     }

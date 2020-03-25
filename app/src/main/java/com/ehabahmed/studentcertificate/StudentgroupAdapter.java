@@ -177,7 +177,7 @@ GsonBuilder builder;
                 holder.Nimage_group_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(context,MemberMakeLike.class);
+                        Intent intent=new Intent(context,MemberMakeLikes.class);
                         intent.putExtra("postId",listitems.get(position).group_Id);
                         context.startActivity(intent);
                     }
@@ -229,7 +229,7 @@ GsonBuilder builder;
                 holder.timage_group_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(context,MemberMakeLike.class);
+                        Intent intent=new Intent(context,MemberMakeLikes.class);
                         intent.putExtra("postId",listitems.get(position).group_Id);
                         context.startActivity(intent);
                     }
@@ -280,7 +280,7 @@ GsonBuilder builder;
                 holder.iimage_group_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(context,MemberMakeLike.class);
+                        Intent intent=new Intent(context,MemberMakeLikes.class);
                         intent.putExtra("postId",listitems.get(position).group_Id);
                         context.startActivity(intent);
                     }
@@ -367,7 +367,7 @@ GsonBuilder builder;
                 holder.timage_group_like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent=new Intent(context,MemberMakeLike.class);
+                        Intent intent=new Intent(context,MemberMakeLikes.class);
                         intent.putExtra("postId",listitems.get(position).group_Id);
                         context.startActivity(intent);
                     }

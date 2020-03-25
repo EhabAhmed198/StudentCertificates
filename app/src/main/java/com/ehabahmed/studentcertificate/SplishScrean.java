@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -83,10 +84,10 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         info = (Info) getApplicationContext();
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
         sharedPreferences2 = getSharedPreferences("Notification", Context.MODE_PRIVATE);
-       opensplish=getSharedPreferences("splish",Context.MODE_PRIVATE);
-       eopensplish=opensplish.edit();
-       eopensplish.putBoolean("splish",true);
-       eopensplish.apply();
+        opensplish = getSharedPreferences("splish", Context.MODE_PRIVATE);
+        eopensplish = opensplish.edit();
+        eopensplish.putBoolean("splish", true);
+        eopensplish.apply();
         requestQueue = Volley.newRequestQueue(this);
         update();
 
@@ -106,11 +107,11 @@ public class SplishScrean extends AppCompatActivity implements Runnable {
         handler = new Handler(getMainLooper());
         this.context = this;
         Intent serviceIntent = new Intent(this, StudentBroadcastReceiver.class);
-        serviceIntent.putExtra("inputExtra", "Welcome In Student Certificate...");
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+        serviceIntent.putExtra("inputExtra", "voice Order");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent);
-        }else{
-            ContextCompat.startForegroundService(this,serviceIntent);
+        } else {
+            ContextCompat.startForegroundService(this, serviceIntent);
         }
 
 
