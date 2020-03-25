@@ -29,7 +29,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fingreprint"></activity>
+        <activity android:name=".VoiceController"></activity>
+        <activity android:name=".Fingreprint" />
         <activity android:name=".Privacy" />
         <activity android:name=".Settings" />
         <activity android:name=".MemberMakeLike" />
