@@ -43,7 +43,7 @@ public class WebSite extends AppCompatActivity {
             public void onClick(View v) {
                 String s = editText.getText().toString();
                 if (s.trim().length() > 0) {
-                    if (s.contains("https://")) {
+                    if (s.contains("https://")||s.contains("http://")) {
                         reference.push().setValue(s);
                     } else {
                         reference.push().setValue("https://" + s);
