@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.Request;
@@ -60,7 +61,7 @@ ProgressBar progressBar;
         progressBar.setVisibility(View.VISIBLE);
         String url;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
-            url="http://ehab01998.com/dgroups.php?doctor_id="+info.getDoctor_id();
+            url="https://ehab01998.com/dgroups.php?doctor_id="+info.getDoctor_id();
         }else{
             url="http://ehab01998.com/dgroups.php?doctor_id="+info.getDoctor_id();
 

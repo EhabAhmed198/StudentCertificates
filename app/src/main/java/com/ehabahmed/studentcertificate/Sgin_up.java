@@ -1,5 +1,6 @@
 package com.ehabahmed.studentcertificate;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +42,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 
 import java.io.ByteArrayOutputStream;
@@ -134,23 +139,24 @@ RequestQueue requestQueue;
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==0 && resultCode==RESULT_OK && data!=null){
+Glide.with(this).asBitmap().circleCrop().override(600,200).load(data.getData()).into(new CustomTarget<Bitmap>() {
+    @Override
+    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+       bitmap=resource;
 
-            if(android.os.Build.VERSION.SDK_INT >= 29) {
-                try {
-                    relized = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(),data.getData()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else{
+       if(type.equals("student"))
+       iv_profile.setImageBitmap(bitmap);
+       else if(type.equals("doctor"))
+           div_profile.setImageBitmap(bitmap);
+    }
 
-            }
-            bitmap = Bitmap.createScaledBitmap(relized,300, 250, true);
-            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(),bitmap);
-            roundedBitmapDrawable.setCircular(true);
-            if(type.equals("student"))
-            iv_profile.setImageDrawable(roundedBitmapDrawable);
-            else if(type.equals("doctor"))
-                div_profile.setImageDrawable(roundedBitmapDrawable);
+    @Override
+    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+    }
+});
+
+
 
 
         }
@@ -160,6 +166,8 @@ RequestQueue requestQueue;
     public void onClick(View v) {
 switch (v.getId()){
     case R.id.iv_profile:
+        intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(intent,0); break;
     case R.id.div_profile:
          intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent,0); break;

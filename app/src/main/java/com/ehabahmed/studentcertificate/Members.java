@@ -210,6 +210,7 @@ setTitle(getResources().getString(R.string.Members));
                 newlist.add(item);
             }
         }
+        if(newlist.size()>0)
         adapter.updateList(newlist);
         return false;
     }

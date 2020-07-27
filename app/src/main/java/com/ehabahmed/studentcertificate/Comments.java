@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -67,7 +68,6 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));
         info=(Info)getApplicationContext();
         postid=getIntent().getExtras().getString("postid");
         type=getIntent().getExtras().getString("type");
-
         try{
             fav=getIntent().getExtras().getString("fav","no");
             if(fav.equals("fav")) {
@@ -90,7 +90,13 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar.setVisibility(View.VISIBLE);
         listitems=new ArrayList<>();
 
-        url="http://www.ehab01998.com/showComments.php?post_id="+postid;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
+           url="https://www.ehab01998.com/showComments.php?post_id="+postid;
+        }else{
+
+            url="http://www.ehab01998.com/showComments.php?post_id="+postid;
+
+        }
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -106,7 +112,6 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));
                         String data_time=current.getString("data_time");
                         if(type.equals("doctor")) code="";
                         listitems.add(new comment(comment_user,comment_text,code,photo,data_time));
-
                     }
                     adapter=new CommentAdapter(Comments.this,listitems);
                     recyclerView.setAdapter(adapter);
@@ -149,7 +154,14 @@ recyclerView.setLayoutManager(new LinearLayoutManager(this));
             commentText.setError(getResources().getString(R.string.addcommenttext));
         }else {
               commentText.setError(null);
-            url = "http://www.ehab01998.com/comments.php";
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP_MR1){
+                url = "https://www.ehab01998.com/comments.php";
+
+            }else{
+
+                url = "http://www.ehab01998.com/comments.php";
+
+            }
             StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
